@@ -1,0 +1,17 @@
+*.gem
+*.swp
+*~
+/*.gemspec
+/.bundle/
+/.envrc
+/.vagrant/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/Gemfile.lock
+/pkg/
+/spec/reports/
+/tmp/
+/Vagrantfile
+/vendor/
