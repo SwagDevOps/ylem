@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'pathname'
+require 'active_support/concern'
+
 require 'ylem/concern'
 
 # Provides a standardized way to use ``VersionInfo``
