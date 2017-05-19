@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'singleton'
+
 require 'ylem/helper'
 
 # Provides access to helper classes
