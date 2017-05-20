@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 
 gem 'activesupport', '~> 5.0'
 gem 'version_info', '~> 1.9'
-gem 'RubyInline', '~> 3.12', '>= 3.12.4'
+gem 'sys-proc', '~> 1.0'
 
 group :development do
   gem 'rake', '~> 11.3'
