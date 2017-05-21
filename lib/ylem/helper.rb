@@ -11,7 +11,7 @@ class Ylem::Helper
   protected def initialize
     @items = {
       inflector: proc do
-        require 'sys/proc/helper/inflector'
+        require 'ylem/helper/inflector'
 
         Inflector.new
       end.call
@@ -30,7 +30,7 @@ class Ylem::Helper
     return items[name] if items[name]
 
     begin
-      @items[name] = inflector.resolve("sys/proc/helper/#{name}").new
+      @items[name] = inflector.resolve("ylem/helper/#{name}").new
     rescue LoadError
       raise NotImplementedError, "helper not loadable: #{name}"
     end
