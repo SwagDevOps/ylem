@@ -3,8 +3,8 @@
 file "#{Project.name}.gemspec" => \
      FileList.new("#{Project.name}.gemspec.tpl",
                   'Gemfile',
-                  './**/*.rb',
-                  './**/version_info.yml') do
+                  'lib/**/*.rb',
+                  'lib/**/version_info.yml') do
   [:ostruct, :pathname, :gemspec_deps_gen, :tenjin].each do |required|
     require required.to_s
   end
