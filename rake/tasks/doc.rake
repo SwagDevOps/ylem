@@ -3,6 +3,8 @@
 #
 # see: https://gist.github.com/chetan/1827484
 
+CLOBBER.include('doc/')
+
 desc "Generate documentation (using YARD)"
 task :doc do
   [:pathname, :yard, :securerandom].each { |req| require req.to_s }

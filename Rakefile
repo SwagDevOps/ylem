@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'bundler/setup'
 require 'pathname'
+require 'rake/clean'
 
 $LOAD_PATH.unshift Pathname.new(__dir__).join('rake', 'lib')
 

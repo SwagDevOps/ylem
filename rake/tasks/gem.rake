@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+CLOBBER.include('pkg')
+
 desc 'Build all the packages'
 task :gem => ['gem:gemspec', 'gem:package']
 

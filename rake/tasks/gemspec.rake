@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+
+CLOBBER.include("#{Project.name}.gemspec")
+
 file "#{Project.name}.gemspec" => \
      FileList.new("#{Project.name}.gemspec.tpl",
                   'Gemfile',
