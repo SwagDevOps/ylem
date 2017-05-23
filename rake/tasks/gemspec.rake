@@ -3,8 +3,10 @@
 
 CLOBBER.include("#{Project.name}.gemspec")
 
+GEMSPEC_TEMPLATE = 'gemspec.tpl'
+
 file "#{Project.name}.gemspec" => \
-     FileList.new("#{Project.name}.gemspec.tpl",
+     FileList.new(GEMSPEC_TEMPLATE,
                   'Gemfile',
                   'lib/**/*.rb',
                   'lib/**/version_info.yml') do
@@ -18,7 +20,7 @@ file "#{Project.name}.gemspec" => \
   )
 
   files = OpenStruct.new(
-    templated: Pathname.new("#{Project.name}.gemspec.tpl"),
+    templated: Pathname.new(GEMSPEC_TEMPLATE),
     generated: Pathname.new(Dir.pwd).join("#{Project.name}.gemspec"),
   )
 
