@@ -12,7 +12,7 @@ task :shell do
                   '%s%s' % [RUBY_VERSION, patch],
                   '(%s revision %s)' % [RUBY_RELEASE_DATE, RUBY_REVISION],
                   '[%s]' % RUBY_PLATFORM].join(' ')).green
-  end.call if Project.subject
+  end.call
 
   Pry.start
 end

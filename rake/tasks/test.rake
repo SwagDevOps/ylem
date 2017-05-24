@@ -15,7 +15,6 @@ unless Dir.glob('spec/*').empty?
 
     proc do
       require 'rspec/core'
-      Project.subject
 
       options += ['--tag', args[:tag]] if args[:tag]
       status = RSpec::Core::Runner.run(options, $stderr, $stdout).to_i
