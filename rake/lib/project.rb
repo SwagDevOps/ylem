@@ -4,8 +4,6 @@ class Project
   class << self
     # @return [Symbol]
     def name
-      require 'dotenv/load'
-
       ENV.fetch('PROJECT_NAME').to_sym
     end
 
@@ -13,8 +11,6 @@ class Project
     #
     # @return [Class]
     def subject
-      require '%s/lib/%s' % [Dir.pwd, Project.name]
-
       name = self.name.to_s.gsub('-', '/')
       inflector.constantize(inflector.classify(name))
     end
@@ -40,11 +36,22 @@ class Project
 
     protected
 
+    # Load project main lib (and dependencies)
+    #
+    # @return [self]
+    def autoload
+      require 'active_support/inflector'
+      require 'dotenv/load'
+      require '%s/lib/%s' % [Dir.pwd, name]
+
+      self
+    end
+
     # @return [ActiveSupport::Inflector]
     def inflector
-      require 'active_support/inflector'
-
       ActiveSupport::Inflector
     end
   end
+
+  self.autoload
 end
