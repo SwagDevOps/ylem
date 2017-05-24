@@ -11,7 +11,7 @@ unless Dir.glob('spec/*').empty?
     options = ['-c',
                '--pattern', 'spec/**/*_spec.rb',
                '-f', 'progress',
-               '-r', 'spec/spec_helper']
+               '-r', '%s/spec/spec_helper' % Dir.pwd]
 
     proc do
       require 'rspec/core'
