@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
+require 'ylem'
 require 'singleton'
-
-require 'ylem/helper'
 
 # Provides access to helper classes
 class Ylem::Helper
