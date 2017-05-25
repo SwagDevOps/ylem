@@ -2,7 +2,8 @@
 
 Create an ``/etc/ylem/scripts`` directory and put your bootstraping scripts.
 Then scripts are executed alphabetically sorted.
-The config reside in ``/etc/ylem/config.yml`` (or be set on the CLI).
+The config resides in ``/etc/ylem/config.yml``
+(filepath to the config can be set on the CLI).
 
 ## Config
 
