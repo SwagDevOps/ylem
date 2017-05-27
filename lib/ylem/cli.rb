@@ -24,14 +24,14 @@ class Ylem::Cli
       self.new(*args, &block).run
     end
 
-    # Get available (registered) actions
+    # Get available (registered) commands
     #
     # @return [Array<Class>]
-    def actions
+    def commands
       [
         :start,
       ].map do |name|
-        helper.get(:inflector).resolve("ylem/action/#{name}")
+        helper.get(:inflector).resolve("ylem/cli/#{name}")
       end
     end
   end
@@ -43,7 +43,7 @@ class Ylem::Cli
     OptionParser.new do |opts|
       opts.banner = 'Usage: %s {%s} [options]' % [
         $PROGRAM_NAME,
-        actions.keys.join('|'),
+        commands.keys.join('|'),
       ]
 
       opts.separator nil
@@ -72,11 +72,11 @@ class Ylem::Cli
     Errno::EINVAL::Errno
   end
 
-  # Get actions indexed by commands keyword
+  # Get commanda indexed by command name/keyword
   #
   # @return [Hash]
-  def actions
-    classes = self.class.actions
+  def commands
+    classes = self.class.commands
     results = { }
 
     classes.each do |c|
@@ -94,13 +94,13 @@ class Ylem::Cli
   def command?(command)
     command = (command || nil).to_s.empty? ? nil : command
 
-    command ? actions.keys.include?(command.to_sym) : false
+    command ? commands.keys.include?(command.to_sym) : false
   end
 
   protected
 
   def run_command(command, arguments)
-    helper.get(:inflector).resolve("ylem/cli/#{command}").new(argv).run
+    commands.fetch(command.to_sym).new(argv).run
   end
 
   # Subtext used in help
@@ -108,13 +108,13 @@ class Ylem::Cli
   # @return [String]
   def subtext
     lines = ['Available commands are:']
-    actions.each do |k, v|
-      lines << '    %s: %s' % [k, v.to_s]
+    commands.each do |k, v|
+      lines << '%s%s: %s' % [' '*4, k, v.to_s]
     end
 
     lines += [
       nil,
-      ("See '#{$PROGRAM_NAME} {%s} --help' " % actions.keys.join('|') +
+      ("See '#{$PROGRAM_NAME} {%s} --help' " % commands.keys.join('|') +
        'for more information on a specific command.')
     ]
 
