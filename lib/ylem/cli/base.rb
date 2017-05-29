@@ -1,14 +1,23 @@
 # frozen_string_literal: true
 
+require 'ylem/cli'
 require 'ylem/concern/helper'
+require 'ylem/concern/action'
 require 'etc'
 require 'optparse'
 require 'pathname'
+# @see https://github.com/rails/rails/blob/master/activerecord/lib/active_record/base.rb
+# @see http://api.rubyonrails.org/classes/ActiveSupport/DescendantsTracker.html
+require 'active_support/descendants_tracker'
 
-class Ylem::Cli::BaseCommand
+# Base command (almost an abstract class)
+class Ylem::Cli::Base
   attr_reader :argv
   attr_reader :options
   attr_reader :arguments
+
+  extend ActiveSupport::DescendantsTracker
+  include Ylem::Concern::Action
 
   class << self
     include Ylem::Concern::Helper
