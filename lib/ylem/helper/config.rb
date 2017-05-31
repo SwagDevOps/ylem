@@ -27,21 +27,31 @@ class Ylem::Helper::Config
     Pathname.new(Etc.sysconfdir).join(progname, 'config.yml')
   end
 
+  def default_file?(filepath)
+    Pathname.new(filepath) == default_file
+  end
+
   # Parse comfig (yaml) file
   #
   # @param [Pathname|String] filepath
   # @return [Hash]
-  def parse(filepath = default_file)
+  def parse_file(filepath = default_file)
     filepath = Pathname.new(filepath)
 
-    parsed = proc do
-      if filepath == default_file and !filepath.exist?
-        {}
-      else
-        helper.get('yaml').parse_file(filepath)
-      end
-    end.call
+    if default_file?(filepath) and !filepath.exist?
+      return defaults
+    end
 
+    parse(filepath.read)
+  end
+
+  # Parse string content (yaml) merging with defauts
+  #
+  # @return [Hash|Array]
+  def parse(content)
+    parsed = helper.get('yaml').parse(content)
+
+    # @todo raise explicit exception before merge
     defaults.merge(parsed)
   end
 
