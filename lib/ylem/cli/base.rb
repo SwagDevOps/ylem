@@ -27,8 +27,7 @@ class Ylem::Cli::Base
     # @return [Hash]
     def defaults
       {
-        config: Pathname.new(Etc.sysconfdir)
-                        .join($PROGRAM_NAME, 'config.yml')
+        config_file: helper.get('config').default_file
       }
     end
 
@@ -45,7 +44,7 @@ class Ylem::Cli::Base
     def banner
       keyword = helper.get(:inflector).underscore(name.split('::')[-1])
 
-      'Usage: %s %s [options]' % [$PROGRAM_NAME, keyword]
+      'Usage: %s %s [options]' % [helper.get('system').progname, keyword]
     end
   end
 
@@ -63,8 +62,8 @@ class Ylem::Cli::Base
 
       opts.on('-c=CONFIG',
               '--config=CONFIG',
-              'Config file used [%s]' % options[:config]) do |c|
-        options[:config] = c
+              'Config file used [%s]' % options[:config_file]) do |c|
+        options[:config_file] = c
       end
     end
   end
