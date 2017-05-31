@@ -13,6 +13,11 @@ if 'development' == ENV['PROJECT_MODE']
   Bundler.setup(:default)
 end
 
+# set process name ---------------------------------------------------
+require 'sys/proc'
+
+Sys::Proc.progname = $PROGRAM_NAME
+
 # require lib requirements -------------------------------------------
 [nil, :cli].each do |r|
   req = r ? "#{$PROGRAM_NAME}/#{r}" : $PROGRAM_NAME
