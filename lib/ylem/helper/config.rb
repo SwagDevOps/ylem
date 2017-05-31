@@ -34,11 +34,13 @@ class Ylem::Helper::Config
   def parse(filepath = default_file)
     filepath = Pathname.new(filepath)
 
-    if filepath == default_file and !filepath.exist?
-      parsed = { }
-    else
-      parsed = helper.get('yaml').parse_file(filepath)
-    end
+    parsed = proc do
+      if filepath == default_file and !filepath.exist?
+        {}
+      else
+        helper.get('yaml').parse_file(filepath)
+      end
+    end.call
 
     defaults.merge(parsed)
   end
