@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/action'
+require 'ylem/action/base'
 
-class Ylem::Action::Start
-  def initialize
-  end
+class Ylem::Action::Start < Ylem::Action::Base
 end
