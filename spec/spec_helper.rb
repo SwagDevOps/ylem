@@ -2,6 +2,9 @@
 
 require 'rspec/sleeping_king_studios/matchers/core/all'
 require '%s/../lib/%s' % [__dir__, ENV.fetch('PROJECT_NAME')]
+require 'sys/proc'
+
+Sys::Proc.progname = nil
 
 # Sample of use:
 #
