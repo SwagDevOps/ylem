@@ -3,14 +3,22 @@
 require 'ylem/helper/config'
 require 'pathname'
 
+config_default_keys = [
+  :log_file,
+  :scripts_dir,
+  :env_file,
+]
+
 describe Ylem::Helper::Config do
   {
-    defaults: 0,
-    default_file: 0,
-    parse_file: 1,
-    parse: 1,
-  }.each do |method, n|
-    it { expect(subject).to respond_to(method).with(n).arguments }
+    defaults: [0],
+    default_file: [0],
+    parse_file: [0, 1],
+    parse: [1],
+  }.each do |method, counts|
+    counts.each do |n|
+      it { expect(subject).to respond_to(method).with(n).arguments }
+    end
   end
 
   context '#default_file' do
@@ -22,6 +30,20 @@ describe Ylem::Helper::Config do
       reg = /^\/etc\/(rake|rspec)\/config\.yml$/
 
       expect(subject.default_file.to_s).to match(reg)
+    end
+  end
+
+  context '#parse_file' do
+    it { expect(subject.parse_file).to be_a(Hash) }
+
+    config_default_keys.each do |key|
+      it { expect(subject.parse_file.keys).to include(key) }
+    end
+  end
+
+  config_default_keys.each do |key|
+    context "#parse_file[:#{key}]" do
+      it { expect(subject.parse_file[key]).to be_a(Pathname) }
     end
   end
 end
