@@ -22,14 +22,16 @@ describe Ylem::Helper::Config do
   end
 
   context '#default_file' do
-    it { expect(subject.default_file).to be_a(Pathname) }
+    let(:default_file) { subject.default_file }
+
+    it { expect(default_file).to be_a(Pathname) }
 
     # default value (example);
     # ``#<Pathname:/etc/progname/config.yml>``
     it do
       reg = /^\/etc\/(rake|rspec)\/config\.yml$/
 
-      expect(subject.default_file.to_s).to match(reg)
+      expect(default_file.to_s).to match(reg)
     end
   end
 
