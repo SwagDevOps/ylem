@@ -36,16 +36,20 @@ describe Ylem::Helper::Config do
   end
 
   context '#parse_file' do
-    it { expect(subject.parse_file).to be_a(Hash) }
+    let(:parse_file) { subject.parse_file }
+
+    it { expect(parse_file).to be_a(Hash) }
 
     config_default_keys.each do |key|
-      it { expect(subject.parse_file.keys).to include(key) }
+      it { expect(parse_file.keys).to include(key) }
     end
   end
 
   config_default_keys.each do |key|
     context "#parse_file[:#{key}]" do
-      it { expect(subject.parse_file[key]).to be_a(Pathname) }
+      let(:parse_file) { subject.parse_file }
+
+      it { expect(parse_file[key]).to be_a(Pathname) }
     end
   end
 end
