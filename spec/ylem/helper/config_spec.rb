@@ -3,11 +3,11 @@
 require 'ylem/helper/config'
 require 'pathname'
 
-config_default_keys = [
-  :log_file,
-  :scripts_dir,
-  :env_file,
-]
+config_defaults = {
+  log_file:  /^\/var\/log\/(rake|rspec)\.log$/,
+  scripts_dir: /^\/etc\/(rake|rspec)\/scripts$/,
+  env_file: /^\/etc\/environment$/,
+}
 
 describe Ylem::Helper::Config do
   {
@@ -21,6 +21,14 @@ describe Ylem::Helper::Config do
     end
   end
 
+  config_defaults.each do |k, regexp|
+    context "#defaults[:#{k}]" do
+      let(:defaults) { subject.defaults }
+
+      it { expect(defaults[k].to_s).to match(regexp) }
+    end
+  end
+
   context '#default_file' do
     let(:default_file) { subject.default_file }
 
@@ -29,9 +37,9 @@ describe Ylem::Helper::Config do
     # default value (example);
     # ``#<Pathname:/etc/progname/config.yml>``
     it do
-      reg = /^\/etc\/(rake|rspec)\/config\.yml$/
+      regexp = /^\/etc\/(rake|rspec)\/config\.yml$/
 
-      expect(default_file.to_s).to match(reg)
+      expect(default_file.to_s).to match(regexp)
     end
   end
 
@@ -40,12 +48,12 @@ describe Ylem::Helper::Config do
 
     it { expect(parse_file).to be_a(Hash) }
 
-    config_default_keys.each do |key|
+    config_defaults.keys.each do |key|
       it { expect(parse_file.keys).to include(key) }
     end
   end
 
-  config_default_keys.each do |key|
+  config_defaults.keys.each do |key|
     context "#parse_file[:#{key}]" do
       let(:parse_file) { subject.parse_file }
 
