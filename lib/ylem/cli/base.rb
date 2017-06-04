@@ -10,7 +10,7 @@ require 'pathname'
 # @see http://api.rubyonrails.org/classes/ActiveSupport/DescendantsTracker.html
 require 'active_support/descendants_tracker'
 
-# Base command (almost an abstract class)
+# @abstract Base command
 class Ylem::Cli::Base
   attr_reader :argv
   attr_reader :options
@@ -18,6 +18,7 @@ class Ylem::Cli::Base
 
   extend ActiveSupport::DescendantsTracker
   include Ylem::Concern::Action
+  include Ylem::Concern::Helper
 
   class << self
     include Ylem::Concern::Helper
@@ -87,7 +88,15 @@ class Ylem::Cli::Base
   # @return [Integer] as return code
   def run
     parse!
+    action.new(config).execute.retcode
+  end
 
-    Errno::NOERROR::Errno
+  # Read config
+  #
+  # @return [Hash]
+  def config
+    config_file = @options[:config_file]
+
+    config_file ? helper.get('config').parse_file(config_file) : {}
   end
 end
