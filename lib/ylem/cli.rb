@@ -66,10 +66,12 @@ class Ylem::Cli
   def run
     parse!
 
-    return run_command(command, arguments).to_i if command?(command)
+    unless command?(command)
+      STDERR.puts(parser)
+      return Errno::EINVAL::Errno
+    end
 
-    STDERR.puts(parser)
-    Errno::EINVAL::Errno
+    run_command(command, arguments).to_i
   end
 
   # Get commanda indexed by command name/keyword
@@ -77,7 +79,7 @@ class Ylem::Cli
   # @return [Hash]
   def commands
     classes = self.class.commands
-    results = { }
+    results = {}
 
     classes.each do |c|
       k = helper.get(:inflector).underscore(c.name.split('::')[-1])
@@ -100,7 +102,7 @@ class Ylem::Cli
   protected
 
   def run_command(command, arguments)
-    commands.fetch(command.to_sym).new(argv).run
+    commands.fetch(command.to_sym).new(arguments).run
   end
 
   # Subtext used in help
@@ -109,7 +111,7 @@ class Ylem::Cli
   def subtext
     lines = ['Available commands are:']
     commands.each do |k, v|
-      lines << '%s%s: %s' % [' '*4, k, v.to_s]
+      lines << '%s%s: %s' % [' ' * 4, k, v.to_s]
     end
 
     lines += [
