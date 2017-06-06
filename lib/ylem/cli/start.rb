@@ -3,8 +3,12 @@
 require 'ylem/cli/base'
 
 class Ylem::Cli::Start < Ylem::Cli::Base
-  # @todo Implement actual method
-  def run
-    super
+  # Read config
+  #
+  # additional arguments are added to ``config`` as ``:command``
+  #
+  # @return [Hash]
+  def config
+    super.merge({command: arguments})
   end
 end
