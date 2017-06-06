@@ -12,7 +12,9 @@ class Ylem::Helper::Yaml
   # @param [String] content
   # @return [Hash]
   def parse(content)
-    engine.load(content)
+    parsed = engine.load(content)
+
+    symbolize_hash(parsed)
   end
 
   # Parse a Yaml file
@@ -22,9 +24,7 @@ class Ylem::Helper::Yaml
   def parse_file(filepath)
     content = Pathname.new(filepath).read
 
-    data = parse(content)
-
-    symbolize_hash(data)
+    parse(content)
   end
 
   protected
