@@ -3,8 +3,15 @@
 require 'rspec/sleeping_king_studios/matchers/core/all'
 require '%s/../lib/%s' % [__dir__, ENV.fetch('PROJECT_NAME')]
 require 'sys/proc'
+require 'pathname'
 
 Sys::Proc.progname = nil
+
+# Constants ----------------------------------------------------------
+
+SPEC_DIR = Pathname.new('spec')
+
+# Matchers -----------------------------------------------------------
 
 # Sample of use:
 #
