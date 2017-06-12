@@ -9,7 +9,7 @@ local = {
   random_dirs: (1..10).to_a.map do |i|
     "#{SPEC_DIR}/samples/#{SecureRandom.hex(16)}"
   end,
-  entries_size: 1,
+  entries_size: 2,
   scripts_size: 1,
 }
 
