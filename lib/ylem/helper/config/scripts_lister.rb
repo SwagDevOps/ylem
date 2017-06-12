@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 require 'ylem/helper/config'
+require 'ylem/type/script'
 
 # Class intended to list scripts (executables)
 #
 # List items from a defined path
 class Ylem::Helper::Config::ScriptsLister
+  include Ylem::Type
+
   # @return [Pathname|nil]
   def path
     Pathname.new(@path) if @path
@@ -34,17 +37,9 @@ class Ylem::Helper::Config::ScriptsLister
   #
   # @return [Array<Pathname>]
   def scripts
-    entries.map do |script|
-      Pathname.new(script).realpath if script?(script)
-    end.compact
-  end
-
-  protected
-
-  # @return [Boolean]
-  def script?(filepath)
-    script = Pathname.new(filepath)
-
-    (script.file? and script.executable? and script.readable?)
+    entries
+      .map { |script| Script.new(script) }
+      .map { |script| script if script.script? }
+      .compact
   end
 end
