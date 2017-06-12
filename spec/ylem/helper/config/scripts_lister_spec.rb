@@ -14,6 +14,19 @@ local = {
 }
 
 describe Ylem::Helper::Config::ScriptsLister do
+  {
+    path: [0],
+    configure: [0, 1],
+    entries: [0],
+    scripts: [0],
+  }.each do |method, counts|
+    counts.each do |n|
+      it { expect(subject).to respond_to(method).with(n).arguments }
+    end
+  end
+end
+
+describe Ylem::Helper::Config::ScriptsLister do
   let(:subject) do
     described_class.new.configure(path: local.fetch(:scripts_dir))
   end
