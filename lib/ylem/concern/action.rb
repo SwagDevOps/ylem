@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'ylem/action'
 require 'ylem/concern'
 require 'active_support/concern'
 
@@ -11,7 +12,6 @@ module Ylem::Concern::Action
   #
   # @return [Class]
   def action
-    require 'ylem/action'
     from = [Class, Module].include?(self.class) ? self : self.class
 
     Ylem::Action.from_class(from)
