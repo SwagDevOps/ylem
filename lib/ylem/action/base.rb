@@ -2,6 +2,7 @@
 
 require 'ylem/action'
 require 'active_support/descendants_tracker'
+require 'dotenv'
 
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
@@ -17,10 +18,16 @@ class Ylem::Action::Base
   # @return [Fixnum]
   attr_reader :retcode
 
+  # Return loaded environment
+  #
+  # @return [Hash]
+  attr_reader :loaded_environment
+
   extend ActiveSupport::DescendantsTracker
 
   # @param [Hash] config
   def initialize(config)
+    @loaded_environment = {}
     @config = config
     @retcode = Errno::NOERROR::Errno
   end
@@ -30,6 +37,15 @@ class Ylem::Action::Base
   #
   # @return [self]
   def execute
+    @loaded_environment = load_environment
+
     self
+  end
+
+  protected
+
+  # @return [Hash]
+  def load_environment
+    Dotenv.load(config[:env_file]) if config[:env_file]
   end
 end
