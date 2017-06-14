@@ -15,4 +15,17 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
       env_file: Pathname.new(Etc.sysconfdir).join('environment')
     }
   end
+
+  # Parse string content (yaml) merging with defauts
+  #
+  # @return [Hash|Array]
+  def parse(content)
+    result = super
+    # Apply type has seen from defaults
+    defaults.each do |k, v|
+      result[k] = Pathname.new(result[k]) if result[k] and v.is_a?(Pathname)
+    end
+
+    result
+  end
 end

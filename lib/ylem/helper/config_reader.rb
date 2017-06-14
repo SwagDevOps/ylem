@@ -50,12 +50,7 @@ class Ylem::Helper::ConfigReader
     parsed = helper.get('yaml').parse(content)
 
     # @todo raise explicit exception before merge
-    result = defaults.merge(parsed)
-    defaults.each do |k, v|
-      result[k] = Pathname.new(result[k]) if result[k] and v.is_a?(Pathname)
-    end
-
-    result
+    defaults.merge(parsed)
   end
 
   protected
