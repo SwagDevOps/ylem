@@ -1,4 +1,4 @@
 ---
-log_file:    ./var/log/sample.log
-scripts_dir: ./spec/samples/scripts
-env_file:    ./spec/samples/environment
+log_file:    ../../var/log/sample.log
+scripts_dir: scripts
+env_file:    environment
