@@ -16,6 +16,19 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     }
   end
 
+  def parse_file(filepath = default_file)
+    filepath = Pathname.new(filepath)
+    dir = pwd
+    parsed = {}
+
+    if filepath.exist?
+      dir = filepath.realpath.dirname
+      filepath = filepath.realpath
+    end
+
+    Dir.chdir(dir) { parsed = super }
+  end
+
   # Parse string content (yaml) merging with defauts
   #
   # @return [Hash|Array]
@@ -23,9 +36,22 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     result = super
     # Apply type has seen from defaults
     defaults.each do |k, v|
-      result[k] = Pathname.new(result[k]) if result[k] and v.is_a?(Pathname)
+      next unless result[k]
+      next unless v.is_a?(Pathname)
+
+      result[k] = Pathname.new(result[k])
+      result[k] = pwd.join(result[k]) unless result[k].absolute?
     end
 
     result
+  end
+
+  protected
+
+  # Return the current working directory as a Pathname
+  #
+  # @return [Pathname]
+  def pwd
+    Pathname.new(Dir.pwd)
   end
 end
