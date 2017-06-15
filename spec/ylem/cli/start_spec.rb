@@ -12,5 +12,7 @@ describe Ylem::Cli::Start do
     described_class.new(['-c', local[:sample_config]]).parse!
   end
 
-  it { expect(subject.config).to be_a(Hash) }
+  describe '.config' do
+    it { expect(subject.config).to be_a(Hash) }
+  end
 end
