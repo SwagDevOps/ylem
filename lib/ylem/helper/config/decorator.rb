@@ -8,6 +8,10 @@ require 'hash_dot'
 class Ylem::Helper::Config::Decorator
   include Ylem::Concern::Helper
 
+  # Decorate config
+  #
+  # @param [Hash] config
+  # @return [Hash]
   def decorate(config)
     derived = {
       scripts: {
@@ -32,11 +36,14 @@ class Ylem::Helper::Config::Decorator
 
   protected
 
-  # @see [Ylem::Helper::Config::Scripts_Lister]
+  # List scripts, using ``config[:scripts_dir]``
+  #
+  # @raise [KeyError] ``scripts_dir``
+  # @see Ylem.Helper.Config.ScriptsLister
   # @param [Hash] config
-  # @return [Array]
+  # @return [Array<Ylem::Type::Script>]
   def list_scripts(config)
-    path = config.fetch(:scripts_dir)
+    path = config.fetch(:scripts_diro)
 
     helper.get('config/scripts_lister').configure(path: path).scripts
   end
