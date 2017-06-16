@@ -31,7 +31,7 @@ class Ylem::Action::Base
   # @param [Hash] config
   def initialize(config)
     @loaded_environment = {}
-    @config = helper.get('config/decorator').decorate(config)
+    @config = helper.get('config/decorator').decorate(config).freeze
     @retcode = Errno::NOERROR::Errno
   end
 
