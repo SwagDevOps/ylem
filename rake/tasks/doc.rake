@@ -22,6 +22,7 @@ task :doc do
     end
 
     t.options = ['-o', 'doc',
+                 '--protected',
                  '--markup-provider=redcarpet',
                  '--markup=markdown',
                  '--charset', 'utf-8',
