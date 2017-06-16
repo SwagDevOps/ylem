@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'ylem/action'
+require 'ylem/concern/helper'
 require 'active_support/descendants_tracker'
 require 'dotenv'
 
@@ -25,10 +26,12 @@ class Ylem::Action::Base
 
   extend ActiveSupport::DescendantsTracker
 
+  include Ylem::Concern::Helper
+
   # @param [Hash] config
   def initialize(config)
     @loaded_environment = {}
-    @config = config
+    @config = helper.get('config/decorator').decorate(config)
     @retcode = Errno::NOERROR::Errno
   end
 
