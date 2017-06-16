@@ -43,7 +43,7 @@ class Ylem::Helper::Config::Decorator
   # @param [Hash] config
   # @return [Array<Ylem::Type::Script>]
   def list_scripts(config)
-    path = config.fetch(:scripts_diro)
+    path = config.fetch(:scripts_dir)
 
     helper.get('config/scripts_lister').configure(path: path).scripts
   end
