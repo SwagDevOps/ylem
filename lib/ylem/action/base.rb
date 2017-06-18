@@ -3,7 +3,6 @@
 require 'ylem/action'
 require 'ylem/concern/helper'
 require 'active_support/descendants_tracker'
-require 'dotenv'
 
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
@@ -26,12 +25,10 @@ class Ylem::Action::Base
 
   extend ActiveSupport::DescendantsTracker
 
-  include Ylem::Concern::Helper
-
   # @param [Hash] config
   def initialize(config)
     @loaded_environment = {}
-    @config = helper.get('config/decorator').decorate(config).freeze
+    @config = self.class.decorate_config(config).freeze
     @retcode = Errno::NOERROR::Errno
   end
 
@@ -40,15 +37,14 @@ class Ylem::Action::Base
   #
   # @return [self]
   def execute
-    @loaded_environment = load_environment
-
     self
   end
 
-  protected
+  class << self
+    include Ylem::Concern::Helper
 
-  # @return [Hash]
-  def load_environment
-    Dotenv.load(config[:env_file]) if config[:env_file]
+    def decorate_config(config)
+      helper.get('config/decorator').load(config).decorate
+    end
   end
 end
