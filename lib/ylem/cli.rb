@@ -29,6 +29,7 @@ class Ylem::Cli
     # @return [Array<Class>]
     def commands
       [
+        :dump,
         :start,
       ].map do |name|
         helper.get(:inflector).resolve("ylem/cli/#{name}")
