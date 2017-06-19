@@ -18,11 +18,16 @@ class Ylem::Action::Base
   # @return [Fixnum]
   attr_reader :retcode
 
+  # Options (mostly provided through CLI)
+  #
+  # @return [Hash]
+  attr_reader :options
+
   extend ActiveSupport::DescendantsTracker
 
   # @param [Hash] config
-  def initialize(config)
-    @loaded_environment = {}
+  def initialize(config, options = {})
+    @options = options
     @config = self.class.decorate_config(config).freeze
     @retcode = Errno::NOERROR::Errno
   end
