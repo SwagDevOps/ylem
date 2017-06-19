@@ -21,6 +21,7 @@ class Ylem::Helper::Config::Decorator
   #
   # @param [Hash] config
   def load(config)
+    @environment = nil if config != @loaded
     @loaded = config
 
     self
