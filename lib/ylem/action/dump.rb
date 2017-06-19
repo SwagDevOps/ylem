@@ -4,18 +4,34 @@ require 'ylem/action/base'
 require 'json'
 
 class Ylem::Action::Dump < Ylem::Action::Base
+  # Execute action
+  #
+  # @return [self]
   def execute
-    output = JSON.pretty_generate(config)
     STDOUT.puts(output)
 
     super
   end
 
+  # Get output (JSON encoded string)
+  #
+  # @return [String]
+  def output
+    JSON.pretty_generate(dumpable)
+  end
+
   protected
 
   def dumpable
-    section = options[:key]
+    dumpable = config
+    sections = options[:key].to_s.split('.')
 
-    return config if section.nil?
+    unless sections.empty?
+      sections.each do |section|
+        dumpable = dumpable.public_send(section)
+      end
+    end
+
+    dumpable
   end
 end
