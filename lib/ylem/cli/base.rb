@@ -56,6 +56,7 @@ class Ylem::Cli::Base
     @arguments = []
   end
 
+  # @return [OptionParser]
   def parser
     options = @options # {}
     OptionParser.new do |opts|
@@ -88,7 +89,7 @@ class Ylem::Cli::Base
   # @return [Integer] as return code
   def run
     parse!
-    action.new(config).execute.retcode
+    action.new(config, options).execute.retcode
   end
 
   # Read config
