@@ -18,11 +18,6 @@ class Ylem::Action::Base
   # @return [Fixnum]
   attr_reader :retcode
 
-  # Return loaded environment
-  #
-  # @return [Hash]
-  attr_reader :loaded_environment
-
   extend ActiveSupport::DescendantsTracker
 
   # @param [Hash] config
