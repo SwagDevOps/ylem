@@ -3,6 +3,8 @@
 require 'ylem/action'
 require 'ylem/concern/helper'
 require 'active_support/descendants_tracker'
+require 'hash_dot'
+require 'stringio'
 
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
@@ -30,6 +32,25 @@ class Ylem::Action::Base
     @options = options
     @config = self.class.decorate_config(config).freeze
     @retcode = Errno::NOERROR::Errno
+  end
+
+  # Get ouptuts
+  #
+  # @return [Hash]
+  def outputs
+    outputs = {
+      stdout: STDOUT,
+      stderr: STDERR,
+    }
+
+    # could use ``File.open(File::NULL, "w")`` too
+    outputs.each { |k, v| outputs[k] = StringIO.new } if mute?
+
+    outputs.to_dot
+  end
+
+  def mute?
+    options[:quiet]
   end
 
   # Execute action
