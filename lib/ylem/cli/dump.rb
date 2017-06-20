@@ -4,12 +4,9 @@ require 'ylem/cli/base'
 
 class Ylem::Cli::Dump < Ylem::Cli::Base
   def parser
-    parser = super
-
-    parser.on('-k=KEY',
-              '--key=KEY',
-              'Display key value' % options[:key]) do |key|
-        options[:key] = key
+    super
+      .on('--section=SECTION', 'Display section value') do |section|
+      options[:section] = section
     end
   end
 end

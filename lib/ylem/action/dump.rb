@@ -35,14 +35,12 @@ class Ylem::Action::Dump < Ylem::Action::Base
   def dumpable
     dumpable = config
 
-    unless sections.empty?
-      sections.each do |section|
-        args = [section, []]
-        # args = ['[]', /^[0-9]{1,}$/ =~ section ? section.to_i : section] \
-        # if dumpable.is_a?(Array)
+    queried_sections.each do |section|
+      args = [section, []]
+      # args = ['[]', /^[0-9]{1,}$/ =~ section ? section.to_i : section] \
+      # if dumpable.is_a?(Array)
 
-        dumpable = dumpable.public_send(*args)
-      end
+      dumpable = dumpable.public_send(*args)
     end
 
     dumpable
@@ -51,7 +49,7 @@ class Ylem::Action::Dump < Ylem::Action::Base
   # Get requested section(s), ``options`` based
   #
   # @return [Hash<String>]
-  def sections
-    options[:key].to_s.split('.')
+  def queried_sections
+    options[:section].to_s.split('.')
   end
 end
