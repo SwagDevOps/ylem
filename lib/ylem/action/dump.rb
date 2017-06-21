@@ -11,19 +11,30 @@ require 'json'
 # @see Ylem.Helper.Config.Decorator
 # @see https://github.com/adsteel/hash_dot
 class Ylem::Action::Dump < Ylem::Action::Base
+  # Get options
+  #
+  # @return [Hash]
+  def options
+    options = super
+
+    options.merge({
+        sections: options[:section].to_s.split('.')
+    })
+  end
+
   # Execute action
   #
   # @return [self]
   def execute
-    STDOUT.puts(output)
+    outputs.stdout.puts(printable)
 
     super
   end
 
-  # Get output (JSON encoded string)
+  # Get printable (JSON encoded string)
   #
   # @return [String]
-  def output
+  def printable
     JSON.pretty_generate(dumpable)
   end
 
@@ -33,23 +44,12 @@ class Ylem::Action::Dump < Ylem::Action::Base
   #
   # return [Hash|Array]
   def dumpable
-    dumpable = config
+    dumpable = config.clone
 
-    queried_sections.each do |section|
-      args = [section, []]
-      # args = ['[]', /^[0-9]{1,}$/ =~ section ? section.to_i : section] \
-      # if dumpable.is_a?(Array)
-
-      dumpable = dumpable.public_send(*args)
+    options.fetch(:sections).each do |section|
+      dumpable = dumpable.public_send(section)
     end
 
     dumpable
-  end
-
-  # Get requested section(s), ``options`` based
-  #
-  # @return [Hash<String>]
-  def queried_sections
-    options[:section].to_s.split('.')
   end
 end
