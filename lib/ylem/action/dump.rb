@@ -26,7 +26,7 @@ class Ylem::Action::Dump < Ylem::Action::Base
   #
   # @return [self]
   def execute
-    outputs.stdout.puts(printable)
+    output(printable)
 
     super
   end

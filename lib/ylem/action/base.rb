@@ -2,6 +2,7 @@
 
 require 'ylem/action'
 require 'ylem/concern/helper'
+require 'ylem/concern/output'
 require 'active_support/descendants_tracker'
 require 'hash_dot'
 require 'stringio'
@@ -26,30 +27,21 @@ class Ylem::Action::Base
   attr_reader :options
 
   extend ActiveSupport::DescendantsTracker
+  include Ylem::Concern::Output
 
+  # Initialize action
+  #
   # @param [Hash] config
+  # @param [Hash] options
   def initialize(config, options = {})
     @options = options
     @config = self.class.decorate_config(config).freeze
     @retcode = Errno::NOERROR::Errno
   end
 
-  # Get ouptuts
-  #
-  # @return [Hash]
-  def outputs
-    outputs = {
-      stdout: STDOUT,
-      stderr: STDERR,
-    }
-
-    # could use ``File.open(File::NULL, "w")`` too
-    outputs.each { |k, v| outputs[k] = StringIO.new } if mute?
-
-    outputs.to_dot
-  end
-
-  def mute?
+  # @return [Booolean]
+  # @see Ylem.Concern.Output#dummy_outputs?
+  def dummy_outputs?
     options[:quiet]
   end
 
