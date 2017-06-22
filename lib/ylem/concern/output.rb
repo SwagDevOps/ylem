@@ -11,7 +11,7 @@ require 'stringio'
 # and evaluated on demand.
 #
 # Outputs cand be muted (all at once), using ``dummy_outputs?`` method,
-# default is false, extending class _could_ redefine this method.
+# default is ``false``, extending class COULD redefine this method.
 module Ylem::Concern::Output
   extend ActiveSupport::Concern
 
