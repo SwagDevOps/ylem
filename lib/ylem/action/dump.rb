@@ -45,6 +45,8 @@ class Ylem::Action::Dump < Ylem::Action::Base
   # return [Hash|Array]
   def dumpable
     dumpable = config.clone
+    # displays ``scripts.executables`` as relative paths
+    dumpable[:scripts][:executables].map!(&:basename)
 
     options.fetch(:sections).each do |section|
       dumpable = dumpable.public_send(section)
