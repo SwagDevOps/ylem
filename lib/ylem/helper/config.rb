@@ -1,3 +1,4 @@
+# coding: utf-8
 # frozen_string_literal: true
 
 require 'ylem/helper'
@@ -6,6 +7,8 @@ require 'ylem/helper/config_reader'
 # Config helper
 class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   # Default config
+  #
+  # @note ``environment.file``: ``/etc/environment`` is used by the ``pam_env`` module and is shell agnostic so scripting or glob expansion cannot be used. The file only accepts ``variable=value`` pairs. See ``pam_env(8)`` and ``pam_env.conf(5)`` for details.
   #
   # @return [Hash]
   def defaults
