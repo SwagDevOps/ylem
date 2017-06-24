@@ -9,10 +9,13 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   #
   # @return [Hash]
   def defaults
+    sysconfdir = Pathname.new(Etc.sysconfdir)
+    rootdir = Pathname.new('/')
+
     {
-      log_file: Pathname.new('/').join('var', 'log', "#{progname}.log"),
-      scripts_dir: Pathname.new(Etc.sysconfdir).join(progname, 'scripts'),
-      env_file: Pathname.new(Etc.sysconfdir).join('environment')
+      'logger.file': rootdir.join('var', 'log', "#{progname}.log"),
+      'scripts.path': sysconfdir.join(progname, 'scripts'),
+      'environment.file': sysconfdir.join('environment')
     }
   end
 

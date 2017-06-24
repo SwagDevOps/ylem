@@ -1,4 +1,5 @@
 ---
-log_file:    ../../var/log/sample.log
-scripts_dir: scripts
-env_file:    environment
+logger.file:      ../../var/log/sample.log
+logger.level:     DEBUG
+scripts.path:     scripts
+environment.file: environment

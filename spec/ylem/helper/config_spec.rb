@@ -4,9 +4,9 @@ require 'ylem/helper/config'
 require 'pathname'
 
 config_defaults = {
-  log_file:  /^\/var\/log\/(rake|rspec)\.log$/,
-  scripts_dir: /^\/etc\/(rake|rspec)\/scripts$/,
-  env_file: /^\/etc\/environment$/,
+  :'logger.file' =>  /^\/var\/log\/(rake|rspec)\.log$/,
+  :'scripts.path' => /^\/etc\/(rake|rspec)\/scripts$/,
+  :'environment.file' => /^\/etc\/environment$/,
 }
 
 describe Ylem::Helper::Config do

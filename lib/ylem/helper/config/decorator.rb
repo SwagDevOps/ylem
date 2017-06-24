@@ -30,7 +30,7 @@ class Ylem::Helper::Config::Decorator
   # @return [Hash]
   def environment
     if @environment.nil?
-      env_file = loaded[:env_file]
+      env_file = loaded[:'environment.file']
 
       @environment = env_file ? Dotenv.load(env_file) : {}
     end
@@ -42,10 +42,12 @@ class Ylem::Helper::Config::Decorator
   #
   # @return [Hash]
   def decorate
+    original_keys = loaded.keys.delete_if { |key| key =~ /^_/ }
+
     result = loaded
-      .merge(derived)
-      .tap do |h|
-      [:scripts_dir, :env_file, :log_file].each { |k| h.delete(k) }
+             .merge(derived)
+             .tap do |h|
+      original_keys.each { |k| h.delete(k) }
     end.to_dot
 
     result.environment.loaded = environment
@@ -63,14 +65,14 @@ class Ylem::Helper::Config::Decorator
   def derived
     {
       scripts: {
-        path: loaded.fetch(:scripts_dir),
+        path: loaded.fetch(:'scripts.path'),
         executables: list_scripts(loaded),
       },
       logger: {
-        file: loaded.fetch(:log_file),
+        file: loaded.fetch(:'logger.file'),
       },
       environment: {
-        file: loaded.fetch(:env_file),
+        file: loaded.fetch(:'environment.file'),
         loaded: {},
       },
     }
@@ -84,7 +86,7 @@ class Ylem::Helper::Config::Decorator
   # @param [Hash] config
   # @return [Array<Ylem::Type::Script>]
   def list_scripts(config)
-    path = config.fetch(:scripts_dir)
+    path = config.fetch(:'scripts.path')
 
     helper.get('config/scripts_lister').configure(path: path).scripts
   end
