@@ -55,8 +55,7 @@ class Ylem::Service::Logger
   def instance
     instance = @instances[id]
 
-    raise RuntimeError, \
-          "output must be set" if instance.nil?
+    raise 'output must be set' if instance.nil?
 
     instance
   end
@@ -66,14 +65,30 @@ class Ylem::Service::Logger
   # @param [Object] output
   # @return [Logger]
   def make_logger(output, options)
-    logger = Logger.new(output, 10, 1024000)
+    logger = Logger.new(output, 10, 1_024_000)
     logger.progname = Sys::Proc.progname
 
     # apply options
-    logger.level = options[:level] if options[:level]
+    logger = apply_level_on_logger(options[:level], logger)
 
     logger.formatter = proc do |severity, datetime, progname, msg|
       Logger::Formatter.new.call(severity, datetime, progname, msg.dump)
+    end
+
+    logger
+  end
+
+  # Apply level on a ``::Logger`` instance
+  #
+  # @param [nil|Integer|String|Symbol] level
+  # @param [::Logger]
+  # @return [::Logger]
+  def apply_level_on_logger(level, logger)
+    if level.nil?
+      logger.level = Logger::INFO
+    else
+      level = Logger.const_get(level.to_s.upcase) unless level.is_a?(Integer)
+      logger.level = level
     end
 
     logger
