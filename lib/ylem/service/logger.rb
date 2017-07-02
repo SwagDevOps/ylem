@@ -28,7 +28,7 @@ class Ylem::Service::Logger
   # @return [self]
   def configure(options)
     output = options.delete(:file) if options[:file]
-    @id = @output.to_s
+    @id    = @output.to_s
 
     unless @instances[id]
       @instances[id] = make_logger(output, options)
@@ -65,14 +65,15 @@ class Ylem::Service::Logger
   # @param [Object] output
   # @return [Logger]
   def make_logger(output, options)
-    logger = Logger.new(output, 10, 1_024_000)
+    logger          = Logger.new(output, 10, 1_024_000)
     logger.progname = Sys::Proc.progname
 
     # apply options
     logger = apply_level_on_logger(options[:level], logger)
 
     logger.formatter = proc do |severity, datetime, progname, msg|
-      Logger::Formatter.new.call(severity, datetime, progname, msg.dump)
+      Logger::Formatter.new
+                       .call(severity, datetime, progname, msg.dump)
     end
 
     logger
@@ -84,12 +85,10 @@ class Ylem::Service::Logger
   # @param [::Logger]
   # @return [::Logger]
   def apply_level_on_logger(level, logger)
-    if level.nil?
-      logger.level = Logger::INFO
-    else
-      level = Logger.const_get(level.to_s.upcase) unless level.is_a?(Integer)
-      logger.level = level
-    end
+    level = Logger::INFO if level.nil?
+    level = Logger.const_get(level.to_s.upcase) unless level.is_a?(Integer)
+
+    logger.level = level
 
     logger
   end
