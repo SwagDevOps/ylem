@@ -28,11 +28,20 @@ class Ylem::Service::Logger
   # @return [self]
   def configure(options)
     output = options.delete(:file) if options[:file]
-    @id    = @output.to_s
+    @id    = output.to_s
 
     unless @instances[id]
       @instances[id] = make_logger(output, options)
     end
+
+    self
+  end
+
+  # Set output
+  #
+  # @return [self]
+  def to(output)
+    @id = output.to_s
 
     self
   end
@@ -55,7 +64,7 @@ class Ylem::Service::Logger
   def instance
     instance = @instances[id]
 
-    raise 'output must be set' if instance.nil?
+    raise "no configuration for #{id}" if instance.nil?
 
     instance
   end
