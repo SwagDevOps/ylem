@@ -2,6 +2,7 @@
 
 require 'ylem/action'
 require 'ylem/concern/helper'
+require 'ylem/concern/service'
 require 'ylem/concern/output'
 require 'active_support/descendants_tracker'
 require 'hash_dot'
@@ -28,6 +29,8 @@ class Ylem::Action::Base
 
   extend ActiveSupport::DescendantsTracker
   include Ylem::Concern::Output
+  include Ylem::Concern::Helper
+  include Ylem::Concern::Service
 
   # Initialize action
   #
@@ -35,7 +38,7 @@ class Ylem::Action::Base
   # @param [Hash] options
   def initialize(config, options = {})
     @options = options
-    @config = self.class.decorate_config(config).freeze
+    @config = helper.get('config/decorator').load(config).decorate.freeze
     @retcode = Errno::NOERROR::Errno
   end
 
@@ -53,11 +56,12 @@ class Ylem::Action::Base
     self
   end
 
-  class << self
-    include Ylem::Concern::Helper
+  protected
 
-    def decorate_config(config)
-      helper.get('config/decorator').load(config).decorate
-    end
+  # Get a self configured ``Logger``
+  #
+  # @return [Ylem::Service::Logger]
+  def logger
+    service.get(:logger).configure(self.config.logger)
   end
 end
