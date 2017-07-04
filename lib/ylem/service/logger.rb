@@ -24,10 +24,15 @@ class Ylem::Service::Logger
 
   # Configure an actual ``Logger``
   #
+  # @raise [RuntimeError] when ``:file`` is missing in ``options``
   # @param [Hash] options
   # @return [self]
   def configure(options)
-    output = options.delete(:file) if options[:file]
+    options = options.clone
+
+    raise ':file must be set' unless options[:file]
+
+    output = options.delete(:file)
     @id    = output.to_s
 
     unless @instances[id]
