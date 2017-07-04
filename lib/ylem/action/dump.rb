@@ -17,9 +17,7 @@ class Ylem::Action::Dump < Ylem::Action::Base
   def options
     options = super
 
-    options.merge({
-        sections: options[:section].to_s.split('.')
-    })
+    options.merge(sections: options[:section].to_s.split('.'))
   end
 
   # Execute action
@@ -28,7 +26,7 @@ class Ylem::Action::Dump < Ylem::Action::Base
   def execute
     output(printable)
 
-    super
+    self
   end
 
   # Get printable (JSON encoded string)
