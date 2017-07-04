@@ -44,9 +44,7 @@ class Ylem::Helper::Config::Decorator
   def decorate
     original_keys = loaded.keys.delete_if { |key| key =~ /^_/ }
 
-    result = loaded
-             .merge(derived)
-             .tap do |h|
+    result = loaded.merge(derived).tap do |h|
       original_keys.each { |k| h.delete(k) }
     end.to_dot
 
@@ -77,6 +75,7 @@ class Ylem::Helper::Config::Decorator
       },
     }
   end
+
   # rubocop:enable Metrics/MethodLength
 
   # List scripts, using ``config[:scripts_dir]``
