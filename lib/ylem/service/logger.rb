@@ -33,7 +33,7 @@ class Ylem::Service::Logger
     raise ':file must be set' unless options[:file]
 
     output = options.delete(:file)
-    @id    = output.to_s
+    @id = output.to_s
 
     unless @instances[id]
       @instances[id] = make_logger(output, options)
@@ -79,15 +79,16 @@ class Ylem::Service::Logger
   # @param [Object] output
   # @return [Logger]
   def make_logger(output, options)
-    logger          = Logger.new(output, 10, 1_024_000)
+    logger = Logger.new(output, 10, 1_024_000)
     logger.progname = Sys::Proc.progname
 
     # apply options
     logger = apply_level_on_logger(options[:level], logger)
 
     logger.formatter = proc do |severity, datetime, progname, msg|
-      Logger::Formatter.new
-                       .call(severity, datetime, progname, msg.dump)
+      Logger::Formatter
+        .new
+        .call(severity, datetime, progname, msg.dump)
     end
 
     logger
@@ -96,7 +97,7 @@ class Ylem::Service::Logger
   # Apply level on a ``::Logger`` instance
   #
   # @param [nil|Integer|String|Symbol] level
-  # @param [::Logger]
+  # @param [::Logger] logger
   # @return [::Logger]
   def apply_level_on_logger(level, logger)
     level = Logger::INFO if level.nil?
