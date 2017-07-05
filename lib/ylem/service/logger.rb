@@ -29,7 +29,7 @@ class Ylem::Service::Logger
   # @param [Hash] options
   # @return [self]
   def configure(options)
-    raise ':file must be set' unless options[:file]
+    raise ":file must be set, got: #{options}" unless options[:file]
 
     unless @options.empty?
       purge if options != @options
