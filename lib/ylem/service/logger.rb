@@ -1,52 +1,64 @@
 # frozen_string_literal: true
 
 require 'ylem/service'
+require 'sys/proc'
 require 'logger'
 
-# This creates Logger
+# This creates Logger, almost a kind of factory
 #
 # Sample of use:
 #
 # ```
-# service.get{'logger')
-#        .configure(file: STDOUT, level: Logger::INFO)
-#        .warn('Nothing to do!')
+# logger = service.get{'logger')
+#        .configure(file: STDOUT, level: debug)
+#
+#  logger.debug('Using default logger')
+#  logger.as(:service).warn('Something bad is happening')
 # ```
 #
 # Logger tries to have a single instance by a given output (``file``)
 class Ylem::Service::Logger
   attr_reader :id
+  attr_reader :instances
 
   def initialize
     @instances = {}
+    @options = {}
     @id
   end
 
-  # Configure an actual ``Logger``
+  # Configure a``::Logger`` instance
   #
   # @raise [RuntimeError] when ``:file`` is missing in ``options``
   # @param [Hash] options
   # @return [self]
   def configure(options)
-    options = options.clone
+    # pp [ @options.empty?, options != @options, options, @options ]
+
+    unless @options.empty?
+      raise 'already configured' if options != @options
+    end
 
     raise ':file must be set' unless options[:file]
 
-    output = options.delete(:file)
-    @id = output.to_s
-
-    unless @instances[id]
-      @instances[id] = make_logger(output, options)
-    end
+    @options = options
 
     self
   end
 
-  # Set output
+  # Get an instance of ``::Logger`` identified by ``id``
+  #
+  # @param [String|Symbol|Object] id
+  # @return [::Logger]
+  def as(id)
+    instance_by_id(id)
+  end
+
+  # Remove all instances
   #
   # @return [self]
-  def to(output)
-    @id = output.to_s
+  def purge
+    @instances = {}
 
     self
   end
@@ -54,33 +66,38 @@ class Ylem::Service::Logger
   def method_missing(method, *args)
     super unless respond_to_missing?(method)
 
-    instance.public_send(method, *args)
+    as(nil).public_send(method, *args)
   end
 
   def respond_to_missing?(method, include_all = false)
-    instance.respond_to?(method, include_all)
+    as(nil).respond_to?(method, include_all)
   end
 
   protected
 
-  # Get instance
+  # Get an instance designed by an ``id``
   #
+  # @param [String|Symbol|Object] id
   # @return [Logger]
-  def instance
-    instance = @instances[id]
+  def instance_by_id(id)
+    id = id.to_s
 
-    raise "no configuration for #{id}" if instance.nil?
+    @instances[id] ||= proc do
+      configure(@options)
 
-    instance
+      make_logger(@options.clone.merge(id: id.to_s.empty? ? nil : id))
+    end.call
+
+    @instances[id]
   end
 
   # Get a preconfigured instance of Logger
   #
   # @param [Object] output
   # @return [Logger]
-  def make_logger(output, options)
-    logger = Logger.new(output, 10, 1_024_000)
-    logger.progname = Sys::Proc.progname
+  def make_logger(options)
+    logger = Logger.new(options.fetch(:file), 10, 1_024_000)
+    logger.progname = options.fetch(:id) || Sys::Proc.progname.upcase
 
     # apply options
     logger = apply_level_on_logger(options[:level], logger)
