@@ -18,13 +18,9 @@ require 'logger'
 #
 # Logger tries to have a single instance by a given output (``file``)
 class Ylem::Service::Logger
-  attr_reader :id
-  attr_reader :instances
-
   def initialize
     @instances = {}
     @options = {}
-    @id
   end
 
   # Configure a``::Logger`` instance
@@ -33,13 +29,11 @@ class Ylem::Service::Logger
   # @param [Hash] options
   # @return [self]
   def configure(options)
-    # pp [ @options.empty?, options != @options, options, @options ]
+    raise ':file must be set' unless options[:file]
 
     unless @options.empty?
-      raise 'already configured' if options != @options
+      purge if options != @options
     end
-
-    raise ':file must be set' unless options[:file]
 
     @options = options
 
