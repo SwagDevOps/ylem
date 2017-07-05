@@ -98,8 +98,8 @@ class Ylem::Service::Logger
 
   # Get a preconfigured instance of Logger
   #
-  # @param [Object] output
-  # @return [Logger]
+  # @param [Hash] options
+  # @return [::Logger]
   def make_logger(options)
     logger = Logger.new(options.fetch(:file), 10, 1_024_000)
     logger.progname = options.fetch(:id) || Sys::Proc.progname.upcase
