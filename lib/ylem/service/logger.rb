@@ -4,19 +4,19 @@ require 'ylem/service'
 require 'sys/proc'
 require 'logger'
 
-# This creates Logger, almost a kind of factory
+# This creates ``::Logger`` instances, almost a kind of factory
 #
 # Sample of use:
 #
 # ```
 # logger = service.get{'logger')
-#        .configure(file: STDOUT, level: debug)
+#                 .configure(file: STDOUT, level: debug)
 #
-#  logger.debug('Using default logger')
-#  logger.as(:service).warn('Something bad is happening')
+# logger.debug('Using default logger')
+# logger.as(:service).warn('Something bad is happening')
 # ```
 #
-# Logger tries to have a single instance by a given output (``file``)
+# Logger has a single instance for each identifier (``id``)
 class Ylem::Service::Logger
   def initialize
     @instances = {}
@@ -26,13 +26,14 @@ class Ylem::Service::Logger
   # Configure a``::Logger`` instance
   #
   # @raise [RuntimeError] when ``:file`` is missing in ``options``
+  # @raise [RuntimeError] when already configured
   # @param [Hash] options
   # @return [self]
   def configure(options)
     raise ":file must be set, got: #{options}" unless options[:file]
 
     unless @options.empty?
-      purge if options != @options
+      raise 'already configured' if options != @options
     end
 
     @options = options
@@ -53,6 +54,16 @@ class Ylem::Service::Logger
   # @return [self]
   def purge
     @instances = {}
+
+    self
+  end
+
+  # Reset, empty configuration and purge instances
+  #
+  # @return [self]
+  def reset
+    purge
+    @options = {}
 
     self
   end
