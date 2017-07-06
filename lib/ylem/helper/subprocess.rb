@@ -25,32 +25,48 @@ class Ylem::Helper::Subprocess
     command = ['sh', '-c'] + command.to_a.compact.map(&:to_s)
     logger = options[:logger]
 
-    execute_command(command, logger)
+    run_command(command, logger)
   end
 
   protected
 
-  # rubocop:disable Metrics/MethodLength
-
+  # Run a command with logging (where ``logger`` can be ``nil``)
+  #
   # @param [Array] command
   # @param [::Logger|nil] logger
   # @return [Fixnum] as status code
-  def execute_command(command, logger)
-    Open3.popen3(*command) do |stdin, out, err, external|
-      { out: out, err: err }.each do |source, stream|
-        next unless logger
+  def run_command(command, logger)
+    Open3.popen3(*command) do |stdin, stdout, stderr, external|
+      stdin.close
 
-        Thread.new do
-          next if (line = stream.gets).nil?
-
-          logger.public_send((source == :out ? :info : :warn), line.chomp)
-        end.join
-      end
+      { stdout: stdout, stderr: stderr }
+        .map { |source, stream| log_stream(logger, source, stream) }
+        .map { |source, thread| thread&.join }
 
       external.join
       external.value.exitstatus
     end
   end
 
-  # rubocop:enable Metrics/MethodLengt
+  # Log stream outputs (as ``stdout`` or ``stderr``)
+  #
+  # @param [::Logger|nil] logger
+  # @param [Symbol] as
+  # @param [IO] stream
+  # @return [Thread|nil]
+  def log_stream(logger, as, stream)
+    severity = { stdout: :info, stderr: :warn }.fetch(as)
+
+    return unless logger
+
+    Thread.new do
+      until stream.eof?
+        line = stream.gets.chomp
+
+        logger.public_send(severity, line)
+      end
+
+      stream.close
+    end
+  end
 end
