@@ -3,7 +3,7 @@
 require 'ylem/helper'
 require 'open3'
 
-# Helper intended to run subprocess (as system command)
+# Helper intended to run subprocess (as ``Kernel#system``)
 #
 # A ``::Logger`` can be used as option in order to keep track of execution
 # both ``STDOUT`` and ``STDERR`` are logged, with the following levels:
@@ -11,11 +11,14 @@ require 'open3'
 # * ``STDOUT`` as ``info``
 # * ``STDERR`` as ``warn``
 #
-# Execution of arbitrary commands is self protected against ``exec``
+# Execution of arbitrary commands is self protected against
+# [``exec``](https://linux.die.net/man/3/exec)
 # by the use of a subshell (``sh -c``), parameters are automagically
 # compacted and casted to ``String``.
 class Ylem::Helper::Subprocess
   # Run a command
+  #
+  # returns error status as ``Fixnum`` (``0`` is success)
   #
   # @param [Array] command
   # @param [Hash] options
@@ -61,9 +64,9 @@ class Ylem::Helper::Subprocess
 
     Thread.new do
       until stream.eof?
-        line = stream.gets.chomp
+        line = stream.gets.strip
 
-        logger.public_send(severity, line)
+        logger.public_send(severity, line) unless line.empty?
       end
 
       stream.close
