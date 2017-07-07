@@ -4,7 +4,7 @@ require 'ylem/cli/start'
 require 'ostruct'
 
 local = {
-  sample_config: "#{SPEC_DIR}/samples/config.yml",
+  sample_config: "#{SPEC_DIR}/samples/config/success.yml",
 }
 
 describe Ylem::Cli::Start do
