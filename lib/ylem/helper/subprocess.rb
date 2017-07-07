@@ -44,7 +44,7 @@ class Ylem::Helper::Subprocess
 
       { stdout: stdout, stderr: stderr }
         .map { |source, stream| log_stream(logger, source, stream) }
-        .map { |source, thread| thread&.join }
+        .map { |thread| thread&.join }
 
       external.join
       external.value.exitstatus
