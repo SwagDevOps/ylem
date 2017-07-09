@@ -11,7 +11,7 @@ require 'stringio'
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
 class Ylem::Action::Base
-  # Config as seen in ``Ylem::Helper::Config``
+  # Config as seen in {Ylem.Helper.Config}
   #
   # @see Ylem::Helper::Config
   # @return [Hash]
@@ -39,7 +39,8 @@ class Ylem::Action::Base
   def initialize(config, options = {})
     @options = options
     @config = helper.get('config/decorator').load(config).decorate.freeze
-    @retcode = Errno::NOERROR::Errno
+
+    self.retcode = :NOERROR
   end
 
   # @return [Booolean]
