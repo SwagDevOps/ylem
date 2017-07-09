@@ -5,20 +5,24 @@
 
 CLOBBER.include('doc/')
 
+# Config ------------------------------------------------------------
+ignored_patterns = [
+  %r{/\.#},
+  /_flymake\.rb$/,
+]
+
+# extra static files to be included (eg. FAQ)
+static_files = ['README.*']
+
+# Tasks -------------------------------------------------------------
 desc 'Generate documentation (using YARD)'
 task doc: ['gem:gemspec'] do
   [:pathname, :yard, :securerandom].each { |req| require req.to_s }
 
   # internal task name
   tname = 'doc:build:%s' % SecureRandom.hex(4)
-  # extra static files to be included (eg. FAQ)
-  statics = Dir.glob(['README.*', 'README'])
 
   YARD::Rake::YardocTask.new(tname) do |t|
-    t.files = Project.spec.require_paths.map do |path|
-      Pathname.new(path).join('**', '*.rb').to_s
-    end
-
     t.options = {
       false => ['--no-stats'],
       true  => [],
@@ -32,23 +36,35 @@ task doc: ['gem:gemspec'] do
       '%s v%s' % [Project.name, Project.version_info[:version]],
     ]
 
-    t.options += ['--files', statics.join(',')] unless statics.empty?
+    ignored_patterns.each do |regexp|
+      t.options += ['--exclude', regexp.inspect.gsub(%r{^/|/$}, '')]
+    end
+
+    t.files = Project.spec.require_paths.map do |path|
+      Pathname.new(path).join('**', '*.rb').to_s
+    end + ['-', Dir.glob(static_files)].flatten
+
+    t.after = Proc.new { Rake::Task['doc:after'].invoke }
   end
 
   Rake::Task[tname].invoke
+end
 
-  proc do
-    threads = []
-    Dir.glob('doc/**/*.html').each do |f|
-      threads << Thread.new do
-        f = Pathname.new(f)
-        s = f.read.gsub(/^\s*<meta charset="[A-Z]+-{0,1}[A-Z]+">/,
-                        '<meta charset="UTF-8">')
-        f.write(s)
+namespace :doc do
+  task :after do
+    proc do
+      threads = []
+      Dir.glob('doc/**/*.html').each do |f|
+        threads << Thread.new do
+          f = Pathname.new(f)
+          s = f.read.gsub(/^\s*<meta charset="[A-Z]+-{0,1}[A-Z]+">/,
+                          '<meta charset="UTF-8">')
+          f.write(s)
+        end
       end
-    end
 
-    threads.map(&:join)
+      threads.map(&:join)
+    end
   end
 end
 
@@ -59,10 +75,7 @@ namespace :doc do
 
     options = {
       only: /\.rb$/,
-      ignore: [
-        %r{/\.#},
-        /_flymake\.rb$/,
-      ],
+      ignore: ignored_patterns,
     }
 
     # ENV['LISTEN_GEM_DEBUGGING'] = '2'
