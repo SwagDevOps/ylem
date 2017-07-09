@@ -30,6 +30,6 @@ group :doc, :development do
 end
 
 group :test, :development do
-  gem 'rspec', '~> 3.4'
+  gem 'rspec', '~> 3.6'
   gem 'rspec-sleeping_king_studios', '~> 2.1'
 end
