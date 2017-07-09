@@ -9,7 +9,8 @@ require 'open3'
 # one by one, procedurally. At the end, ``status`` SHOULD denote
 # any error issued during execution of any script.
 #
-# @todo ``retcode`` SHOULD denote any issued, may be use ``ENOTRECOVERABLE``
+# @todo ``retcode`` SHOULD denote any issued script error,
+#   may be use ``ENOTRECOVERABLE``
 # @todo Implement a ``-k``, ``--keep-going`` option
 class Ylem::Action::Start < Ylem::Action::Base
   def execute
@@ -18,7 +19,7 @@ class Ylem::Action::Start < Ylem::Action::Base
 
   # Get scripts (to be executed)
   #
-  # @return [Array<Ylem::Type::Script|Pathname>]
+  # @return [Array<Ylem::Type::Script>]
   def scripts
     config.scripts.executables
   end
@@ -27,16 +28,11 @@ class Ylem::Action::Start < Ylem::Action::Base
 
   # Execute scripts
   #
-  # @param [Array<Ylem::Type::Script|Pathname>]
+  # @param [Array<Ylem::Type::Script>] scripts
   def execute_scripts(scripts)
-    subprocess = helper.get('subprocess')
-
     scripts.each do |script|
-      logger = self.logger.as(script.basename)
-
-      # @todo set ``retcode`` and break loop
-      status = subprocess.run([script], logger: logger).to_i
-      if status != 0
+      unless script.execute(logger: logger, as: :basename).zero?
+        # @todo set ``retcode`` and break loop
         logger.error("failed (#{status})")
       end
     end
