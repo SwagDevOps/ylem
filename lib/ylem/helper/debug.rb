@@ -21,9 +21,8 @@ class Ylem::Helper::Debug
       warn('%s: %s' % [caller[0], e.message])
     end
 
-    args = [obj, out, width].compact
     colorable = (out.isatty and Kernel.const_defined?('Pry::ColorPrinter'))
 
-    (colorable ? Pry::ColorPrinter : PP).pp(*args)
+    (colorable ? Pry::ColorPrinter : PP).pp(obj, out, width)
   end
 end
