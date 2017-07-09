@@ -30,11 +30,8 @@ class Ylem::Type::Script < Pathname
   #
   # @return [Fixnum]
   def execute(options = {})
-    subprocess = helper.get('subprocess')
-    # options processing
-    as = options[:as] ? self.public_send(options.fetch(:as)) : self
-    logger = options[:logger]&.as(as)
+    logger = options[:logger]&.as(public_send(options[:as] || :to_s))
 
-    subprocess.run([self], logger: logger).to_i
+    helper.get('subprocess').run([self], logger: logger).to_i
   end
 end
