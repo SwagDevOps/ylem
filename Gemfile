@@ -19,6 +19,7 @@ group :development do
   gem 'tenjin', '~> 0.7'
   gem 'rainbow', '~> 2.2'
   gem 'tty-editor', '~> 0.2'
+  gem 'tty-screen', '~> 0.5'
   gem 'benchmark-memory', '~> 0.1'
 end
 
