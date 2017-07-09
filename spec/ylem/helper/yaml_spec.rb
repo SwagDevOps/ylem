@@ -4,7 +4,7 @@ require 'ylem/helper/yaml'
 require 'pathname'
 
 local = {
-  sample_config: "#{SPEC_DIR}/samples/config/success.yml",
+  sample_config: "#{SAMPLES_DIR}/config/success.yml",
 }
 
 describe Ylem::Helper::Yaml do

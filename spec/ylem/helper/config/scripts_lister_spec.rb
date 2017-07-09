@@ -5,9 +5,9 @@ require 'pathname'
 require 'securerandom'
 
 local = {
-  scripts_dir: "#{SPEC_DIR}/samples/scripts",
+  scripts_dir: "#{SAMPLES_DIR}/scripts",
   random_dirs: (1..10).to_a.map do |i|
-    "#{SPEC_DIR}/samples/#{SecureRandom.hex(16)}"
+    "#{SAMPLES_DIR}/#{SecureRandom.hex(16)}"
   end,
   entries_size: 2,
   scripts_size: 1,
@@ -32,8 +32,8 @@ describe Ylem::Helper::Config::ScriptsLister do
   end
 
   context '#path' do
-      it { expect(subject.path).to exist }
-    end
+    it { expect(subject.path).to exist }
+  end
 
   context '#entries' do
     it { expect(subject.entries).to be_a(Array) }

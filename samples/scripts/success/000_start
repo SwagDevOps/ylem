@@ -7,3 +7,4 @@ echo() {
 }
 
 echo "in $(basename -- "$_FILE")"
+exit 12
