@@ -61,22 +61,27 @@ namespace :doc do
       only: /\.rb$/,
       ignore: [
         %r{/\.#},
-        %r{_flymake\.rb$},
+        /_flymake\.rb$/,
       ],
     }
 
     # ENV['LISTEN_GEM_DEBUGGING'] = '2'
+    # rubocop:disable Lint/HandleExceptions
     begin
       paths = Project.spec.require_paths
-      loop do
-        Listen.to(paths, options) do
-          ENV['RAKE_DOC_WATCH'] = '1'
+      task = proc do
+        env = { 'RAKE_DOC_WATCH' => '1' }
 
-          sh('rake', 'doc', verbose: false)
-        end.start.join
+        sh(env, 'rake', 'doc', verbose: false)
+      end
+
+      if task.call
+        loop do
+          Listen.to(paths, options) { task.call }.start.join
+        end
       end
     rescue SystemExit, Interrupt
-      ENV['RAKE_DOC_WATCH'] = '0'
     end
+    # rubocop:enable Lint/HandleExceptions
   end
 end
