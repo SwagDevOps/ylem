@@ -10,6 +10,7 @@ gem 'hash_dot', '~> 2.1'
 
 group :development do
   gem 'rake', '~> 11.3'
+  gem 'listen', '~> 2.10'
   gem 'pry', '~> 0.10'
   gem 'dotenv', '~> 2.2'
   gem 'cliver', '= 0.3.2'
