@@ -40,7 +40,7 @@ class Ylem::Action::Dump < Ylem::Action::Base
 
   # Dumpable content
   #
-  # return [Hash|Array]
+  # @return [Hash|Array]
   def dumpable
     dumpable = config.clone
     # displays ``scripts.executables`` as relative paths
