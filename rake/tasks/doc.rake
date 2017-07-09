@@ -20,7 +20,7 @@ task doc: ['gem:gemspec'] do
   [:pathname, :yard, :securerandom].each { |req| require req.to_s }
 
   # internal task name
-  tname = 'doc:build:%s' % SecureRandom.hex(4)
+  tname = 'doc:t_%s' % SecureRandom.hex(8)
 
   YARD::Rake::YardocTask.new(tname) do |t|
     t.options = {
