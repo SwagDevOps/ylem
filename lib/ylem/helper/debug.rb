@@ -26,18 +26,21 @@ class Ylem::Helper::Debug
 
   # Get printers
   #
-  # @return [Array]
+  # First printer SHOULD be the color printer, secund is the default printer
+  #
+  # @return [Array<PP>]
   def printers
     printers_load
+    default = '::PP'
 
     [
       proc do
-        target = 'Pry::ColorPrinter'
+        target = '::Pry::ColorPrinter'
 
-        Kernel.const_defined?(target) ? target : 'PP'
+        Kernel.const_defined?(target) ? target : default
       end.call,
-      'PP',
-    ].map { |n| helper.get('inflector').constantize(n) }
+      default,
+    ].map { |n| helper.get('inflector').constantize(n) }.freeze
   end
 
   protected
