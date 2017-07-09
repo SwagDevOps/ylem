@@ -31,7 +31,10 @@ class Ylem::Type::Script < Pathname
   # @return [Fixnum]
   def execute(options = {})
     logger = options[:logger]&.as(public_send(options[:as] || :to_s))
+    status = helper.get('subprocess').run([self], logger: logger).to_i
 
-    helper.get('subprocess').run([self], logger: logger).to_i
+    logger.error("failed (#{status})") unless status.zero?
+
+    status
   end
 end
