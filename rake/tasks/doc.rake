@@ -69,16 +69,17 @@ namespace :doc do
     # rubocop:disable Lint/HandleExceptions
     begin
       paths = Project.spec.require_paths
-      task = proc do
+      ptask = proc do
         env = { 'RAKE_DOC_WATCH' => '1' }
 
         sh(env, 'rake', 'doc', verbose: false)
       end
 
-      if task.call
-        loop do
-          Listen.to(paths, options) { task.call }.start.join
-        end
+      if ptask.call
+        listener = Listen.to(*paths, options) { ptask.call }
+        listener.start
+
+        sleep
       end
     rescue SystemExit, Interrupt
     end
