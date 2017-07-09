@@ -64,4 +64,19 @@ class Ylem::Action::Base
   def logger
     service.get(:logger).configure(self.config.logger)
   end
+
+  # Set retcode
+  #
+  # ``Symbol`` can be used as param, and resolved from ``Errno``
+  # to ``Fixnum (integer)
+  #
+  # @raise [NameError]
+  # @param [Symbol|Fixnum] retcode
+  def retcode=(retcode)
+    if retcode.is_a?(Symbol)
+      retcode = Errno.const_get(retcode.to_s.upcase)::Errno
+    end
+
+    @retcode = retcode
+  end
 end
