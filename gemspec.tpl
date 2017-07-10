@@ -16,7 +16,8 @@ Gem::Specification.new do |s|
   s.email       = '#{@email}'
   s.homepage    = '#{@homepage}'
 
-  s.required_ruby_version = '>= 2.2.2'
+  # Require version >= 2.3.0 with safe navigation operator &.
+  s.required_ruby_version = '>= 2.3.0'
   s.require_paths = ['lib']
   s.bindir        = 'bin'
   s.files         = ['.yardopts',
@@ -30,4 +31,5 @@ end
 
 # Local Variables:
 # mode: ruby
+# eval: (rufo-minor-mode 0);
 # End:
