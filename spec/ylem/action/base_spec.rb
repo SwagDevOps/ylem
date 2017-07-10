@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require 'ylem/action/base'
-require 'ylem/helper/config'
+require 'ylem/helper'
 require 'pathname'
+
+helper = Ylem::Helper.instance
 
 describe Ylem::Action::Base do
   let(:subject) do
-    config = Ylem::Helper::Config.new.defaults
+    config = helper.get('config').defaults
 
     described_class.new(config)
   end
