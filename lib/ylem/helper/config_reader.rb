@@ -36,10 +36,6 @@ class Ylem::Helper::ConfigReader
   def parse_file(filepath = default_file)
     filepath = Pathname.new(filepath)
 
-    if default_file?(filepath) and !filepath.exist?
-      return defaults
-    end
-
     parse(filepath.read)
   end
 
