@@ -28,7 +28,7 @@ class Ylem::Cli::Base
     # @return [Hash]
     def defaults
       {
-        config_file: helper.get('config').default_file
+        config_file: helper.get('config').default_file,
       }
     end
 
@@ -51,36 +51,34 @@ class Ylem::Cli::Base
 
   # @param [Array] argv
   def initialize(argv = ARGV)
-    @argv = argv.clone
-    @options = self.class.defaults
+    @argv      = argv.clone
+    @options   = self.class.defaults
     @arguments = []
   end
 
   # @return [OptionParser]
   def parser
-    options = @options # {}
+    (options = @options).merge!(use_defaults: true)
+
     OptionParser.new do |opts|
       opts.banner = self.class.banner
 
       opts.on('-c=CONFIG',
               '--config=CONFIG',
               'Config file used [%s]' % options[:config_file]) do |c|
-        options[:config_file] = c
+        options.merge!(config_file: c, use_defaults: false)
       end
     end
   end
 
+  # @raise [OptionParser::InvalidOption]
   # @return [self]
   def parse!
     argv = self.argv.clone
 
-    begin
-      parser.parse!(argv)
-    rescue OptionParser::InvalidOption
-      STDERR.puts(parser)
-      exit(Errno::EINVAL::Errno)
-    end
-    @options = @options
+    parser.parse!(argv)
+
+    @options   = @options
     @arguments = argv
 
     self
@@ -88,16 +86,32 @@ class Ylem::Cli::Base
 
   # @return [Integer] as return code
   def run
-    parse!
+    begin
+      parse!
+    rescue OptionParser::InvalidOption
+      STDERR.puts(parser)
+      return Errno::EINVAL::Errno
+    end
+
     action.new(config, options).execute.retcode
   end
 
   # Read config
   #
+  # @raise Errno::ENOENT
+  # @raise Errno::EACCES
   # @return [Hash]
   def config
-    config_file = @options[:config_file]
+    config_file  = @options[:config_file]
+    use_defaults = @options.delete(:use_defaults)
 
-    config_file ? helper.get('config').parse_file(config_file) : {}
+    begin
+      helper.get('config').parse_file(config_file)
+    rescue Errno::ENOENT => e
+      # Inexisting file, is not really an exception, unless user request
+      raise unless use_defaults
+
+      helper.get('config').defaults
+    end
   end
 end
