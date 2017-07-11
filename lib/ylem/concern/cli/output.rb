@@ -11,13 +11,11 @@ module Ylem::Concern::Cli::Output
   extend ActiveSupport::Concern
   include Ylem::Concern::Output
 
-  included do
-    # Allow/deny access to outputs (``STDOUT``, ``STDERR``)
-    #
-    # @see Ylem::Concern::Output
-    # @return [Boolean]
-    attr_accessor :quiet
-  end
+  # @!attribute [rw] quiet
+  #   Allow/deny access to outputs (``STDOUT``, ``STDERR``)
+  #   @return [Boolean]
+  #   @see Ylem::Concern::Output
+  included { attr_accessor :quiet }
 
   # Denote quiet
   #
