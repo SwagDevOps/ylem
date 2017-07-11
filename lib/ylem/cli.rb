@@ -12,8 +12,9 @@ class Ylem::Cli
   attr_reader :arguments
   attr_reader :command
 
+  # @param [Array] argv
   def initialize(argv = ARGV)
-    @argv = argv.clone
+    @argv      = argv.clone
     @arguments = []
   end
 
@@ -54,20 +55,23 @@ class Ylem::Cli
 
   # Parse command arguments
   #
+  # @raise OptionParser::InvalidArgument
   # @return [self]
   def parse!
     parser.order!(argv)
     @arguments = argv.clone
-    @command = arguments.shift
+    @command   = arguments.shift
+
+    raise OptionParser::InvalidArgument unless command?(command)
 
     self
   end
 
   # @return [Fixnum]
   def run
-    parse!
-
-    unless command?(command)
+    begin
+      parse!
+    rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
       STDERR.puts(parser)
       return Errno::EINVAL::Errno
     end
@@ -118,7 +122,7 @@ class Ylem::Cli
     lines += [
       nil,
       ("See '#{$PROGRAM_NAME} {%s} --help' " % commands.keys.join('|') +
-       'for more information on a specific command.')
+       'for more information on a specific command.'),
     ]
 
     lines.join("\n")
