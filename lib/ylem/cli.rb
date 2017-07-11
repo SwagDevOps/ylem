@@ -2,11 +2,13 @@
 
 require 'ylem'
 require 'ylem/concern/helper'
+require 'ylem/concern/output'
 require 'optparse'
 
 # CLI interface
 class Ylem::Cli
   include Ylem::Concern::Helper
+  include Ylem::Concern::Output
 
   attr_reader :argv
   attr_reader :arguments
@@ -72,7 +74,8 @@ class Ylem::Cli
     begin
       parse!
     rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
-      STDERR.puts(parser)
+      output(parser, to: :stderr)
+
       return Errno::EINVAL::Errno
     end
 
