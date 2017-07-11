@@ -14,11 +14,26 @@ class Ylem::Cli
   attr_reader :arguments
   attr_reader :command
 
+  # Allow/deny access to outputs (``STDOUT``, ``STDERR``)
+  #
+  # @see Ylem::Concern::Output
+  # @return [Boolean]
+  attr_accessor :quiet
+
   # @param [Array] argv
   def initialize(argv = ARGV)
     @argv      = argv.clone
     @arguments = []
   end
+
+  # Denote quiet
+  #
+  # @return [Boolean]
+  def quiet?
+    !!quiet
+  end
+
+  alias dummy_outputs? quiet?
 
   class << self
     include Ylem::Concern::Helper
@@ -102,9 +117,9 @@ class Ylem::Cli
   #
   # @return [Boolean]
   def command?(command)
-    command = (command || nil).to_s.empty? ? nil : command
+    command = command.to_s.empty? ? nil : command
 
-    command ? commands.keys.include?(command.to_sym) : false
+    commands.keys.include?(command&.to_sym)
   end
 
   protected
