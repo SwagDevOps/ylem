@@ -2,38 +2,23 @@
 
 require 'ylem'
 require 'ylem/concern/helper'
-require 'ylem/concern/output'
+require 'ylem/concern/cli/output'
 require 'optparse'
 
 # CLI interface
 class Ylem::Cli
   include Ylem::Concern::Helper
-  include Ylem::Concern::Output
+  include Ylem::Concern::Cli::Output
 
   attr_reader :argv
   attr_reader :arguments
   attr_reader :command
-
-  # Allow/deny access to outputs (``STDOUT``, ``STDERR``)
-  #
-  # @see Ylem::Concern::Output
-  # @return [Boolean]
-  attr_accessor :quiet
 
   # @param [Array] argv
   def initialize(argv = ARGV)
     @argv      = argv.clone
     @arguments = []
   end
-
-  # Denote quiet
-  #
-  # @return [Boolean]
-  def quiet?
-    !!quiet
-  end
-
-  alias dummy_outputs? quiet?
 
   class << self
     include Ylem::Concern::Helper
