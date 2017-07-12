@@ -93,7 +93,7 @@ class Ylem::Cli::Base
     rescue OptionParser::InvalidOption
       output(parser, to: :stderr)
 
-      return Errno::EINVAL::Errno
+      return helper.get(:errno).retcode_get(:EINVAL)
     end
 
     action.new(config, options).execute.retcode
