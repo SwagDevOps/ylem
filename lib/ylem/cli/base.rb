@@ -3,6 +3,7 @@
 require 'ylem/cli'
 require 'ylem/concern/helper'
 require 'ylem/concern/action'
+require 'ylem/concern/cli/output'
 require 'etc'
 require 'optparse'
 require 'pathname'
@@ -19,6 +20,7 @@ class Ylem::Cli::Base
   extend ActiveSupport::DescendantsTracker
   include Ylem::Concern::Action
   include Ylem::Concern::Helper
+  include Ylem::Concern::Cli::Output
 
   class << self
     include Ylem::Concern::Helper
@@ -89,7 +91,8 @@ class Ylem::Cli::Base
     begin
       parse!
     rescue OptionParser::InvalidOption
-      STDERR.puts(parser)
+      output(parser, to: :stderr)
+
       return Errno::EINVAL::Errno
     end
 
