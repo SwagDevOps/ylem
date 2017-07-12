@@ -76,7 +76,7 @@ class Ylem::Cli
     rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
       output(parser, to: :stderr)
 
-      return Errno::EINVAL::Errno
+      return helper.get(:errno).retcode_get(:EINVAL)
     end
 
     run_command(command, arguments).to_i
