@@ -117,17 +117,22 @@ class Ylem::Cli
   #
   # @return [String]
   def subtext
-    lines = ['Available commands are:']
-    commands.each do |k, v|
-      lines << '%s%s: %s' % [' ' * 4, k, v.to_s]
-    end
+    ['Available commands are:']
+      .push(commands.keys.map { |k| format_command_summary(k) },
+            nil,
+            "See '#{$PROGRAM_NAME} [command] --help' " \
+            'for more information on a specific command.')
+      .join("\n")
+  end
 
-    lines += [
-      nil,
-      ("See '#{$PROGRAM_NAME} {%s} --help' " % commands.keys.join('|') +
-       'for more information on a specific command.'),
-    ]
+  # Format a command summary (as displayed in help)
+  #
+  # @param [Symbol] name
+  # @return [String]
+  def format_command_summary(name)
+    padding = commands.keys.max_by(&:length).size + 4
+    blanks  = ' ' * (padding - name.to_s.size)
 
-    lines.join("\n")
+    '%s%s: %s' % [blanks, name, commands.fetch(name).summary]
   end
 end
