@@ -74,10 +74,6 @@ class Ylem::Action::Base
   # @raise [NameError]
   # @param [Symbol|Fixnum] retcode
   def retcode=(retcode)
-    if retcode.is_a?(Symbol)
-      retcode = Errno.const_get(retcode.to_s.upcase)::Errno
-    end
-
-    @retcode = retcode
+    @retcode = helper.get(:errno).retcode_get(retcode)
   end
 end
