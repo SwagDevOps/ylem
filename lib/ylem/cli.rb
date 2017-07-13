@@ -23,13 +23,27 @@ class Ylem::Cli
   class << self
     include Ylem::Concern::Helper
 
-    def run(*args, &block)
-      self.new(*args, &block).run
+    # Run, almost a shortcut
+    #
+    # Usable, in place of:
+    #
+    # ```ruby
+    # cli = Ylem::Cli.new(ARGV)
+    # res = cli.run
+    # ```
+    #
+    # @param [Array] argv
+    # @return [Integer]
+    #
+    # @see Ylem::Cli#initialize
+    # @see Ylem::Cli#run
+    def run(argv)
+      self.new(argv).run
     end
 
     # Get available (registered) commands
     #
-    # @return [Array<Class>]
+    # @return [Array<Ylem::Cli::Base>]
     def commands
       [
         :dump,
