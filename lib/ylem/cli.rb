@@ -120,8 +120,8 @@ class Ylem::Cli
     ['Available commands are:']
       .push(commands.keys.map { |k| format_command_summary(k) },
             nil,
-            "See '#{$PROGRAM_NAME} [command] --help' " \
-            'for more information on a specific command.')
+            "See '#{$PROGRAM_NAME} [command] --help'",
+            'to read about a specific subcommand.')
       .join("\n")
   end
 
@@ -131,8 +131,9 @@ class Ylem::Cli
   # @return [String]
   def format_command_summary(name)
     padding = commands.keys.max_by(&:length).size + 4
-    blanks  = ' ' * (padding - name.to_s.size)
+    spacer  = ' ' * (padding - name.to_s.size)
+    summary = commands.fetch(name).summary
 
-    '%s%s: %s' % [blanks, name, commands.fetch(name).summary]
+    "   #{name}#{spacer}#{summary}"
   end
 end
