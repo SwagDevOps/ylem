@@ -50,8 +50,8 @@ class Ylem::Cli
         commands.keys.join('|'),
       ]
 
-      opts.separator nil
-      opts.separator subtext
+      opts.separator(nil)
+      opts.separator(subtext)
     end
   end
 
