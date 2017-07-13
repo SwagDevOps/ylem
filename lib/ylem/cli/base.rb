@@ -34,6 +34,15 @@ class Ylem::Cli::Base
       }
     end
 
+    # Summary
+    #
+    # A short description of the command
+    #
+    # @return [String]
+    def summary
+      self.name
+    end
+
     # Command description
     #
     # SHOULD be overriden by child class
