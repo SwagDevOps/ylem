@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'factory_girl'
+require 'hashie'
 require 'rspec/sleeping_king_studios/matchers/core/all'
 require '%s/../lib/%s' % [__dir__, ENV.fetch('PROJECT_NAME')]
 require 'sys/proc'
@@ -35,5 +37,21 @@ end
 RSpec::Matchers.define :have_all_symbol_keys do
   match do |subject|
     subject.keys.all? { |k| Symbol === k }
+  end
+end
+
+RSpec.configure do |config|
+  config.include FactoryGirl::Syntax::Methods
+
+  # Generic struct (ala OpenStruct) based on Hashie
+  class FactoryStruct < Hash
+    include Hashie::Extensions::MethodAccess
+  end
+
+  FactoryGirl.find_definitions
+
+  # Build is defined on a root level to be available outside of examples
+  def build(name)
+    FactoryGirl.build(name)
   end
 end
