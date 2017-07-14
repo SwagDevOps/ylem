@@ -37,7 +37,7 @@ class Ylem::Cli
     #
     # @see Ylem::Cli#initialize
     # @see Ylem::Cli#run
-    def run(argv)
+    def run(argv = ARGV)
       self.new(argv).run
     end
 
@@ -48,9 +48,7 @@ class Ylem::Cli
       [
         :dump,
         :start,
-      ].map do |name|
-        helper.get(:inflector).resolve("ylem/cli/#{name}")
-      end
+      ]
     end
   end
 
@@ -100,13 +98,10 @@ class Ylem::Cli
   #
   # @return [Hash]
   def commands
-    classes = self.class.commands
-    results = {}
+    results  = {}
 
-    classes.each do |c|
-      k = helper.get(:inflector).underscore(c.name.split('::')[-1])
-
-      results[k.to_sym] = c
+    self.class.commands.each do |name|
+      results[name.to_sym] = command_get(name)
     end
 
     results
@@ -149,5 +144,13 @@ class Ylem::Cli
     summary = commands.fetch(name).summary
 
     "   #{name}#{spacer}#{summary}"
+  end
+
+  # Resolve command by name
+  #
+  # @param [String|Symbol] name
+  # @return [Ylem::Cli::Base]
+  def command_get(name)
+    helper.get(:inflector).resolve("ylem/cli/#{name}")
   end
 end
