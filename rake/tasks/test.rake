@@ -5,7 +5,7 @@
 # https://www.relishapp.com/rspec/rspec-core/docs/command-line/rake-task
 # https://github.com/rspec/rspec-core/blob/master/lib/rspec/core/runner.rb
 
-rspec_file = Pathname.new('.').join('.rspec')
+rspec_file = Pathname.new(Dir.pwd).join('.rspec')
 
 if rspec_file.file?
   desc 'Run test suites'
