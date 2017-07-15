@@ -8,10 +8,14 @@
 unless Dir.glob('spec/*').empty?
   desc 'Run test suites'
   task :test, [:tag] do |task, args|
-    options = ['-c',
-               '--pattern', 'spec/**/*_spec.rb',
-               '-f', 'progress',
-               '-r', '%s/spec/spec_helper' % Dir.pwd]
+    # Extract options directly from ``.rspec`` file, consistent behavior
+    options = proc do
+      require 'shellwords'
+
+      config_file = Pathname.new('.').join('.rspec')
+
+      config_file.file? ? Shellwords.split(config_file.read) : []
+    end.call
 
     proc do
       require 'rspec/core'
@@ -23,5 +27,5 @@ unless Dir.glob('spec/*').empty?
     end.call
   end
 
-  task :spec => [:test]
+  task spec: [:test]
 end
