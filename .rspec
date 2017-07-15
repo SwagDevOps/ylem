@@ -1,1 +1,4 @@
---require spec_helper --color
+--require ./spec/spec_helper.rb
+--color
+--pattern ./spec/**/*_spec.rb
+-f progress
