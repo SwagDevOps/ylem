@@ -5,16 +5,16 @@
 # https://www.relishapp.com/rspec/rspec-core/docs/command-line/rake-task
 # https://github.com/rspec/rspec-core/blob/master/lib/rspec/core/runner.rb
 
-unless Dir.glob('spec/*').empty?
+rspec_file = Pathname.new('.').join('.rspec')
+
+if rspec_file.file?
   desc 'Run test suites'
   task :test, [:tag] do |task, args|
     # Extract options directly from ``.rspec`` file, consistent behavior
     options = proc do
       require 'shellwords'
 
-      config_file = Pathname.new('.').join('.rspec')
-
-      config_file.file? ? Shellwords.split(config_file.read) : []
+      Shellwords.split(rspec_file.read)
     end.call
 
     proc do
