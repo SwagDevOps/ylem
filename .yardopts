@@ -1,1 +1,7 @@
-./lib/**/*.rb --markup=markdown
+./lib/**/*.rb
+--markup-provider redcarpet
+--markup markdown
+--charset utf-8
+--protected
+--embed-mixins
+--readme README.md

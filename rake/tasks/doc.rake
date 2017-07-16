@@ -6,96 +6,93 @@
 CLOBBER.include('doc/')
 
 # Config ------------------------------------------------------------
+
 ignored_patterns = [
   %r{/\.#},
   /_flymake\.rb$/,
 ]
 
-# extra static files to be included (eg. FAQ)
-static_files = ['README.*']
-
 # Tasks -------------------------------------------------------------
-desc 'Generate documentation (using YARD)'
-task doc: ['gem:gemspec'] do
-  [:pathname, :yard, :securerandom].each { |req| require req.to_s }
 
-  # internal task name
-  tname = 'doc:t_%s' % SecureRandom.hex(8)
+if (yardopts_file = Pathname.new(Dir.pwd).join('.yardopts')).file?
+  desc 'Generate documentation (using YARD)'
+  task doc: ['gem:gemspec'] do
+    [:pathname, :yard, :securerandom].each { |req| require req.to_s }
 
-  YARD::Rake::YardocTask.new(tname) do |t|
-    t.options = {
-      false => ['--no-stats'],
-      true  => [],
-    }[ENV['RAKE_DOC_WATCH'].to_i.zero?] + [
-      '-o', 'doc',
-      '--protected',
-      '--markup-provider=redcarpet',
-      '--markup=markdown',
-      '--charset', 'utf-8',
-      '--title',
-      '%s v%s' % [Project.name, Project.version_info[:version]],
-    ]
+    # internal task name
+    tname = 'doc:t_%s' % SecureRandom.hex(8)
 
-    ignored_patterns.each do |regexp|
-      t.options += ['--exclude', regexp.inspect.gsub(%r{^/|/$}, '')]
+    YARD::Rake::YardocTask.new(tname) do |t|
+      t.options = proc do
+        require 'shellwords'
+
+        Shellwords.split(yardopts_file.read) + [
+          '--output-dir', './doc',
+          '--title',
+          '%s v%s' % [Project.name, Project.version_info[:version]]
+        ]
+      end.call + {
+        false => ['--no-stats'],
+        true  => [],
+      }[ENV['RAKE_DOC_WATCH'].to_i.zero?]
+
+      ignored_patterns.each do |regexp|
+        t.options += ['--exclude', regexp.inspect.gsub(%r{^/|/$}, '')]
+      end
+
+      t.after = proc { Rake::Task['doc:after'].invoke }
     end
 
-    t.files = Project.spec.require_paths.map do |path|
-      Pathname.new(path).join('**', '*.rb').to_s
-    end + ['-', Dir.glob(static_files)].flatten
-
-    t.after = Proc.new { Rake::Task['doc:after'].invoke }
+    Rake::Task[tname].invoke
   end
 
-  Rake::Task[tname].invoke
-end
-
-namespace :doc do
-  task :after do
-    proc do
-      threads = []
-      Dir.glob('doc/**/*.html').each do |f|
-        threads << Thread.new do
-          f = Pathname.new(f)
-          s = f.read.gsub(/^\s*<meta charset="[A-Z]+-{0,1}[A-Z]+">/,
-                          '<meta charset="UTF-8">')
-          f.write(s)
+  namespace :doc do
+    task :after do
+      proc do
+        threads = []
+        Dir.glob('doc/**/*.html').each do |f|
+          threads << Thread.new do
+            f = Pathname.new(f)
+            s = f.read.gsub(/^\s*<meta charset="[A-Z]+-{0,1}[A-Z]+">/,
+                            '<meta charset="UTF-8">')
+            f.write(s)
+          end
         end
-      end
 
-      threads.map(&:join)
+        threads.map(&:join)
+      end
     end
   end
-end
 
-namespace :doc do
-  desc 'Watch documentation changes'
-  task watch: ['gem:gemspec'] do
-    require 'listen'
+  namespace :doc do
+    desc 'Watch documentation changes'
+    task watch: ['gem:gemspec'] do
+      require 'listen'
 
-    options = {
-      only: /\.rb$/,
-      ignore: ignored_patterns,
-    }
+      options = {
+        only:   /\.rb$/,
+        ignore: ignored_patterns,
+      }
 
-    # ENV['LISTEN_GEM_DEBUGGING'] = '2'
-    # rubocop:disable Lint/HandleExceptions
-    begin
-      paths = Project.spec.require_paths
-      ptask = proc do
-        env = { 'RAKE_DOC_WATCH' => '1' }
+      # ENV['LISTEN_GEM_DEBUGGING'] = '2'
+      # rubocop:disable Lint/HandleExceptions
+      begin
+        paths = Project.spec.require_paths
+        ptask = proc do
+          env = { 'RAKE_DOC_WATCH' => '1' }
 
-        sh(env, 'rake', 'doc', verbose: false)
+          sh(env, 'rake', 'doc', verbose: false)
+        end
+
+        if ptask.call
+          listener = Listen.to(*paths, options) { ptask.call }
+          listener.start
+
+          sleep
+        end
+      rescue SystemExit, Interrupt
       end
-
-      if ptask.call
-        listener = Listen.to(*paths, options) { ptask.call }
-        listener.start
-
-        sleep
-      end
-    rescue SystemExit, Interrupt
+      # rubocop:enable Lint/HandleExceptions
     end
-    # rubocop:enable Lint/HandleExceptions
   end
 end
