@@ -3,12 +3,6 @@
 require 'ylem/helper/config'
 require 'pathname'
 
-config_defaults = {
-  'logger.file':      /^\/var\/log\/(rake|rspec)\.log$/,
-  'scripts.path':     /^\/etc\/(rake|rspec)\/scripts$/,
-  'environment.file': /^\/etc\/environment$/,
-}
-
 describe Ylem::Helper::Config do
   {
     defaults:     [0],
@@ -21,47 +15,44 @@ describe Ylem::Helper::Config do
     end
   end
 
-  config_defaults.each do |k, regexp|
+  context '#default_file' do
+    let(:config_paths) { build(:config_paths) }
+    let(:default_file) { subject.default_file }
+
+    it { expect(default_file).to be_a(Pathname) }
+
+    it { expect(default_file.to_s).to match(config_paths.default) }
+  end
+end
+
+describe Ylem::Helper::Config do
+  build(:config_defaults).patterns.each do |k, regexp|
     context "#defaults[:#{k}]" do
       let(:defaults) { subject.defaults }
 
       it { expect(defaults[k].to_s).to match(regexp) }
     end
   end
+end
 
-  context '#default_file' do
-    let(:default_file) { subject.default_file }
+describe Ylem::Helper::Config do
+  context "#parse_file('%s')" % build(:config_paths).success do
+    let(:parsed) do
+      parsed_file = build(:config_paths).success
 
-    it { expect(default_file).to be_a(Pathname) }
+      subject.parse_file(parsed_file)
+    end
 
-    # default value (example);
-    # ``#<Pathname:/etc/progname/config.yml>``
-    it do
-      regexp = /^\/etc\/(rake|rspec)\/config\.yml$/
+    it { expect(parsed).to be_a(Hash) }
 
-      expect(default_file.to_s).to match(regexp)
+    build(:config_defaults).patterns.keys.each do |key|
+      context "#parse_file[:#{key}]" do
+        # all default keys ust be present in parsed result
+        it { expect(parsed.keys).to include(key) }
+
+        # atm config only paths are present in config
+        it { expect(parsed[key]).to be_a(Pathname) }
+      end
     end
   end
-
-  # Old behavior
-  # Should be modified later
-=begin
-  context '#parse_file' do
-    let(:parse_file) { subject.parse_file }
-
-    it { expect(parse_file).to be_a(Hash) }
-
-    config_defaults.keys.each do |key|
-      it { expect(parse_file.keys).to include(key) }
-    end
-  end
-
-  config_defaults.keys.each do |key|
-    context "#parse_file[:#{key}]" do
-      let(:parse_file) { subject.parse_file }
-
-      it { expect(parse_file[key]).to be_a(Pathname) }
-    end
-  end
-=end
 end
