@@ -3,13 +3,9 @@
 require 'ylem/cli/start'
 require 'ostruct'
 
-local = {
-  sample_config: "#{SAMPLES_DIR}/config/success.yml",
-}
-
 describe Ylem::Cli::Start do
   let(:subject) do
-    described_class.new(['-c', local[:sample_config]]).parse!
+    described_class.new(['-c', build(:config_paths).success]).parse!
   end
 
   describe '.config' do
