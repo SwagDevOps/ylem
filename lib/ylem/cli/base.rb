@@ -69,7 +69,9 @@ class Ylem::Cli::Base
 
   # @return [OptionParser]
   def parser
+    # rubocop:disable Performance/RedundantMerge
     (options = @options).merge!(use_defaults: true)
+    # rubocop:enable Performance/RedundantMerge
 
     OptionParser.new do |opts|
       opts.banner = self.class.banner
@@ -103,6 +105,10 @@ class Ylem::Cli::Base
       output(parser, to: :stderr)
 
       return helper.get(:errno).retcode_get(:EINVAL)
+    rescue OptionParser::MissingArgument => e
+      output(e, to: :stderr)
+
+      return helper.get(:errno).retcode_get(:EINVAL)
     end
 
     action.new(config, options).execute.retcode
@@ -119,7 +125,7 @@ class Ylem::Cli::Base
 
     begin
       helper.get('config').parse_file(config_file)
-    rescue Errno::ENOENT => e
+    rescue Errno::ENOENT
       # Inexisting file, is not really an exception, unless user request
       raise unless use_defaults
 
