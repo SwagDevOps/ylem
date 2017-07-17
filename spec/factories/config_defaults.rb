@@ -6,12 +6,14 @@ FactoryGirl.define do
     # Patterns used to match config file default values
     patterns(
       'logger.file':      %r{^/var/log/(rake|rspec).log$},
+      'logger.level':     %r{[a-z A-Z]+},
       'scripts.path':     %r{^/etc/(rake|rspec)/scripts$},
       'environment.file': %r{^/etc/environment$}
     )
 
     types(
       'logger.file':      Pathname,
+      'logger.level':     Symbol,
       'scripts.path':     Pathname,
       'environment.file': Pathname
     )
