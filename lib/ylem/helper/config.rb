@@ -8,7 +8,11 @@ require 'ylem/helper/config_reader'
 class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   # Default config
   #
-  # @note ``environment.file``: ``/etc/environment`` is used by the ``pam_env`` module and is shell agnostic so scripting or glob expansion cannot be used. The file only accepts ``variable=value`` pairs. See ``pam_env(8)`` and ``pam_env.conf(5)`` for details.
+  # @note ``environment.file``: ``/etc/environment``
+  #   is used by the ``pam_env`` module and is shell agnostic
+  #   so scripting or glob expansion cannot be used.
+  #   The file only accepts ``variable=value`` pairs.
+  #   See ``pam_env(8)`` and ``pam_env.conf(5)`` for details.
   #
   # @return [Hash]
   def defaults
@@ -16,8 +20,9 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     rootdir = Pathname.new('/')
 
     {
-      'logger.file': rootdir.join('var', 'log', "#{progname}.log"),
-      'scripts.path': sysconfdir.join(progname, 'scripts'),
+      'logger.file':      rootdir.join('var', 'log', "#{progname}.log"),
+      'logger.level':     :info,
+      'scripts.path':     sysconfdir.join(progname, 'scripts'),
       'environment.file': sysconfdir.join('environment')
     }
   end
@@ -43,10 +48,13 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     # Apply type has seen from defaults
     defaults.each do |k, v|
       next unless result[k]
-      next unless v.is_a?(Pathname)
 
-      result[k] = Pathname.new(result[k])
-      result[k] = pwd.join(result[k]) unless result[k].absolute?
+      if v.is_a?(Pathname)
+        result[k] = Pathname.new(result[k])
+        result[k] = pwd.join(result[k]) unless result[k].absolute?
+      end
+
+      result[k] = result[k].to_sym if v.is_a?(Symbol)
     end
 
     result
