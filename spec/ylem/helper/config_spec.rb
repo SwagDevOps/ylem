@@ -26,10 +26,15 @@ describe Ylem::Helper::Config do
 end
 
 describe Ylem::Helper::Config do
+  let(:defaults) { subject.defaults }
+  let(:expected_keys) { build(:config_defaults).patterns.keys }
+
+  context "#defaults.keys" do
+    it { expect(defaults.keys).to eq(expected_keys) }
+  end
+
   build(:config_defaults).patterns.each do |k, regexp|
     context "#defaults[:#{k}]" do
-      let(:defaults) { subject.defaults }
-
       it { expect(defaults[k].to_s).to match(regexp) }
     end
   end
