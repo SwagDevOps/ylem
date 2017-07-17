@@ -47,11 +47,12 @@ describe Ylem::Helper::Config do
 
     build(:config_defaults).patterns.keys.each do |key|
       context "#parse_file[:#{key}]" do
-        # all default keys ust be present in parsed result
+        let(:expected_class) { build(:config_defaults).types.fetch(key) }
+
+        # all default keys MUST be present in parsed result
         it { expect(parsed.keys).to include(key) }
 
-        # atm config only paths are present in config
-        it { expect(parsed[key]).to be_a(Pathname) }
+        it { expect(parsed[key]).to be_a(expected_class) }
       end
     end
   end
