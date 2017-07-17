@@ -27,10 +27,10 @@ end
 
 describe Ylem::Helper::Config do
   let(:defaults) { subject.defaults }
-  let(:expected_keys) { build(:config_defaults).patterns.keys }
+  let(:expected_keys) { build(:config_defaults).patterns.keys.sort }
 
   context "#defaults.keys" do
-    it { expect(defaults.keys).to eq(expected_keys) }
+    it { expect(defaults.keys.sort).to eq(expected_keys) }
   end
 
   build(:config_defaults).patterns.each do |k, regexp|
