@@ -5,15 +5,15 @@ FactoryGirl.define do
   factory :config_defaults, class: FactoryStruct do
     # Patterns used to match config file default values
     patterns(
-      'logger.file':      %r{^/var/log/(rake|rspec).log$},
       'logger.level':     %r{[a-z A-Z]+},
+      'logger.file':      %r{^/var/log/(rake|rspec).log$},
       'scripts.path':     %r{^/etc/(rake|rspec)/scripts$},
       'environment.file': %r{^/etc/environment$}
     )
 
     types(
-      'logger.file':      Pathname,
       'logger.level':     Symbol,
+      'logger.file':      Pathname,
       'scripts.path':     Pathname,
       'environment.file': Pathname
     )
