@@ -9,5 +9,11 @@ FactoryGirl.define do
       'scripts.path':     %r{^/etc/(rake|rspec)/scripts$},
       'environment.file': %r{^/etc/environment$}
     )
+
+    types(
+      'logger.file':      Pathname,
+      'scripts.path':     Pathname,
+      'environment.file': Pathname
+    )
   end
 end
