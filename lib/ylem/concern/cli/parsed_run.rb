@@ -15,6 +15,8 @@ module Ylem::Concern::Cli::ParsedRun
 
   protected
 
+  # rubocop:disable Metrics/MethodLength
+
   # Block to run wrqpped CLI method
   #
   # Parse command line qrguments (using OptionParser)
@@ -25,27 +27,24 @@ module Ylem::Concern::Cli::ParsedRun
   # @yieldreturn [Integer]
   # @return [Integer]
   def parsed_run
+    error = lambda { |displayable, code = :EINVAL|
+      output(displayable.to_s, to: :stderr)
+
+      helper.get(:errno).retcode_get(code)
+    }
+
     yield if proc do
       begin
         parse!
       rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
-        parsed_error(parser)
+        error.call(parser)
       rescue OptionParser::MissingArgument => e
-        parsed_error(e)
+        error.call(e)
       else
         0
       end
     end.call.zero?
   end
 
-  # Display error (displayable) on ``STDERR`` and return retcode
-  #
-  # @param [String|Object] displayable
-  # @param [Symbol] code
-  # @return [Integer]
-  def parsed_error(displayable, code = :EINVAL)
-    output(displayable.to_s, to: :stderr)
-
-    helper.get(:errno).retcode_get(code)
-  end
+  # rubocop:enable Metrics/MethodLength
 end
