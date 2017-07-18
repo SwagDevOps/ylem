@@ -25,18 +25,27 @@ module Ylem::Concern::Cli::ParsedRun
   # @yieldreturn [Integer]
   # @return [Integer]
   def parsed_run
-    begin
-      parse!
-    rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
-      output(parser, to: :stderr)
+    yield if proc do
+      begin
+        parse!
+      rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
+        parsed_error(parser)
+      rescue OptionParser::MissingArgument => e
+        parsed_error(e)
+      else
+        0
+      end
+    end.call.zero?
+  end
 
-      return helper.get(:errno).retcode_get(:EINVAL)
-    rescue OptionParser::MissingArgument => e
-      output(e, to: :stderr)
+  # Display error (displayable) on ``STDERR`` and return retcode
+  #
+  # @param [String|Object] displayable
+  # @param [Symbol] code
+  # @return [Integer]
+  def parsed_error(displayable, code = :EINVAL)
+    output(displayable.to_s, to: :stderr)
 
-      return helper.get(:errno).retcode_get(:EINVAL)
-    end
-
-    yield
+    helper.get(:errno).retcode_get(code)
   end
 end
