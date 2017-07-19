@@ -3,12 +3,14 @@
 require 'ylem'
 require 'ylem/concern/helper'
 require 'ylem/concern/cli/output'
+require 'ylem/concern/cli/parse'
 require 'optparse'
 
 # CLI interface
 class Ylem::Cli
   include Ylem::Concern::Helper
   include Ylem::Concern::Cli::Output
+  include Ylem::Concern::Cli::Parse
 
   attr_reader :argv
   attr_reader :arguments
@@ -25,7 +27,7 @@ class Ylem::Cli
 
     # Run, almost a shortcut
     #
-    # Usable, in place of:
+    # Usable, instead of:
     #
     # ```ruby
     # cli = Ylem::Cli.new(ARGV)
@@ -43,7 +45,7 @@ class Ylem::Cli
 
     # Get available (registered) commands
     #
-    # @return [Array<Ylem::Cli::Base>]
+    # @return [Array<Symbol>]
     def commands
       [
         :dump,
@@ -83,22 +85,14 @@ class Ylem::Cli
 
   # @return [Fixnum]
   def run
-    begin
-      parse!
-    rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
-      output(parser, to: :stderr)
-
-      return helper.get(:errno).retcode_get(:EINVAL)
-    end
-
-    run_command(command, arguments).to_i
+    parse { run_command(command, arguments).to_i }
   end
 
   # Get commanda indexed by command name/keyword
   #
   # @return [Hash]
   def commands
-    results  = {}
+    results = {}
 
     self.class.commands.each do |name|
       results[name.to_sym] = command_get(name)
