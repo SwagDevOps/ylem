@@ -37,25 +37,22 @@ class Ylem::Cli::Base
     # Summary
     #
     # A short description of the command
+    # SHOULD be overriden by child class
     #
     # @return [String]
     def summary
       self.name
     end
 
-    # Command description
-    #
-    # SHOULD be overriden by child class
+    # Keyword used to identify command
     #
     # @return [String]
-    def to_s
-      name
+    def keyword
+      helper.get(:inflector).underscore(name.split('::')[-1])
     end
 
     # @return [String]
     def banner
-      keyword = helper.get(:inflector).underscore(name.split('::')[-1])
-
       'Usage: %s %s [options]' % [helper.get('system').progname, keyword]
     end
   end
