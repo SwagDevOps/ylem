@@ -5,9 +5,7 @@ require 'ylem/concern/helper'
 require 'ylem/concern/action'
 require 'ylem/concern/cli/output'
 require 'ylem/concern/cli/parse'
-require 'etc'
 require 'optparse'
-require 'pathname'
 # @see https://github.com/rails/rails/blob/master/activerecord/lib/active_record/base.rb
 # @see http://api.rubyonrails.org/classes/ActiveSupport/DescendantsTracker.html
 require 'active_support/descendants_tracker'
