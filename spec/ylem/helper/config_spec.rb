@@ -62,3 +62,14 @@ describe Ylem::Helper::Config do
     end
   end
 end
+
+# testing with an inexistent file ------------------------------------
+
+describe Ylem::Helper::Config do
+  context "#parse_file('%s')" % build(:config_paths).random do
+    let(:parsed_file) { build(:config_paths).random }
+    let(:error) { Errno::ENOENT }
+
+    it { expect { subject.parse_file(parsed_file) }.to raise_error(error) }
+  end
+end
