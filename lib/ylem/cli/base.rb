@@ -4,6 +4,7 @@ require 'ylem/cli'
 require 'ylem/concern/helper'
 require 'ylem/concern/action'
 require 'ylem/concern/cli/output'
+require 'ylem/concern/cli/parse'
 require 'etc'
 require 'optparse'
 require 'pathname'
@@ -21,6 +22,7 @@ class Ylem::Cli::Base
   include Ylem::Concern::Action
   include Ylem::Concern::Helper
   include Ylem::Concern::Cli::Output
+  include Ylem::Concern::Cli::Parse
 
   class << self
     include Ylem::Concern::Helper
@@ -99,19 +101,7 @@ class Ylem::Cli::Base
 
   # @return [Integer] as return code
   def run
-    begin
-      parse!
-    rescue OptionParser::InvalidOption
-      output(parser, to: :stderr)
-
-      return helper.get(:errno).retcode_get(:EINVAL)
-    rescue OptionParser::MissingArgument => e
-      output(e, to: :stderr)
-
-      return helper.get(:errno).retcode_get(:EINVAL)
-    end
-
-    action.new(config, options).execute.retcode
+    parse { action.new(config, options).execute.retcode }
   end
 
   # Read config
