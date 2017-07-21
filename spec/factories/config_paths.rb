@@ -10,6 +10,7 @@ FactoryGirl.define do
   factory :config_paths, class: FactoryStruct do
     success "#{SAMPLES_DIR}/config/success.yml"
     failure "#{SAMPLES_DIR}/config/failure.yml"
+    partial "#{SAMPLES_DIR}/config/partial.yml"
     default %r{^/etc/(rake|rspec)/config\.yml$}
 
     random do
