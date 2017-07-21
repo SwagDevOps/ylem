@@ -44,7 +44,21 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   #
   # @return [Hash|Array]
   def parse(content)
-    result = super
+    apply_defaults(super)
+  end
+
+  protected
+
+  # Return the current working directory as a Pathname
+  #
+  # @return [Pathname]
+  def pwd
+    Pathname.new(Dir.pwd)
+  end
+
+  def apply_defaults(h)
+    result = h.clone
+
     # Apply type has seen from defaults
     defaults.each do |k, v|
       next unless result[k]
@@ -58,14 +72,5 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     end
 
     result
-  end
-
-  protected
-
-  # Return the current working directory as a Pathname
-  #
-  # @return [Pathname]
-  def pwd
-    Pathname.new(Dir.pwd)
   end
 end
