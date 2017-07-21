@@ -10,11 +10,11 @@ class Ylem::Helper::Yaml
   # Parse Yaml source into a Ruby data structure
   #
   # @param [String] content
-  # @return [Hash]
+  # @return [Hash|Array|nil]
   def parse(content)
     parsed = engine.load(content)
 
-    symbolize_hash(parsed)
+    symbolize_hash(parsed) unless parsed.nil?
   end
 
   # Parse a Yaml file
