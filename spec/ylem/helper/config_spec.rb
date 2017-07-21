@@ -40,24 +40,28 @@ describe Ylem::Helper::Config do
   end
 end
 
+# testing with different type of config ------------------------------
+
 describe Ylem::Helper::Config do
-  context "#parse_file('%s')" % build(:config_paths).success do
-    let(:parsed) do
-      parsed_file = build(:config_paths).success
+  [:success, :partial].map(&:to_s).each do |config_type|
+    context "#parse_file('%s')" % build(:config_paths).fetch(config_type) do
+      let(:parsed) do
+        parsed_file = build(:config_paths).fetch(config_type)
 
-      subject.parse_file(parsed_file)
-    end
+        subject.parse_file(parsed_file)
+      end
 
-    it { expect(parsed).to be_a(Hash) }
+      it { expect(parsed).to be_a(Hash) }
 
-    build(:config_defaults).patterns.keys.each do |key|
-      context "#parse_file[:#{key}]" do
-        let(:expected_class) { build(:config_defaults).types.fetch(key) }
+      build(:config_defaults).patterns.keys.each do |key|
+        context "#parse_file[:#{key}]" do
+          let(:expected_class) { build(:config_defaults).types.fetch(key) }
 
-        # all default keys MUST be present in parsed result
-        it { expect(parsed.keys).to include(key) }
+          # all default keys MUST be present in parsed result
+          it { expect(parsed.keys).to include(key) }
 
-        it { expect(parsed[key]).to be_a(expected_class) }
+          it { expect(parsed[key]).to be_a(expected_class) }
+        end
       end
     end
   end
