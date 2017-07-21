@@ -37,12 +37,13 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
       filepath = filepath.realpath
     end
 
-    Dir.chdir(dir) { parsed = super }
+    Dir.chdir(dir) { parsed = super(filepath) }
   end
 
-  # Parse string content (yaml) merging with defauts
+  # Parse string content (YAML) merging with defauts
   #
-  # @return [Hash|Array]
+  # @param [String] content
+  # @return [Hash]
   def parse(content)
     apply_defaults(super)
   end
@@ -56,8 +57,16 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     Pathname.new(Dir.pwd)
   end
 
-  def apply_defaults(h)
-    result = h.clone
+  # Apply defaults (typing)
+  #
+  # Used on a parsed config (from a string/file using YAML format),
+  # some values are transformed from original ``String`` type to
+  # more advanced types as ``Pathname`` or ``Symbol``
+  #
+  # @param [Hash] parsed
+  # @return [Hash]
+  def apply_defaults(parsed)
+    result = parsed.clone
 
     # Apply type has seen from defaults
     defaults.each do |k, v|
