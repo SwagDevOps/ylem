@@ -46,7 +46,7 @@ class Ylem::Helper::ConfigReader
     parsed = helper.get('yaml').parse(content)
 
     # @todo raise explicit exception before merge
-    defaults.merge(parsed)
+    defaults.merge(parsed.to_h)
   end
 
   protected
