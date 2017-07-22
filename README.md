@@ -37,16 +37,21 @@ and remains in ``/etc/#{progname}/config.yml``,
 where ``progname`` is ``ylem``.
 Furthermore configuration filepath can be set on the
 <abbr title="Command Line Interface">CLI</abbr>.
-The main configuration keys are:
 
-* ``logger.file``<br />
-    default value is: ``/var/log/#{progname}.log``
+Available configuration keys are:
+
 * ``scripts.path``<br />
-    where bootstraping scripts are stored<br />
-    default value is: ``/etc/#{progname}/scripts``
+  where bootstraping scripts are stored<br />
+  default value is: ``/etc/#{progname}/scripts``
+* ``logger.file``<br />
+  default value is: ``/var/log/#{progname}.log``
+* ``logger.level``<br />
+  default value is: ``INFO`` (see: [Logger::Severity](https://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger/Severity.html))
 * ``environment.file``<br />
-    default value is: ``/etc/environment``
-    ([System-wide environment variables](https://help.ubuntu.com/community/EnvironmentVariables#System-wide_environment_variables))
+  default value is: ``/etc/environment``
+  ([System-wide environment variables](https://help.ubuntu.com/community/EnvironmentVariables#System-wide_environment_variables))
+
+Omitted configuration keys use default values. Configuration file can be: complete, partial or empty.
 
 ## Resources
 
