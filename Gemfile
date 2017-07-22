@@ -34,5 +34,4 @@ group :test, :development do
   gem 'rspec', '~> 3.6'
   gem 'factory_girl', '~> 4.8'
   gem 'hashie', '~> 3.5'
-  gem 'rspec-sleeping_king_studios', '~> 2.1'
 end
