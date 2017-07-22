@@ -43,7 +43,7 @@ end
 # testing with different type of config ------------------------------
 
 describe Ylem::Helper::Config do
-  [:success, :partial].map(&:to_s).each do |config_type|
+  [:success, :partial, :empty].map(&:to_s).each do |config_type|
     context "#parse_file('%s')" % build(:config_paths).fetch(config_type) do
       let(:parsed) do
         parsed_file = build(:config_paths).fetch(config_type)
