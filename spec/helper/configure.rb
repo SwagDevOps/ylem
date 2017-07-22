@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 require 'factory_girl'
-require 'rspec/sleeping_king_studios/matchers/core/all'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
