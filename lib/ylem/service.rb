@@ -4,7 +4,7 @@ require 'ylem'
 require 'ylem/concern/helper'
 require 'singleton'
 
-# Provides access to helper classes
+# Provides access to service classes
 class Ylem::Service
   include ::Singleton
   include Ylem::Concern::Helper
