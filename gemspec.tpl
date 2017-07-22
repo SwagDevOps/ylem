@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.3.0'
   s.require_paths = ['lib']
   s.bindir        = 'bin'
+  s.executables   = Dir.glob('bin/*').map { |f| File.basename(f) }
   s.files         = ['.yardopts',
                      'bin/*',
                      'lib/**/*.rb',
