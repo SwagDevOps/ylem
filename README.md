@@ -57,3 +57,4 @@ Omitted configuration keys use default values. Configuration file can be: comple
 
 * [Yelp/dumb-init: A minimal init system for Linux containers](https://github.com/Yelp/dumb-init)
 * [Supervisor process control system for UNIX](https://github.com/Supervisor/supervisor)
+* [``/sbin/my_init`` by ``phusion/baseimage-docker``](https://github.com/SwagDevOps/baseimage-docker/blob/master/image/bin/my_init)
