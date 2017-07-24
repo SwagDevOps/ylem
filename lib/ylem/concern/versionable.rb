@@ -11,6 +11,7 @@ module Ylem::Concern::Versionable
 
   included { version_info }
 
+  # Class methods for ``Ylem::Concern::Versionable``
   module ClassMethods
     def version_info
       unless const_defined?(:VERSION)
