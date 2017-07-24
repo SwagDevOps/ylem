@@ -25,3 +25,4 @@ Style/RedundantSelf: { Enabled: false }
 Style/Send: { Enabled: true }
 Style/SymbolArray: { Enabled: false }
 Style/TrailingCommaInLiteral: { Enabled: false }
+Style/YodaCondition: { Enabled: false }
