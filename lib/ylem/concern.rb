@@ -5,5 +5,4 @@ require 'active_support/concern'
 
 # Namespace for ``Concern``
 module Ylem::Concern
-
 end
