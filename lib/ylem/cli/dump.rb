@@ -2,8 +2,12 @@
 
 require 'ylem/cli/base'
 
+# CLI ``dump`` command class
 class Ylem::Cli::Dump < Ylem::Cli::Base
   class << self
+    # Get summary (short description)
+    #
+    # @return [String]
     def summary
       'Dump configuration (JSON format)'
     end
