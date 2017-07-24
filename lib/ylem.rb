@@ -16,6 +16,7 @@ if 'development' == ENV['PROJECT_MODE']
   end
 end
 
+# Base module (namespace)
 module Ylem
   require 'ylem/concern/versionable'
 
