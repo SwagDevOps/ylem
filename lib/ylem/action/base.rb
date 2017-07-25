@@ -41,6 +41,10 @@ class Ylem::Action::Base
     @config = helper.get('config/decorator').load(config).decorate.freeze
 
     self.retcode = :NOERROR
+
+    # Forget previous instances of ``Logger`` (during tests)
+    # logger service SHOULD not have any instances at this point
+    service.get('logger').purge
   end
 
   # @return [Booolean]
