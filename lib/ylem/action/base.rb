@@ -5,8 +5,6 @@ require 'ylem/concern/helper'
 require 'ylem/concern/service'
 require 'ylem/concern/output'
 require 'active_support/descendants_tracker'
-require 'hash_dot'
-require 'stringio'
 
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
