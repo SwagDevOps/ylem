@@ -13,6 +13,10 @@ describe Ylem::Action::Start do
   context '#execute' do
     it { expect(subject.execute).to be_a(described_class) }
 
+    context '.config.logger.file' do
+      it { expect(subject.execute.config.logger.file).to be_file }
+    end
+
     context '.retcode' do
       it { expect(subject.execute.retcode).to be_a(Integer) }
       it { expect(subject.execute.retcode).to be_zero }
