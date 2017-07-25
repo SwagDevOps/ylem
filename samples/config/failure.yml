@@ -1,5 +1,5 @@
 ---
-logger.file:      ../../var/log/failure.log
+logger.file:      ../../spec/var/log/failure.log
 logger.level:     DEBUG
 scripts.path:     ../scripts/failure
 environment.file: ../environment
