@@ -13,7 +13,7 @@ FactoryGirl.define do
   factory(:config_values, class: FactoryStruct) do
     success(
       'logger.file':      Pathname.new(SPEC_DIR)
-                                  .join('log/success.log'),
+                                  .join('var/log/success.log'),
       'logger.level':     :DEBUG,
       'scripts.path':     Pathname.new(SAMPLES_DIR)
                                   .realpath
