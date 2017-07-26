@@ -1,3 +1,4 @@
+# coding: utf-8
 # frozen_string_literal: true
 
 require 'ylem/helper'
@@ -24,11 +25,12 @@ class Ylem::Helper::Subprocess
   # @param [Hash] options
   # @return [Fixnum] as status code
   def run(command, options = {})
-    # protect against ``exec``, using ``sh -c``
-    command = ['sh', '-c'] + command.to_a.compact.map(&:to_s)
-    logger = options[:logger]
+    logged_with(options[:logger]) do |logger|
+      # protect against ``exec``, using ``sh -c``
+      command = ['sh', '-c'] + command.to_a.compact.map(&:to_s)
 
-    run_command(command, logger)
+      run_command(command, logger)
+    end
   end
 
   protected
@@ -71,5 +73,17 @@ class Ylem::Helper::Subprocess
 
       stream.close
     end
+  end
+
+  # Log BEGIN/ENDED (debug)
+  #
+  # @param [::Logger] logger
+  # @return [Integer]
+  def logged_with(logger)
+    logger&.debug('BEGIN')
+    status = yield logger
+    logger&.debug("ENDED [#{status}]")
+
+    status
   end
 end
