@@ -31,9 +31,27 @@ class Ylem::Type::Script < Pathname
   # @return [Fixnum]
   def execute(options = {})
     logger = options[:logger]&.as(public_send(options[:as] || :to_s))
-    status = helper.get('subprocess').run([self], logger: logger).to_i
+    runner = helper.get('subprocess')
 
-    logger.error("failed (#{status})") unless status.zero?
+    logged_with(logger) { runner.run([self], logger: logger).to_i }
+  end
+
+  protected
+
+  # Log ``BEGIN``, ``ENDED`` (``debug``) and ``ERROR`` (``error``)
+  #
+  # Script execution is logged, surrounded by ``BEGIN`` and ``ENDED``
+  # when logger severity set to ``DEBUG``. Errors are logged with
+  # ``ERROR`` severity.
+  #
+  # @param [::Logger] logger
+  # @yieldreturn [::Logger]
+  # @return [Integer]
+  def logged_with(logger)
+    logger&.debug('BEGIN')
+    status = yield logger
+    logger&.debug("ENDED [#{status}]")
+    logger&.error("ERROR [#{status}]") unless status.zero?
 
     status
   end
