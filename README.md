@@ -6,7 +6,7 @@
 
 During the [Linux startup process](https://en.wikipedia.org/wiki/Linux_startup_process),
 ``ylem`` is intended to sequentially execute arbitrary "user scripts"
-(alphabetically sorted). Moreover ``ylem`` provides logging facility
+(alphabetically sorted). Moreover ``ylem`` provides [logging](#Logging)
 which facilitates startup __debugging__.
 
 Startup scripts executed through ``ylem`` SHOULD be aimed to:
@@ -51,11 +51,28 @@ Available configuration keys are:
   default value is: ``/etc/environment``
   ([System-wide environment variables](https://help.ubuntu.com/community/EnvironmentVariables#System-wide_environment_variables))
 
-Omitted configuration keys use default values. Configuration file can be: complete, partial or empty.
+Missing configuration keys use default values.
+Configuration file can be: complete, partial or empty.
+
+## Logging
+
+Ylem provides its own logging mechanism, based on
+[``Logger``](https://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html).
+During its init process, each handled script is logged to ``logger.file``.
+Depending on ``logger.level`` only the messages with a level greater or equal
+will be published to the log file.
+
+| Level         | Format          | Summary                             |
+| ------------- | --------------- | ----------------------------------- |
+| ``DEBUG``     | ``/"BEGIN"/``   | script started                      |
+| ``INFO``      | ``/".*"/``      | script message echoed to ``STDOUT`` |
+| ``WARN``      | ``/".*"/``      | script message echoed to ``STDERR`` |
+| ``DEBUG``     | ``/"ENDED \[0\]/"``     | script ended (success)      |
+| ``ERROR``     | ``/"ERROR \[[0-9]+\]"/``| script error                |
 
 ## Resources
 
 * [Yelp/dumb-init: A minimal init system for Linux containers](https://github.com/Yelp/dumb-init)
 * [Supervisor process control system for UNIX](https://github.com/Supervisor/supervisor)
-* [``/sbin/my_init`` by ``phusion/baseimage-docker``](https://github.com/SwagDevOps/baseimage-docker/blob/master/image/bin/my_init)
+* [``/sbin/my_init`` as seen in ``phusion/baseimage-docker``](https://github.com/SwagDevOps/baseimage-docker/blob/master/image/bin/my_init)
 * [``runit`` - a UNIX init scheme with service supervision](http://smarden.org/runit/)
