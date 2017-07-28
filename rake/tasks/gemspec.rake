@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-
 CLOBBER.include("#{Project.name}.gemspec")
 
 GEMSPEC_TEMPLATE = 'gemspec.tpl'
@@ -16,18 +15,18 @@ file "#{Project.name}.gemspec" => \
 
   tools = OpenStruct.new(
     deps_gen: GemspecDepsGen.new,
-    template: Tenjin::Engine.new(cache: false),
+    template: Tenjin::Engine.new(cache: false)
   )
 
   files = OpenStruct.new(
     templated: Pathname.new(GEMSPEC_TEMPLATE),
-    generated: Pathname.new(Dir.pwd).join("#{Project.name}.gemspec"),
+    generated: Pathname.new(Dir.pwd).join("#{Project.name}.gemspec")
   )
 
   spec_id = files.templated
-              .read
-              .scan(/Gem::Specification\.new\s+do\s+\|([a-z]+)\|/)
-              .flatten.fetch(0)
+                 .read
+                 .scan(/Gem::Specification\.new\s+do\s+\|([a-z]+)\|/)
+                 .flatten.fetch(0)
 
   context = {
     dependencies: tools.deps_gen.generate_project_dependencies(spec_id).strip,

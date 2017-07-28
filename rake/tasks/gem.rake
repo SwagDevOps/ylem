@@ -3,11 +3,11 @@
 CLOBBER.include('pkg')
 
 desc 'Build all the packages'
-task :gem => ['gem:gemspec', 'gem:package']
+task gem: ['gem:gemspec', 'gem:package']
 
 namespace :gem do
   # desc Rake::Task[:gem].comment
-  task :package => FileList.new('gem:gemspec', 'lib/**/*.rb') do
+  task package: FileList.new('gem:gemspec', 'lib/**/*.rb') do
     require 'rubygems/package_task'
     require 'securerandom'
 
@@ -28,10 +28,10 @@ namespace :gem do
   end
 
   desc 'Update gemspec'
-  task :gemspec => "#{Project.name}.gemspec"
+  task gemspec: "#{Project.name}.gemspec"
 
   desc 'Install gem'
-  task :install => ['gem:package'] do
+  task install: ['gem:package'] do
     require 'cliver'
 
     sh(*[Cliver.detect(:sudo),
@@ -45,7 +45,7 @@ namespace :gem do
   #
   # Code mostly base on gem executable
   desc 'Push gem up to the gem server'
-  task :push => ['gem:package'] do
+  task push: ['gem:package'] do
     ['rubygems',
      'rubygems/gem_runner',
      'rubygems/exceptions'].each { |i| require i }

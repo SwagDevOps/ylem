@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-task :default => [:clobber, 'gem:package']
+task default: [:clobber, 'gem:package']

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # A Ruby static code analyzer, based on the community Ruby style guide.
 #
 # @see http://batsov.com/rubocop/
