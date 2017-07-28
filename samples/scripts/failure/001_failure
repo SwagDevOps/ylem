@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+export _FILE=$(readlink -f -- "$0")
+export _DIR=$(dirname -- "$_FILE")
+echo() {
+    /usr/bin/env printf "${1}\n"
+}
+
+echo "in $(basename -- "$_FILE")"
+exit 42
