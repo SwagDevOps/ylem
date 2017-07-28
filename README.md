@@ -6,7 +6,7 @@
 
 During the [Linux startup process](https://en.wikipedia.org/wiki/Linux_startup_process),
 ``ylem`` is intended to sequentially execute arbitrary "user scripts"
-(alphabetically sorted). Moreover ``ylem`` provides [logging](#Logging)
+(alphabetically sorted). Moreover ``ylem`` provides [logging](#logging-mechanism)
 which facilitates startup __debugging__.
 
 Startup scripts executed through ``ylem`` SHOULD be aimed to:
@@ -54,7 +54,7 @@ Available configuration keys are:
 Missing configuration keys use default values.
 Configuration file can be: complete, partial or empty.
 
-## Logging
+## Logging <span id="logging-mechanism" />
 
 Ylem provides its own logging mechanism, based on
 [``Logger``](https://ruby-doc.org/stdlib-2.1.0/libdoc/logger/rdoc/Logger.html).
