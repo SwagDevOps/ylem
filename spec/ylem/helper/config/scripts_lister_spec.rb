@@ -1,17 +1,6 @@
 # frozen_string_literal: true
 
 require 'ylem/helper/config/scripts_lister'
-require 'pathname'
-require 'securerandom'
-
-local = {
-  scripts_dir: "#{SAMPLES_DIR}/scripts",
-  random_dirs: (1..10).to_a.map do |i|
-    "#{SAMPLES_DIR}/#{SecureRandom.hex(16)}"
-  end,
-  entries_size: 2,
-  scripts_size: 1,
-}
 
 describe Ylem::Helper::Config::ScriptsLister do
   {
@@ -26,26 +15,30 @@ describe Ylem::Helper::Config::ScriptsLister do
   end
 end
 
-describe Ylem::Helper::Config::ScriptsLister do
-  let(:subject) do
-    described_class.new.configure(path: local.fetch(:scripts_dir))
-  end
+{ success: 1, failure: 2 }.each do |config_type, entries_size|
+  describe Ylem::Helper::Config::ScriptsLister do
+    let!(:config) { build(:config_values).public_send(config_type) }
+    let!(:subject) do
+      described_class.new
+                     .configure(path: config.fetch(:'scripts.path'))
+    end
 
-  context '#path' do
-    it { expect(subject.path).to exist }
-  end
+    context '#path' do
+      it { expect(subject.path).to exist }
+    end
 
-  context '#entries' do
-    it { expect(subject.entries).to be_a(Array) }
-  end
+    context '#entries' do
+      it { expect(subject.entries).to be_a(Array) }
+    end
 
-  context '#entries.size' do
-    it { expect(subject.entries.size).to be(local.fetch(:entries_size)) }
+    context '#entries.size' do
+      it { expect(subject.entries.size).to be(entries_size) }
+    end
   end
 end
 
 describe Ylem::Helper::Config::ScriptsLister do
-  local.fetch(:random_dirs).each do |path|
+  build(:paths).random.each do |path|
     let(:subject) do
       described_class.new.configure(path: path)
     end
