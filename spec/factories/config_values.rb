@@ -22,5 +22,17 @@ FactoryGirl.define do
                                   .realpath
                                   .join('environment')
     )
+
+    failure(
+      'logger.file':      Pathname.new(SPEC_DIR)
+                                  .join('var/log/failure.log'),
+      'logger.level':     :DEBUG,
+      'scripts.path':     Pathname.new(SAMPLES_DIR)
+                                  .realpath
+                                  .join('scripts/failure'),
+      'environment.file': Pathname.new(SAMPLES_DIR)
+                                  .realpath
+                                  .join('environment')
+    )
   end
 end
