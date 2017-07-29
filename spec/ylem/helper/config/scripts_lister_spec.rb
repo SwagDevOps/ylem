@@ -15,13 +15,17 @@ describe Ylem::Helper::Config::ScriptsLister do
   end
 end
 
-{ success: 1, failure: 2 }.each do |config_type, entries_size|
+# using different configs --------------------------------------------
+
+{ success: [1, 1], failure: [2, 2] }.each do |config_type, counts|
   describe Ylem::Helper::Config::ScriptsLister do
     let!(:config) { build(:config_values).public_send(config_type) }
     let!(:subject) do
       described_class.new
                      .configure(path: config.fetch(:'scripts.path'))
     end
+    let!(:entries_size) { counts.fetch(0) }
+    let!(:scrpts_size) { counts.fetch(1) }
 
     context '#path' do
       it { expect(subject.path).to exist }
@@ -34,23 +38,33 @@ end
     context '#entries.size' do
       it { expect(subject.entries.size).to be(entries_size) }
     end
+
+    context '#scripts' do
+      it { expect(subject.scripts).to be_a(Array) }
+    end
+
+    context '#scripts.size' do
+      it { expect(subject.scripts.size).to be(scrpts_size) }
+    end
   end
 end
 
+# using 10 randomized unexisting directories -------------------------
+
 describe Ylem::Helper::Config::ScriptsLister do
   build(:paths).random.each do |path|
-    let(:subject) do
-      described_class.new.configure(path: path)
-    end
+    let!(:subject) { described_class.new.configure(path: path) }
 
     context '#path' do
       it { expect(subject.path).to_not exist }
     end
 
-    context '#entries (using a random unexisting directory)' do
-      it { expect(subject.entries).to be_a(Array) }
+    [:entries, :scripts].each do |method|
+      context "##{method}" do
+        it { expect(subject.public_send(method)).to be_a(Array) }
 
-      it { expect(subject.entries).to be_empty }
+        it { expect(subject.public_send(method)).to be_empty }
+      end
     end
   end
 end
