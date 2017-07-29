@@ -5,21 +5,23 @@ require 'fileutils'
 
 # execute a ``success`` action ---------------------------------------
 
-describe Ylem::Action::Start do
-  let!(:config) { build(:config_values).success }
-  let!(:subject) { described_class.new(config) }
-  before(:example) { FileUtils.rm_f(config.fetch(:'logger.file')) }
+{ success: 0, failure: 131 }.each do |config_type, retcode|
+  describe Ylem::Action::Start do
+    let!(:config) { build(:config_values).public_send(config_type) }
+    let!(:subject) { described_class.new(config) }
+    before(:example) { FileUtils.rm_f(config.fetch(:'logger.file')) }
 
-  context '#execute' do
-    it { expect(subject.execute).to be_a(described_class) }
+    context '#execute' do
+      it { expect(subject.execute).to be_a(described_class) }
 
-    context '.retcode' do
-      it { expect(subject.execute.retcode).to be_a(Integer) }
-      it { expect(subject.execute.retcode).to be_zero }
-    end
+      context '.retcode' do
+        it { expect(subject.execute.retcode).to be_a(Integer) }
+        it { expect(subject.execute.retcode).to be(retcode) }
+      end
 
-    context '.config.logger.file' do
-      it { expect(subject.execute.config.logger.file).to be_file }
+      context '.config.logger.file' do
+        it { expect(subject.execute.config.logger.file).to be_file }
+      end
     end
   end
 end
