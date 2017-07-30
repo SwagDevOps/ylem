@@ -16,8 +16,8 @@ class Ylem::Action::Start < Ylem::Action::Base
   def execute
     execute_scripts(scripts)
 
-    if self.retcode.zero?
-      self.retcode = self.exec(arguments)&.retcode || 0
+    if success?
+      self.retcode = self.exec(arguments)&.retcode || :NOERROR
     end
 
     self
