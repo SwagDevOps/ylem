@@ -30,7 +30,7 @@ class Ylem::Cli::Base
     # @return [Hash]
     def defaults
       {
-        config_file: helper.get('config').default_file,
+        config_file: helper.get(:config).default_file,
       }
     end
 
@@ -53,7 +53,7 @@ class Ylem::Cli::Base
 
     # @return [String]
     def banner
-      'Usage: %s %s [options]' % [helper.get('system').progname, keyword]
+      'Usage: %s %s [options]' % [helper.get(:system).progname, keyword]
     end
   end
 
@@ -109,12 +109,12 @@ class Ylem::Cli::Base
     use_defaults = @options.delete(:use_defaults)
 
     begin
-      helper.get('config').parse_file(config_file)
+      helper.get(:config).parse_file(config_file)
     rescue Errno::ENOENT
       # Inexisting file, is not really an exception, unless user request
       raise unless use_defaults
 
-      helper.get('config').defaults
+      helper.get(:config).defaults
     end
   end
 
