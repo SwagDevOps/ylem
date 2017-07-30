@@ -15,6 +15,12 @@ require 'open3'
 class Ylem::Action::Start < Ylem::Action::Base
   def execute
     execute_scripts(scripts)
+
+    if self.retcode.zero?
+      self.retcode = self.exec(arguments)&.retcode || 0
+    end
+
+    self
   end
 
   # Get scripts (to be executed)
@@ -41,5 +47,16 @@ class Ylem::Action::Start < Ylem::Action::Base
     end
 
     self
+  end
+
+  # Exec command (``arguments``)
+  #
+  # @param [Array] arguments
+  # @return [Ylem::Action::Exec]
+  def exec(arguments)
+    action = Ylem::Action.get(:exec)
+    runnable = false == arguments.to_a.empty?
+
+    action.new(@base_config, arguments, options).execute if runnable
   end
 end
