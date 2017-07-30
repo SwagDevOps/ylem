@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-require 'ylem/cli/base'
 require 'ylem/cli/start'
 
-# CLI ``start`` command class
+# CLI ``exec`` command class
 class Ylem::Cli::Exec < Ylem::Cli::Start
   class << self
     # Get summary (short description)
