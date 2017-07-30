@@ -67,6 +67,11 @@ class Ylem::Action::Base
     self
   end
 
+  # Denote action is a success
+  def success?
+    helper.get(:errno).retcode_get(:NOERROR) == retcode
+  end
+
   protected
 
   # Get a self configured ``Logger``
