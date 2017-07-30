@@ -52,7 +52,7 @@ class Ylem::Action::Start < Ylem::Action::Base
   # Exec command (``arguments``)
   #
   # @param [Array] arguments
-  # @return [Ylem::Action::Exec]
+  # @return [Ylem::Action::Exec|nil]
   def exec(arguments)
     action = Ylem::Action.get(:exec)
     runnable = false == arguments.to_a.empty?
