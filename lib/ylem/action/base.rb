@@ -9,12 +9,6 @@ require 'active_support/descendants_tracker'
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
 class Ylem::Action::Base
-  # Config as seen in {Ylem.Helper.Config}
-  #
-  # @see Ylem::Helper::Config
-  # @return [Hash]
-  attr_reader :config
-
   # Return code (to be used as status code by command line)
   #
   # @return [Fixnum]
@@ -42,13 +36,21 @@ class Ylem::Action::Base
   def initialize(config, arguments = [], options = {})
     @arguments = arguments
     @options = options
-    @config = helper.get('config/decorator').load(config).decorate.freeze
+    @config = config
 
     self.retcode = :NOERROR
 
     # Forget previous instances of ``Logger`` (during tests)
     # logger service SHOULD not have any instances at this point
     service.get('logger').reset
+  end
+
+  # Get config
+  #
+  # @see Ylem::Helper::Config
+  # @return [Hash]
+  def config
+    helper.get('config/decorator').load(@config).decorate
   end
 
   # @return [Booolean]
