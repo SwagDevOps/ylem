@@ -11,14 +11,10 @@ class Ylem::Cli::Start < Ylem::Cli::Base
     def summary
       'Start up'
     end
-  end
 
-  # Get config
-  #
-  # additional arguments are added to ``config`` as ``:command``
-  #
-  # @return [Hash]
-  def config
-    super.merge(command: arguments)
+    # @return [String]
+    def banner
+      '%s -- [command]' % super
+    end
   end
 end
