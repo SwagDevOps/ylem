@@ -49,6 +49,7 @@ class Ylem::Cli
     def commands
       [
         :dump,
+        :exec,
         :start,
       ]
     end
