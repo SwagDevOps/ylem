@@ -96,7 +96,7 @@ class Ylem::Cli::Base
 
   # @return [Integer] as return code
   def run
-    parse { action.new(config, options).execute.retcode }
+    parse { executable.execute.retcode }
   end
 
   # Read config
@@ -116,5 +116,17 @@ class Ylem::Cli::Base
 
       helper.get('config').defaults
     end
+  end
+
+  protected
+
+  # Get an executable action (ready to go)
+  #
+  # @param [Hash] config
+  # @param [Array] arguments
+  # @param [Hash] options
+  # @return [Ylem::Action::Base]
+  def executable
+    action.new(config, arguments, options)
   end
 end
