@@ -25,6 +25,11 @@ class Ylem::Action::Base
   # @return [Hash]
   attr_reader :options
 
+  # Arguments (mostly provided through CLI)
+  #
+  # @return [Array]
+  attr_reader :arguments
+
   extend ActiveSupport::DescendantsTracker
   include Ylem::Concern::Output
   include Ylem::Concern::Helper
@@ -34,7 +39,8 @@ class Ylem::Action::Base
   #
   # @param [Hash] config
   # @param [Hash] options
-  def initialize(config, options = {})
+  def initialize(config, arguments = [], options = {})
+    @arguments = arguments
     @options = options
     @config = helper.get('config/decorator').load(config).decorate.freeze
 
