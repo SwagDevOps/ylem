@@ -12,7 +12,7 @@
 /Gemfile.lock
 /pkg/
 /spec/reports/
+/spec/var/*
 /tmp/
 /Vagrantfile
-/var/*
 /vendor/
