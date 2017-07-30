@@ -11,7 +11,7 @@ class Ylem::Helper::Errno
   # ``Errno::error::Errno``.
   #
   # @raise [RuntimeError]
-  # @param [Symbol|Object] retcode
+  # @param [Symbol|String|Integer] retcode
   # @return [Integer]
   def retcode_get(retcode)
     constants = Errno.constants
