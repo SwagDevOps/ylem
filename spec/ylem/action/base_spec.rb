@@ -13,6 +13,7 @@ describe Ylem::Action::Base do
   {
     config:           [0],
     options:          [0],
+    arguments:        [0],
     retcode:          [0],
     'dummy_outputs?': [0],
     execute:          [0],
