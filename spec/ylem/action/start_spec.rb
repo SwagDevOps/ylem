@@ -9,7 +9,13 @@ require 'fileutils'
   describe Ylem::Action::Start do
     let!(:config) { build(:config_values).public_send(config_type) }
     let!(:subject) { described_class.new(config) }
-    before(:example) { FileUtils.rm_f(config.fetch(:'logger.file')) }
+
+    before(:example) do
+      logfile = config.fetch(:'logger.file')
+
+      FileUtils.mkdir_p(logfile.dirname)
+      FileUtils.rm_f(logfile)
+    end
 
     context '#execute' do
       it { expect(subject.execute).to be_a(described_class) }
