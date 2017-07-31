@@ -21,8 +21,9 @@ end
   describe Ylem::Helper::Config::ScriptsLister do
     let!(:config) { build(:config_values).public_send(config_type) }
     let!(:subject) do
-      described_class.new
-                     .configure(path: config.fetch(:'scripts.path'))
+      path = config.fetch(:'scripts.path')
+
+      described_class.new.configure(path: path)
     end
     let!(:entries_size) { counts.fetch(0) }
     let!(:scripts_size) { counts.fetch(1) }
