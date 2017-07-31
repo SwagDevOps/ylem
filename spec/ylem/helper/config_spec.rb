@@ -29,6 +29,10 @@ describe Ylem::Helper::Config do
   let(:defaults) { subject.defaults }
   let(:expected_keys) { build(:config_defaults).patterns.keys.sort }
 
+  context '#defaults' do
+    it { expect(defaults).to eq(build(:helper_config).defaults) }
+  end
+
   context '#defaults.keys' do
     it { expect(defaults.keys.sort).to eq(expected_keys) }
   end
