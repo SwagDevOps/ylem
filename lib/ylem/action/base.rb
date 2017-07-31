@@ -50,7 +50,9 @@ class Ylem::Action::Base
   # @see Ylem::Helper::Config
   # @return [Hash]
   def config
-    helper.get('config/decorator').load(@config).decorate
+    helper.get('config/decorator')
+          .load(@config)
+          .decorate.freeze
   end
 
   # @return [Booolean]
