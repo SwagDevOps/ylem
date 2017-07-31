@@ -51,11 +51,15 @@ end
 
 # using 10 randomized unexisting directories -------------------------
 
-describe Ylem::Helper::Config::ScriptsLister do
-  build(:paths).random.each do |path|
-    let!(:subject) { described_class.new.configure(path: path) }
+(1..10).to_a.each do
+  describe Ylem::Helper::Config::ScriptsLister do
+    let(:path) { build(:paths).random }
+    let(:subject) { described_class.new.configure(path: path) }
 
     context '#path' do
+      # value as set during test initialization
+      it { expect(subject.path).to eq(path) }
+      # path should not exist
       it { expect(subject.path).to_not exist }
     end
 
