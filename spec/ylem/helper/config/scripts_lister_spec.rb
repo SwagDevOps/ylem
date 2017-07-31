@@ -25,7 +25,7 @@ end
                      .configure(path: config.fetch(:'scripts.path'))
     end
     let!(:entries_size) { counts.fetch(0) }
-    let!(:scrpts_size) { counts.fetch(1) }
+    let!(:scripts_size) { counts.fetch(1) }
 
     context '#path' do
       it { expect(subject.path).to exist }
@@ -44,7 +44,7 @@ end
     end
 
     context '#scripts.size' do
-      it { expect(subject.scripts.size).to be(scrpts_size) }
+      it { expect(subject.scripts.size).to be(scripts_size) }
     end
   end
 end
