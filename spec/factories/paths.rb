@@ -5,6 +5,7 @@ require 'securerandom'
 require 'pathname'
 
 FactoryGirl.define do
+  # @see https://github.com/thoughtbot/factory_girl/issues/350
   sequence(:'paths.random') do |n|
     random_paths ||= (1..10).to_a.map do |i|
       Pathname.new('/')
@@ -13,7 +14,7 @@ FactoryGirl.define do
                     SecureRandom.hex(6))
     end
 
-    random_paths.shuffle[0]
+    random_paths.sample
   end
 
   factory :paths, class: FactoryStruct do
