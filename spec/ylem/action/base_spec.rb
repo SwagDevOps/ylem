@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'ylem/action/base'
-require 'pathname'
 
 describe Ylem::Action::Base do
   let(:subject) do
