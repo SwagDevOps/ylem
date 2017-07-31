@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # frozen_string_literal: true
 
-require 'ylem/helper'
+require 'pathname'
+require 'sys-proc'
 
 # Sample of expected results:
 #
@@ -13,10 +14,19 @@ require 'ylem/helper'
 #  :"scripts.path"=>#<Pathname:/etc/rake/scripts>,
 #  :"environment.file"=>#<Pathname:/etc/environment>}
 # ````
+#
+# @see Ylem::Helper::Config#defaults
 FactoryGirl.define do
-  helper = Ylem::Helper.instance.get('config')
+  progname = Sys::Proc.progname
 
   factory :helper_config, class: FactoryStruct do
-    defaults(helper.defaults)
+    defaults(
+      'logger.file':      Pathname.new('/var')
+                                  .join('log', "#{progname}.log"),
+      'logger.level':     :info,
+      'scripts.path':     Pathname.new('/etc')
+                                  .join(progname, 'scripts'),
+      'environment.file': Pathname.new('/etc').join('environment')
+    )
   end
 end
