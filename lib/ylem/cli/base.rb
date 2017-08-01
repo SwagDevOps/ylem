@@ -12,8 +12,11 @@ require 'active_support/descendants_tracker'
 
 # @abstract Base command
 class Ylem::Cli::Base
-  attr_reader :argv
+  # @return [Array]
+  attr_reader :arg
+  # @return [Hash]
   attr_reader :options
+  # @return [Array]
   attr_reader :arguments
 
   extend ActiveSupport::DescendantsTracker
@@ -101,8 +104,8 @@ class Ylem::Cli::Base
 
   # Read config
   #
-  # @raise Errno::ENOENT
-  # @raise Errno::EACCES
+  # @raise [Errno::ENOENT]
+  # @raise [Errno::EACCES]
   # @return [Hash]
   def config
     config_file  = @options[:config_file]
