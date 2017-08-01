@@ -7,7 +7,8 @@ require 'ylem/action/base'
 # Replaces the current process by running external command
 # (given through arguments)
 #
-# @see ``Kernel.exec``
+# @see Kernel.exec
+# @see https://ruby-doc.org/core-2.4.1/Kernel.html#method-i-exec
 class Ylem::Action::Exec < Ylem::Action::Base
   def execute
     Kernel.exec(*command)
@@ -33,8 +34,8 @@ class Ylem::Action::Exec < Ylem::Action::Base
   # @param [StandardError] e
   # @param [Symbol|String] type
   # @return [self]
-  def on_error(e, type = :ENOTRECOVERABLE)
-    output(e.message, to: :stderr)
+  def on_error(error, type = :ENOTRECOVERABLE)
+    output(error.message, to: :stderr)
     self.retcode = type
 
     self
