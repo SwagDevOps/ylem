@@ -3,6 +3,7 @@
 require 'ylem/service'
 require 'sys/proc'
 require 'logger'
+require 'pathname'
 
 # This creates ``::Logger`` instances, almost a kind of factory
 #
@@ -18,6 +19,9 @@ require 'logger'
 #
 # Logger has a single instance for each identifier (``id``)
 class Ylem::Service::Logger
+  # @return [Hash]
+  attr_reader :options
+
   def initialize
     @instances = {}
     @options = {}
@@ -39,6 +43,18 @@ class Ylem::Service::Logger
     @options = options
 
     self
+  end
+
+  # Get logger file
+  #
+  # @return [Pathname|nil]
+  def file
+    return unless options[:file]
+
+    file = Pathname.new(options[:file])
+    file.write(nil) unless file.file?
+
+    file
   end
 
   # Get an instance of ``::Logger`` identified by ``id``
@@ -88,9 +104,9 @@ class Ylem::Service::Logger
     id = id.to_s
 
     @instances[id] ||= proc do
-      configure(@options)
+      configure(options)
 
-      make_logger(@options.clone.merge(id: id.to_s.empty? ? nil : id))
+      make_logger(options.clone.merge(id: id.to_s.empty? ? nil : id))
     end.call
 
     @instances[id]
@@ -101,7 +117,7 @@ class Ylem::Service::Logger
   # @param [Hash] options
   # @return [::Logger]
   def make_logger(options)
-    logger = Logger.new(options.fetch(:file), 10, 1_024_000)
+    logger = Logger.new(file, 10, 1_024_000)
     logger.progname = options.fetch(:id) || Sys::Proc.progname.upcase
 
     # apply options
