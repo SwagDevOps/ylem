@@ -14,13 +14,11 @@ require 'open3'
 # @todo Implement a ``-k``, ``--keep-going`` option
 class Ylem::Action::Start < Ylem::Action::Base
   def execute
-    execute_scripts(scripts)
-
-    if success?
-      self.retcode = self.exec(arguments)&.retcode || :NOERROR
+    unless execute_scripts(scripts).success?
+      output('An error was encountered while executing scripts', to: :stderr)
     end
 
-    self
+    self.exec(command)
   end
 
   # Get scripts (to be executed)
@@ -28,6 +26,20 @@ class Ylem::Action::Start < Ylem::Action::Base
   # @return [Array<Ylem::Type::Script>]
   def scripts
     config.scripts.executables
+  end
+
+  # Get command
+  #
+  # @return [Array]
+  def command
+    arguments.compact.map(&:to_s).freeze
+  end
+
+  # Denote command (not empty)
+  #
+  # @return [Boolean]
+  def command?
+    !command.empty?
   end
 
   protected
@@ -51,12 +63,23 @@ class Ylem::Action::Start < Ylem::Action::Base
 
   # Exec command (``arguments``)
   #
-  # @param [Array] arguments
-  # @return [Ylem::Action::Exec|nil]
-  def exec(arguments)
+  # @note as ``exec`` success will replace current process
+  #       it can hide previous exit code,
+  #       hiding errors encoutered during scripts execution.
+  #
+  # @param [Array] command
+  # @return [self]
+  # @see Ylem::Action::Exec
+  def exec(command)
     action = Ylem::Action.get(:exec)
-    runnable = false == arguments.to_a.empty?
 
-    action.new(@base_config, arguments, options).execute if runnable
+    if command?
+      action.new(@base_config, command, options).execute
+      # As ``exec`` will replace current process
+      # it can hide previous exit code
+      self.retcode = success? ? action.retcode : self.retcode
+    end
+
+    self
   end
 end
