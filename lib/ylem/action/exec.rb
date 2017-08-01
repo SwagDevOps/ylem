@@ -10,13 +10,20 @@ require 'ylem/action/base'
 # @see ``Kernel.exec``
 class Ylem::Action::Exec < Ylem::Action::Base
   def execute
-    Kernel.exec(*arguments)
+    Kernel.exec(*command)
   rescue Errno::ENOENT => e
     on_error(e, e.class.name.split('::')[-1])
   rescue StandardError => e
     on_error(e)
   ensure
     self
+  end
+
+  # Get command to exec(ute)
+  #
+  # return [Array<String>]
+  def command
+    arguments.compact.map(&:to_s)
   end
 
   protected
