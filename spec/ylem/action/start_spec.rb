@@ -3,6 +3,15 @@
 require 'ylem/action/start'
 require 'fileutils'
 
+describe Ylem::Action::Start do
+  let(:config) { build(:config_values).public_send(:success) }
+  let(:subject) { described_class.new(config, [], quiet: true) }
+
+  [:command, :'command?'].each do |method|
+    it { expect(subject).to respond_to(method).with(0).arguments }
+  end
+end
+
 # execute a ``success`` action ---------------------------------------
 
 { success: 0, failure: 131 }.each do |config_type, retcode|
