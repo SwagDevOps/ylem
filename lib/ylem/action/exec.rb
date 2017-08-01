@@ -31,7 +31,7 @@ class Ylem::Action::Exec < Ylem::Action::Base
 
   # On error
   #
-  # @param [StandardError] e
+  # @param [StandardError] error
   # @param [Symbol|String] type
   # @return [self]
   def on_error(error, type = :ENOTRECOVERABLE)
