@@ -54,7 +54,8 @@ Available configuration keys are:
 Missing configuration keys use default values.
 Configuration file can be: complete, partial or empty.
 
-<div id="logging" /><!-- ala github -->
+<!-- ala github -->
+<div id="logging" />
 
 ## Logging
 
