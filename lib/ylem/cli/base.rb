@@ -122,9 +122,6 @@ class Ylem::Cli::Base
 
   # Get an executable action (ready to go)
   #
-  # @param [Hash] config
-  # @param [Array] arguments
-  # @param [Hash] options
   # @return [Ylem::Action::Base]
   def executable
     action.new(config, arguments, options)
