@@ -13,7 +13,7 @@ require 'active_support/descendants_tracker'
 # @abstract Base command
 class Ylem::Cli::Base
   # @return [Array]
-  attr_reader :arg
+  attr_reader :argv
   # @return [Hash]
   attr_reader :options
   # @return [Array]
