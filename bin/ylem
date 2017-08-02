@@ -1,7 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-
+#
+# rubyc bin/ylem --keep-tmpdir -r . -o ylem
 require 'pathname'
+
+$PROGRAM_NAME = 'ylem'
 
 # runnning in a development context ----------------------------------
 
@@ -17,12 +20,6 @@ if 'development' == ENV['PROJECT_MODE']
   end
 end
 # rubocop:enable Style/YodaCondition
-
-# set process name ---------------------------------------------------
-
-require 'sys/proc'
-
-Sys::Proc.progname = nil
 
 # require lib requirements -------------------------------------------
 
@@ -40,6 +37,12 @@ Sys::Proc.progname = nil
     end
   end
 end
+
+# set process name ---------------------------------------------------
+
+require 'sys/proc'
+
+Sys::Proc.progname = nil
 
 # process command line options and run -------------------------------
 
