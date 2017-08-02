@@ -7,12 +7,12 @@ gem 'activesupport', '~> 5.1'
 gem 'version_info', '~> 1.9'
 gem 'sys-proc', '~> 1.0'
 gem 'hash_dot', '~> 2.1'
+gem 'dotenv', '~> 2.2'
 
 group :development do
   gem 'rake', '~> 12.0'
   gem 'listen', '~> 3.1'
   gem 'pry', '~> 0.10'
-  gem 'dotenv', '~> 2.2'
   gem 'cliver', '= 0.3.2'
   gem 'rubocop', '~> 0.49'
   gem 'gemspec_deps_gen', '= 1.1.2'
