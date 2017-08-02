@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
-
 require 'ylem/concern/cli'
 require 'ylem/concern/helper'
 require 'ylem/concern/cli/output'
+
+require 'optparse'
+require 'active_support/concern'
 
 # Provide a convenient and reusable way to prepare the ``#run``
 #
@@ -50,10 +51,8 @@ module Ylem::Concern::Cli::Parse
 
     begin
       parse!
-    rescue OptionParser::InvalidOption, OptionParser::InvalidArgument
-      return error.call(parser)
-    rescue OptionParser::MissingArgument => e
-      return error.call(e)
+    rescue OptionParser::ParseError => e
+      return error.call("%s\n\n%s" % [e.to_s.capitalize, parser])
     end
 
     block_given? ? yield : 0
