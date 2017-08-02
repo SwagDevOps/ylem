@@ -84,15 +84,16 @@ class Ylem::Cli::Base
     end
   end
 
-  # @raise [OptionParser::InvalidOption]
+  # Parse options given through the command line arguments
+  #
+  # @raise [OptionParser::ParseError]
   # @return [self]
   def parse!
     argv = self.argv.clone
-
     parser.parse!(argv)
 
     @options   = @options
-    @arguments = argv
+    @arguments = argv.clone
 
     self
   end
