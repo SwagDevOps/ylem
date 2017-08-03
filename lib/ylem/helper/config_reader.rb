@@ -2,7 +2,6 @@
 
 require 'ylem/helper'
 require 'ylem/concern/helper'
-require 'etc'
 require 'pathname'
 
 # Helper intended to read config files
@@ -22,7 +21,7 @@ class Ylem::Helper::ConfigReader
   #
   # @return [Pathname]
   def default_file
-    Pathname.new(Etc.sysconfdir).join(progname, 'config.yml')
+    helper.get('system/path').sysconfdir.join(progname, 'config.yml')
   end
 
   def default_file?(filepath)
