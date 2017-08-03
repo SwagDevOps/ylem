@@ -20,5 +20,10 @@ class Ylem::Helper::System::Path
     rootdir.join('etc')
   end
 
+  # @return [Pathname]
+  def vardir
+    rootdir.join('var')
+  end
+
   alias etcdir sysconfdir
 end
