@@ -21,7 +21,7 @@ class Ylem::Helper::ConfigReader
   #
   # @return [Pathname]
   def default_file
-    helper.get('system/path').sysconfdir.join(progname, 'config.yml')
+    helper.get('system').path(:etc, progname, 'config.yml')
   end
 
   def default_file?(filepath)

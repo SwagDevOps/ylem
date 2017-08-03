@@ -23,10 +23,10 @@ class Ylem::Helper::System
   # Get path for a named target directory
   #
   # @param [Symbol|String] type
-  # @param [Array] path_parts
+  # @param [*Array<String|Object>] parts
   # @return [Pathname]
   # @raise [ArgumentError]
-  def path(type, path_parts = [])
+  def path(type, *parts)
     path = helper.get('system/path')
     dirs = path.public_methods
                .grep(/dir$/)
@@ -37,6 +37,6 @@ class Ylem::Helper::System
     end
 
     Pathname.new(path.public_send("#{type}dir"))
-            .join(*path_parts.map(&:to_s))
+            .join(*parts.map(&:to_s))
   end
 end

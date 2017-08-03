@@ -16,13 +16,13 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   #
   # @return [Hash]
   def defaults
-    path = helper.get('system/path')
+    os = helper.get('system')
 
     {
-      'logger.file':      path.rootdir.join('var', 'log', "#{progname}.log"),
+      'logger.file':      os.path(:var, 'log', "#{progname}.log"),
       'logger.level':     :info,
-      'scripts.path':     path.sysconfdir.join(progname, 'scripts'),
-      'environment.file': path.sysconfdir.join('environment')
+      'scripts.path':     os.path(:etc, progname, 'scripts'),
+      'environment.file': os.path(:etc, 'environment')
     }
   end
 
