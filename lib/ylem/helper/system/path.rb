@@ -15,7 +15,10 @@ class Ylem::Helper::System::Path
   # Return system configuration directory
   #
   # @return [Pathname]
+  # @see https://github.com/pmq20/ruby-compiler/issues/13
   def sysconfdir
     rootdir.join('etc')
   end
+
+  alias etcdir sysconfdir
 end
