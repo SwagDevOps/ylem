@@ -6,21 +6,6 @@ require 'pathname'
 
 $PROGRAM_NAME = 'ylem'
 
-# runnning in a development context ----------------------------------
-
-# rubocop:disable Style/YodaCondition
-if 'development' == ENV['PROJECT_MODE']
-  if Pathname.new(__dir__).join('..', 'Gemfile').file?
-    require 'rubygems'
-    require 'bundler'
-
-    Bundler.setup(:default)
-  else
-    ENV['PROJECT_MODE'] = nil
-  end
-end
-# rubocop:enable Style/YodaCondition
-
 # require lib requirements -------------------------------------------
 
 [nil, :cli].each do |r|
@@ -38,12 +23,9 @@ end
   end
 end
 
-# set process name ---------------------------------------------------
+# execution ----------------------------------------------------------
 
 require 'sys/proc'
 
 Sys::Proc.progname = nil
-
-# process command line options and run -------------------------------
-
 exit Ylem::Cli.run.to_i

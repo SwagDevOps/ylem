@@ -2,10 +2,14 @@
 
 $LOAD_PATH.unshift __dir__
 
-if 'development' == ENV['PROJECT_MODE']
+if Pathname.new(__dir__).join('..', 'Gemfile.lock').file?
   require 'rubygems'
-  require 'bundler/setup'
+  require 'bundler'
 
+  Bundler.setup(:default)
+end
+
+if 'development' == ENV['PROJECT_MODE']
   def pp(*args)
     proc do
       require 'active_support/inflector'
