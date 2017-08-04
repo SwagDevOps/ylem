@@ -4,7 +4,7 @@ require 'ylem'
 require 'ylem/concern/helper'
 require 'ylem/concern/cli/output'
 require 'ylem/concern/cli/parse'
-require 'optparse'
+require 'ylem/type/option_parser'
 
 # CLI interface
 class Ylem::Cli
@@ -59,7 +59,7 @@ class Ylem::Cli
     # Get an option parser
     #
     # @return OptionParser
-    OptionParser.new do |opts|
+    Ylem::Type::OptionParser.new do |opts|
       opts.banner = 'Usage: %s {%s} [options]' % [
         $PROGRAM_NAME,
         commands.keys.join('|'),
