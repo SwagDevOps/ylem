@@ -5,7 +5,7 @@ require 'ylem/concern/helper'
 require 'ylem/concern/action'
 require 'ylem/concern/cli/output'
 require 'ylem/concern/cli/parse'
-require 'optparse'
+require 'ylem/type/option_parser'
 # @see https://github.com/rails/rails/blob/master/activerecord/lib/active_record/base.rb
 # @see http://api.rubyonrails.org/classes/ActiveSupport/DescendantsTracker.html
 require 'active_support/descendants_tracker'
@@ -73,7 +73,7 @@ class Ylem::Cli::Base
     (options = @options).merge!(use_defaults: true)
     # rubocop:enable Performance/RedundantMerge
 
-    OptionParser.new do |opts|
+    Ylem::Type::OptionParser.new do |opts|
       opts.banner = self.class.banner
 
       opts.on('-c=CONFIG',
