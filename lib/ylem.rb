@@ -10,6 +10,8 @@ if Pathname.new(__dir__).join('..', 'Gemfile.lock').file?
 end
 
 if 'development' == ENV['PROJECT_MODE']
+  require 'bundler/setup'
+
   def pp(*args)
     proc do
       require 'active_support/inflector'
@@ -26,3 +28,5 @@ module Ylem
 
   include Concern::Versionable
 end
+
+pp Ylem
