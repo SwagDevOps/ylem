@@ -28,5 +28,3 @@ module Ylem
 
   include Concern::Versionable
 end
-
-pp Ylem
