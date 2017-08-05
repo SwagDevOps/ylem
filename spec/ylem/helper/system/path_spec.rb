@@ -5,8 +5,10 @@ require 'pathname'
 
 describe Ylem::Helper::System::Path do
   {
-    sysconfdir: [0],
     rootdir:    [0],
+    sysconfdir: [0],
+    etcdir:     [0],
+    vardir:     [0],
   }.each do |method, counts|
     counts.each do |n|
       it { expect(subject).to respond_to(method).with(n).arguments }
@@ -17,7 +19,9 @@ end
 describe Ylem::Helper::System::Path do
   {
     rootdir: '/',
-    sysconfdir: '/etc'
+    sysconfdir: '/etc',
+    etcdir: '/etc',
+    vardir: '/var',
   }.each do |method, path|
     context "##{method}" do
       it { expect(subject.public_send(method)).to be_a(Pathname) }
