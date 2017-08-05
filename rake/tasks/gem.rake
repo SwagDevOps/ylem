@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'cliver'
+
 CLOBBER.include('pkg')
 
 desc 'Build all the packages'
@@ -24,6 +26,41 @@ namespace :gem do
         exit 1
       end
       Rake::Task['clobber'].reenable
+    end
+  end
+
+  if Project.spec&.executables.size > 0 and Cliver.detect(:rubyc)
+    CLOBBER.include('build')
+
+    desc 'compile executables'
+    task compile: ['gem:package'] do
+      curdir = Pathname.new('.').realpath
+      pkgdir = "pkg/#{Project.name}-#{Project.version_info[:version]}"
+      srcdir = 'build/src'
+      bindir = 'build/bin'
+      tmpdir = 'build/tmp'
+
+      Bundler.with_clean_env do
+        rm_rf(srcdir)
+        [srcdir, bindir, tmpdir].each { |dir| mkdir_p(dir) }
+        cp_r(Dir.glob("#{pkgdir}/*"), srcdir)
+        cp(Dir.glob("*.gemspec") + ['Gemfile'], srcdir)
+
+        Dir.chdir(srcdir) do
+          sh(Cliver.detect!(:bundle), 'install',
+             '--path', 'vendor/bundle', '--clean',
+             '--without', 'development', 'doc', 'test')
+
+          Project.spec.executables.each do |executable|
+            sh(Cliver.detect!(:rubyc),
+               "#{Project.spec.bindir}/#{executable}",
+               '-d', "#{curdir}/#{tmpdir}",
+               '-r', "#{curdir}/#{srcdir}",
+               '-o', "#{curdir}/#{bindir}/#{executable}")
+            sh('strip', '-s', "#{curdir}/#{bindir}/#{executable}")
+          end
+        end
+      end
     end
   end
 
