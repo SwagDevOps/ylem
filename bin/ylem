@@ -11,16 +11,7 @@ $PROGRAM_NAME = 'ylem'
 [nil, :cli].each do |r|
   req = r ? "#{$PROGRAM_NAME}/#{r}" : $PROGRAM_NAME
 
-  begin
-    require Pathname.new(__dir__).join('..', 'lib', '%s' % req)
-  rescue LoadError
-    begin
-      require req
-    rescue LoadError
-      require 'rubygems'
-      require req
-    end
-  end
+  require Pathname.new(__dir__).join('..', 'lib', '%s' % req)
 end
 
 # execution ----------------------------------------------------------
