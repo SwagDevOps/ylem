@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift __dir__
-
 if Pathname.new(__dir__).join('..', 'Gemfile.lock').file?
   require 'rubygems'
   require 'bundler'
@@ -9,8 +7,10 @@ if Pathname.new(__dir__).join('..', 'Gemfile.lock').file?
   Bundler.setup(:default)
 end
 
+$LOAD_PATH.unshift __dir__
+
 if 'development' == ENV['PROJECT_MODE']
-  require 'bundler/setup'
+  require 'bundler/setup' if Kernel.const_defined?('Bundle')
 
   def pp(*args)
     proc do
