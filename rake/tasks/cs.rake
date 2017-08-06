@@ -3,6 +3,16 @@
 #
 # @see http://batsov.com/rubocop/
 # @see https://github.com/bbatsov/rubocop
+#
+# Share RuboCop rules across repos
+# @see https://blog.percy.io/share-rubocop-rules-across-all-of-your-repos-f3281fbd71f8
+# @see https://github.com/percy/percy-style
+#
+# ~~~~
+# # .rubocop.yml
+# inherit_gem:
+#   percy-style: [ default.yml ]
+# ~~~~
 
 namespace :cs do
   require 'rubocop/rake_task'
@@ -10,11 +20,11 @@ namespace :cs do
   {
     control: {
       description: 'Run static code analyzer',
-      options: ['--fail-level', 'E'],
+      options:     ['--fail-level', 'E'],
     },
     correct: {
       description: 'Run static code analyzer, auto-correcting offenses',
-      options: ['--fail-level', 'E', '--auto-correct'],
+      options:     ['--fail-level', 'E', '--auto-correct'],
     }
   }.each do |name, meta|
     desc meta.fetch(:description)
