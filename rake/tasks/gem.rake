@@ -29,7 +29,7 @@ namespace :gem do
     end
   end
 
-  if Project.spec&.executables.size > 0 and Cliver.detect(:rubyc)
+  if (Project.spec&.executables).to_a.size > 0 and Cliver.detect(:rubyc)
     CLOBBER.include('build')
 
     desc 'compile executables'
@@ -43,8 +43,8 @@ namespace :gem do
       Bundler.with_clean_env do
         rm_rf(srcdir)
         [srcdir, bindir, tmpdir].each { |dir| mkdir_p(dir) }
-        cp_r(Dir.glob("#{pkgdir}/*"), srcdir)
-        cp(Dir.glob("*.gemspec") + ['Gemfile'], srcdir)
+        cp_r(Dir.glob("#{pkgdir}/*") + ['vendor'], srcdir)
+        cp(Dir.glob("*.gemspec") + ['Gemfile', 'Gemfile.lock'], srcdir)
 
         Dir.chdir(srcdir) do
           sh(Cliver.detect!(:bundle), 'install',
@@ -52,12 +52,13 @@ namespace :gem do
              '--without', 'development', 'doc', 'test')
 
           Project.spec.executables.each do |executable|
-            sh(Cliver.detect!(:rubyc),
+            sh(ENV.to_h, Cliver.detect!(:rubyc),
                "#{Project.spec.bindir}/#{executable}",
                '-d', "#{curdir}/#{tmpdir}",
                '-r', "#{curdir}/#{srcdir}",
                '-o', "#{curdir}/#{bindir}/#{executable}")
-            sh('strip', '-s', "#{curdir}/#{bindir}/#{executable}")
+            sh(Cliver.detect!(:strip),
+               '-s', "#{curdir}/#{bindir}/#{executable}") if Cliver.detect(:strip)
           end
         end
       end
