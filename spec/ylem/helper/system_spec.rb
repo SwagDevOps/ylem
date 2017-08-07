@@ -14,3 +14,22 @@ describe Ylem::Helper::System do
     end
   end
 end
+
+[:etc, :root, :var, :sysconf].sort.each do |name|
+  describe Ylem::Helper::System do
+    let(:path) { build(:paths).random.to_s.gsub(/^\//, '') }
+    let(:matchable) { %r{#{path}$} }
+
+    context "#path(:#{name})" do
+      it { expect(subject.path(name)).to be_a(Pathname) }
+    end
+
+    context "#path(:#{name}, path)" do
+      it { expect(subject.path(name, path)).to be_a(Pathname) }
+    end
+
+    context "#path(:#{name}, path).to_s" do
+      it { expect(subject.path(name, path).to_s).to match(matchable) }
+    end
+  end
+end
