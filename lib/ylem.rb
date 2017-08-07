@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if Pathname.new(__dir__).join('..', 'Gemfile.lock').file?
+if File.file?("#{__dir__}/../Gemfile.lock")
   require 'rubygems'
   require 'bundler'
 
@@ -9,16 +9,18 @@ end
 
 $LOAD_PATH.unshift __dir__
 
-if 'development' == ENV['PROJECT_MODE']
-  require 'bundler/setup' if Kernel.const_defined?('Bundle')
+if File.file?("#{__dir__}/../Gemfile.lock")
+  if 'development' == ENV['PROJECT_MODE']
+    require 'bundler/setup'
 
-  def pp(*args)
-    proc do
-      require 'active_support/inflector'
-      require 'ylem/helper/debug'
+    def pp(*args)
+      proc do
+        require 'active_support/inflector'
+        require 'ylem/helper/debug'
 
-      ActiveSupport::Inflector.constantize('Ylem::Helper::Debug')
-    end.call.new.dump(*args)
+        ActiveSupport::Inflector.constantize('Ylem::Helper::Debug')
+      end.call.new.dump(*args)
+    end
   end
 end
 
