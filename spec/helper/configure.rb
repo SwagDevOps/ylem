@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-require 'factory_girl'
+require 'factory_bot'
+FactoryGirl = FactoryBot
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
