@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-#
+
 # bundle install --path vendor/bundle
 source 'https://rubygems.org'
 
@@ -23,14 +23,14 @@ group :development do
   gem 'benchmark-memory', '~> 0.1'
 end
 
-group :doc, :development do
+group :development, :doc do
   gem 'yard', '~> 0.9'
   # Github Flavored Markdown in YARD
   gem 'redcarpet', '~> 3.4'
   gem 'github-markup', '~> 1.6'
 end
 
-group :test, :development do
+group :development, :test do
   gem 'rspec', '~> 3.6'
   gem 'factory_girl', '~> 4.8'
   gem 'hashie', '~> 3.5'
