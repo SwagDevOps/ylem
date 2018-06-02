@@ -1,7 +1,7 @@
 # vim: ft=sh
 
 --require './spec/spec_helper.rb'
---color --format 'progress'
+--color --format 'Fuubar'
 --pattern './spec/**/*_spec.rb'
 --order 'rand'
 
