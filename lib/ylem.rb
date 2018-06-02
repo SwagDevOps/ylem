@@ -15,7 +15,7 @@ end
 
 # Base module (namespace)
 module Ylem
-  require 'ylem/concern/versionable'
+  require 'ylem/version'
 
-  include Concern::Versionable
+  VERSION = Ylem::Version.new.freeze
 end

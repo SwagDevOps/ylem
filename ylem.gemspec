@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 # vim: ai ts=2 sts=2 et sw=2 ft=ruby
+# rubocop:disable all
 
 # Should follow the higher required_ruby_version
 # at the moment, gem with higher required_ruby_version is activesupport
@@ -24,14 +25,14 @@ Gem::Specification.new do |s|
   s.files         = ['.yardopts',
                      'bin/*',
                      'lib/**/*.rb',
-                     'lib/**/version_info.yml'
+                     'lib/**/version.yml'
                     ].map { |pt| Dir.glob(pt) }.flatten
 
   s.add_runtime_dependency("activesupport", ["~> 5.1"])
-  s.add_runtime_dependency("version_info", ["~> 1.9"])
-  s.add_runtime_dependency("sys-proc", ["~> 1.1"])
-  s.add_runtime_dependency("hash_dot", ["~> 2.1"])
   s.add_runtime_dependency("dotenv", ["~> 2.4"])
+  s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
+  s.add_runtime_dependency("hash_dot", ["~> 2.1"])
+  s.add_runtime_dependency("sys-proc", ["~> 1.1"])
 end
 
 # Local Variables:

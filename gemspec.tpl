@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 # vim: ai ts=2 sts=2 et sw=2 ft=ruby
+# rubocop:disable all
 
 # Should follow the higher required_ruby_version
 # at the moment, gem with higher required_ruby_version is activesupport
@@ -24,7 +25,7 @@ Gem::Specification.new do |s|
   s.files         = ['.yardopts',
                      'bin/*',
                      'lib/**/*.rb',
-                     'lib/**/version_info.yml'
+                     'lib/**/version.yml'
                     ].map { |pt| Dir.glob(pt) }.flatten
 
   #{@dependencies.keep(:runtime).to_s.lstrip}
