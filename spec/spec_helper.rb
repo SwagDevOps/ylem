@@ -7,4 +7,6 @@
   :constants,
   :factory_struct,
   :configure,
-].each { |s| require [__dir__, 'helper', s].map(&:to_s).join('/') }
+].each do |s|
+  require [__dir__, 'spec_helper', s].map(&:to_s).join('/')
+end
