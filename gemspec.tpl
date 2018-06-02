@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 # vim: ai ts=2 sts=2 et sw=2 ft=ruby
-#
+
 # Should follow the higher required_ruby_version
 # at the moment, gem with higher required_ruby_version is activesupport
 
