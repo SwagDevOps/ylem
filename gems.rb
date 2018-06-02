@@ -32,6 +32,6 @@ end
 
 group :development, :test do
   gem 'rspec', '~> 3.6'
-  gem 'factory_girl', '~> 4.8'
+  gem 'factory_bot', '~> 4.8'
   gem 'hashie', '~> 3.5'
 end
