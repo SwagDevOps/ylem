@@ -1,0 +1,12 @@
+# image: 'bento/freebsd-11.0'
+modifyvm:
+  - ['memory', 1024]
+  - ['cpus', 6]
+  - ['cpuexecutioncap', 100]
+  - ['hwvirtex', 'on']
+  - ['audio', 'none']
+  - ['vram', 1]
+  - ['vrde', 'off']
+  - ['nictype1', 'virtio']
+  - ['nictype2', 'virtio']
+  - ['cableconnected1', 'on']

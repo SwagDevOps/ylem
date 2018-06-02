@@ -6,23 +6,21 @@ source 'https://rubygems.org'
 group :default do
   gem 'activesupport', '~> 5.1'
   gem 'version_info', '~> 1.9'
-  gem 'sys-proc', '~> 1.0'
+  gem 'sys-proc', '~> 1.1'
   gem 'hash_dot', '~> 2.1'
-  gem 'dotenv', '~> 2.2'
+  gem 'dotenv', '~> 2.4'
 end
 
 group :development do
-  gem 'rake', '~> 12.0'
+  gem 'kamaze-project', '~> 1.0', '>= 1.0.3'
   gem 'listen', '~> 3.1'
-  gem 'pry', '~> 0.10'
-  gem 'cliver', '= 0.3.2'
-  gem 'rubocop', '~> 0.49'
-  gem 'gemspec_deps_gen', '= 1.1.2'
-  gem 'tenjin', '~> 0.7'
-  gem 'rainbow', '~> 2.2'
-  gem 'tty-editor', '~> 0.2'
-  gem 'tty-screen', '~> 0.5'
-  gem 'benchmark-memory', '~> 0.1'
+  gem 'rubocop', '~> 0.56'
+end
+
+group :development, :repl do
+  gem 'interesting_methods', '~> 0.1'
+  gem 'pry', '~> 0.11'
+  gem 'pry-coolline', '~> 0.2'
 end
 
 group :development, :doc do
