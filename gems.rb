@@ -3,11 +3,13 @@
 # bundle install --path vendor/bundle
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 5.1'
-gem 'version_info', '~> 1.9'
-gem 'sys-proc', '~> 1.0'
-gem 'hash_dot', '~> 2.1'
-gem 'dotenv', '~> 2.2'
+group :default do
+  gem 'activesupport', '~> 5.1'
+  gem 'version_info', '~> 1.9'
+  gem 'sys-proc', '~> 1.0'
+  gem 'hash_dot', '~> 2.1'
+  gem 'dotenv', '~> 2.2'
+end
 
 group :development do
   gem 'rake', '~> 12.0'
