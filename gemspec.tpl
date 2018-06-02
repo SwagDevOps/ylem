@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
                      'lib/**/version_info.yml'
                     ].map { |pt| Dir.glob(pt) }.flatten
 
-  #{@dependencies}
+  #{@dependencies.keep(:runtime).to_s.lstrip}
 end
 
 # Local Variables:
