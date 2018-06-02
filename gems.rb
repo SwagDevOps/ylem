@@ -5,10 +5,10 @@ source 'https://rubygems.org'
 
 group :default do
   gem 'activesupport', '~> 5.1'
-  gem 'version_info', '~> 1.9'
-  gem 'sys-proc', '~> 1.1'
-  gem 'hash_dot', '~> 2.1'
   gem 'dotenv', '~> 2.4'
+  gem 'dry-inflector', '~> 0.1'
+  gem 'hash_dot', '~> 2.1'
+  gem 'sys-proc', '~> 1.1'
 end
 
 group :development do
@@ -26,8 +26,8 @@ end
 group :development, :doc do
   gem 'yard', '~> 0.9'
   # Github Flavored Markdown in YARD
-  gem 'redcarpet', '~> 3.4'
   gem 'github-markup', '~> 1.6'
+  gem 'redcarpet', '~> 3.4'
 end
 
 group :development, :test do
