@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
                      'lib/**/version.yml'
                     ].map { |pt| Dir.glob(pt) }.flatten
 
-  s.add_runtime_dependency("activesupport", ["~> 5.1"])
   s.add_runtime_dependency("dotenv", ["~> 2.4"])
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("hash_dot", ["~> 2.1"])

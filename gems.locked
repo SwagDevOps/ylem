@@ -127,7 +127,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (~> 5.1)
   dotenv (~> 2.4)
   dry-inflector (~> 0.1)
   factory_bot (~> 4.8)

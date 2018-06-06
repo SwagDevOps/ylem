@@ -4,7 +4,6 @@
 source 'https://rubygems.org'
 
 group :default do
-  gem 'activesupport', '~> 5.1'
   gem 'dotenv', '~> 2.4'
   gem 'dry-inflector', '~> 0.1'
   gem 'hash_dot', '~> 2.1'
