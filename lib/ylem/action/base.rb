@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'ylem/action'
-require 'ylem/concern/helper'
-require 'ylem/concern/service'
-require 'ylem/concern/output'
+require_relative '../action'
+require_relative '../concern/helper'
+require_relative '../concern/service'
+require_relative '../concern/output'
 require 'active_support/descendants_tracker'
 
 # @abstract Subclass and override {#execute} to implement
