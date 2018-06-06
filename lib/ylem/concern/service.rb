@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
+require_relative '../concern'
+require_relative '../service'
 
-require 'ylem/concern'
-require 'ylem/service'
-
-# Provides access to system
+# Provides access to ``Ylem::Service``
 module Ylem::Concern::Service
-  extend ActiveSupport::Concern
-
   protected
 
-  # @return [Sys::Proc::Helper]
+  # @return [Ylem::Service]
   def service
     Ylem::Service.instance
   end
