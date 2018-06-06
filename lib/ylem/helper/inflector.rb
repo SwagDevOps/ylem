@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-require 'ylem/helper'
+require_relative '../helper'
+require 'dry/inflector'
 
-# Inflector built on top of ``ActiveSupport::Inflector``
+# Inflector built on top of ``Dry::Inflector``
 class Ylem::Helper::Inflector
   def initialize
-    require 'active_support/inflector'
-
-    @inflector = ActiveSupport::Inflector
+    @inflector = Dry::Inflector.new
   end
 
   # Load constant from a loadable/requirable path
@@ -15,6 +14,8 @@ class Ylem::Helper::Inflector
   # @param [String] loadable
   # @return [Object]
   def resolve(loadable)
+    loadable = loadable.to_s.empty? ? nil : loadable.to_s
+
     require loadable
 
     @inflector.constantize(@inflector.classify(loadable))
