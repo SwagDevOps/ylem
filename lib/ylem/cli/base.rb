@@ -6,9 +6,6 @@ require_relative '../concern/action'
 require_relative '../concern/cli/output'
 require_relative '../concern/cli/parse'
 require_relative '../type/option_parser'
-# @see https://github.com/rails/rails/blob/master/activerecord/lib/active_record/base.rb
-# @see http://api.rubyonrails.org/classes/ActiveSupport/DescendantsTracker.html
-require 'active_support/descendants_tracker'
 
 # @abstract Base command
 class Ylem::Cli::Base
@@ -19,7 +16,6 @@ class Ylem::Cli::Base
   # @return [Array]
   attr_reader :arguments
 
-  extend ActiveSupport::DescendantsTracker
   include Ylem::Concern::Action
   include Ylem::Concern::Helper
   include Ylem::Concern::Cli::Output
@@ -83,7 +79,7 @@ class Ylem::Cli::Base
 
       opts.on('-c=CONFIG',
               '--config=CONFIG',
-              'Config file used [%<config_files]' % {
+              'Config file used [%<config_file>s]' % {
                 config_file: options[:config_file]
               }) { |c| options.merge!(config_file: c, use_defaults: false) }
     end
