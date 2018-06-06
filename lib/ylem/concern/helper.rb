@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
-
-require 'ylem/concern'
-require 'ylem/helper'
+require_relative '../concern'
+require_relative '../helper'
 
 # Provides access to helpers
 module Ylem::Concern::Helper
-  extend ActiveSupport::Concern
-
   protected
 
   # @return [Sys::Proc::Helper]
