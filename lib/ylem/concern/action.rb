@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
-require 'ylem/action'
-require 'ylem/concern'
-require 'active_support/concern'
+require_relative '../concern'
+require_relative '../action'
 
 # Provides access to related action
 module Ylem::Concern::Action
-  extend ActiveSupport::Concern
-
   # Get related action
   #
   # @return [Class]
