@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'active_support/concern'
-
-require 'ylem/concern'
+require_relative '../concern'
 require 'stringio'
 
 # Provides access to outputs (``STDOUT`` and ``STDERR``)
@@ -13,9 +11,7 @@ require 'stringio'
 # Outputs cand be muted (all at once), using ``dummy_outputs?`` method,
 # default is ``false``, extending class COULD redefine this method.
 module Ylem::Concern::Output
-  extend ActiveSupport::Concern
-
-  # Output message (using one of the defined outputs)
+  # Output message (using defined outputs)
   #
   # @param [String] message
   # @param [Hash] options
