@@ -4,7 +4,6 @@ require_relative '../action'
 require_relative '../concern/helper'
 require_relative '../concern/service'
 require_relative '../concern/output'
-require 'active_support/descendants_tracker'
 
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.
@@ -24,7 +23,6 @@ class Ylem::Action::Base
   # @return [Array]
   attr_reader :arguments
 
-  extend ActiveSupport::DescendantsTracker
   include Ylem::Concern::Output
   include Ylem::Concern::Helper
   include Ylem::Concern::Service
