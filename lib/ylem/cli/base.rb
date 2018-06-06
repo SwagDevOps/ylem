@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'ylem/cli'
-require 'ylem/concern/helper'
-require 'ylem/concern/action'
-require 'ylem/concern/cli/output'
-require 'ylem/concern/cli/parse'
-require 'ylem/type/option_parser'
+require_relative '../cli'
+require_relative '../concern/helper'
+require_relative '../concern/action'
+require_relative '../concern/cli/output'
+require_relative '../concern/cli/parse'
+require_relative '../type/option_parser'
 # @see https://github.com/rails/rails/blob/master/activerecord/lib/active_record/base.rb
 # @see http://api.rubyonrails.org/classes/ActiveSupport/DescendantsTracker.html
 require 'active_support/descendants_tracker'
@@ -54,9 +54,14 @@ class Ylem::Cli::Base
       helper.get(:inflector).underscore(name.split('::')[-1])
     end
 
+    # Get banner
+    #
     # @return [String]
     def banner
-      'Usage: %s %s [options]' % [helper.get(:system).progname, keyword]
+      'Usage: %<progname>s %<keyword>s [options]' % {
+        progname: helper.get(:system).progname,
+        keyword: keyword
+      }
     end
   end
 
@@ -78,9 +83,9 @@ class Ylem::Cli::Base
 
       opts.on('-c=CONFIG',
               '--config=CONFIG',
-              'Config file used [%s]' % options[:config_file]) do |c|
-        options.merge!(config_file: c, use_defaults: false)
-      end
+              'Config file used [%<config_files]' % {
+                config_file: options[:config_file]
+              }) { |c| options.merge!(config_file: c, use_defaults: false) }
     end
   end
 
