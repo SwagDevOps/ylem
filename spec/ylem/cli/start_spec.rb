@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 require 'ylem/cli/start'
-require 'ostruct'
 
-describe Ylem::Cli::Start do
+describe Ylem::Cli::Start, :cli, :'cli/start' do
   let(:subject) do
-    described_class.new(['-c', build(:config_paths).success]).parse!
+    described_class.new(['-c', sham!(:config_paths).success]).parse!
   end
 
   describe '.config' do
