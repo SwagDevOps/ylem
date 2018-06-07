@@ -3,8 +3,8 @@
 require 'ylem/action/start'
 require 'fileutils'
 
-describe Ylem::Action::Start do
-  let(:config) { build(:config_values).public_send(:success) }
+describe Ylem::Action::Start, :action, :'action/start' do
+  let(:config) { sham!(:config_values).success }
   let(:subject) { described_class.new(config, [], quiet: true) }
 
   [:command, :'command?'].each do |method|
@@ -16,7 +16,7 @@ end
 
 { success: 0, failure: 131 }.each do |config_type, retcode|
   describe Ylem::Action::Start do
-    let!(:config) { build(:config_values).public_send(config_type) }
+    let!(:config) { sham!(:config_values).public_send(config_type) }
     let!(:subject) { described_class.new(config, [], quiet: true) }
 
     before(:example) do
