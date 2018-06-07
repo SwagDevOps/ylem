@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+require_relative '../lib/ylem'
+
 [
-  :project,
-  :progname,
   :matchers,
   :constants,
-  :factory_struct,
   :configure,
-].each do |s|
-  require [__dir__, 'spec_helper', s].map(&:to_s).join('/')
+].each do |req|
+  require_relative '%<dir>s/%<req>s' % {
+    dir: __FILE__.gsub(/\.rb$/, ''),
+    req: req.to_s,
+  }
 end
