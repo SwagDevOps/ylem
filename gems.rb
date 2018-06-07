@@ -23,10 +23,9 @@ group :development, :repl do
 end
 
 group :development, :doc do
-  gem 'yard', '~> 0.9'
-  # Github Flavored Markdown in YARD
   gem 'github-markup', '~> 1.6'
   gem 'redcarpet', '~> 3.4'
+  gem 'yard', '~> 0.9'
 end
 
 group :development, :test do
@@ -34,4 +33,5 @@ group :development, :test do
   gem 'fuubar', '~> 2.3'
   gem 'hashie', '~> 3.5'
   gem 'rspec', '~> 3.6'
+  gem 'sham', '~> 2.0'
 end

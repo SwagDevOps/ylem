@@ -93,6 +93,7 @@ GEM
     ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
     rugged (0.27.1)
+    sham (2.0.0)
     sys-proc (1.1.2)
       dry-inflector (~> 0.1)
     tenjin (0.7.1)
@@ -142,6 +143,7 @@ DEPENDENCIES
   redcarpet (~> 3.4)
   rspec (~> 3.6)
   rubocop (~> 0.56)
+  sham (~> 2.0)
   sys-proc (~> 1.1)
   yard (~> 0.9)
 
