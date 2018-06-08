@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'ylem/concern/cli'
-require 'ylem/concern/helper'
-require 'ylem/concern/cli/output'
-
+require_relative '../cli'
+require_relative '../cli/output'
+require_relative '../helper'
 require 'optparse'
-require 'active_support/concern'
 
 # Provide a convenient and reusable way to prepare the ``#run``
 #
@@ -30,8 +28,6 @@ module Ylem::Concern::Cli::Parse
 
   protected
 
-  # rubocop:disable Metrics/MethodLength
-
   # Block to run wrapped CLI method
   #
   # Parse command line arguments (using OptionParser)
@@ -43,20 +39,28 @@ module Ylem::Concern::Cli::Parse
   # @yieldreturn [Integer]
   # @return [Integer]
   def parse(display_error = true)
-    error = lambda do |displayable, code = :EINVAL|
-      output(displayable.to_s, to: :stderr) if display_error
-
-      helper.get(:errno).retcode_get(code)
-    end
-
     begin
       parse!
     rescue OptionParser::ParseError => e
-      return error.call("%s\n\n%s" % [e.to_s.capitalize, parser])
+      return on_parser_error(e, display_error)
     end
 
     block_given? ? yield : 0
   end
 
-  # rubocop:enable Metrics/MethodLength
+  # @param [Error] error
+  # @param [Boolean] display_error
+  # @return [Integer]
+  def on_parser_error(error, display_error)
+    formatter = lambda do |displayable, code = :EINVAL|
+      output(displayable.to_s, to: :stderr) if display_error
+
+      helper.get(:errno).retcode_get(code)
+    end
+
+    formatter.call("%<>s\n\n%<>s" % {
+      error_name: error.to_s.capitalize,
+      parser: parser
+    })
+  end
 end
