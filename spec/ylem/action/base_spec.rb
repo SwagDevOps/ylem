@@ -2,24 +2,18 @@
 
 require 'ylem/action/base'
 
-describe Ylem::Action::Base do
+describe Ylem::Action::Base, :action, :'action/base' do
   let(:subject) do
-    config = build(:helper_config).defaults
+    config = sham!(:helper_config).defaults
 
     described_class.new(config)
   end
 
-  {
-    config:            [0],
-    options:           [0],
-    arguments:         [0],
-    retcode:           [0],
-    'dummy_outputs?':  [0],
-    'success?':        [0],
-    execute:           [0],
-  }.each do |method, counts|
-    counts.each do |n|
-      it { expect(subject).to respond_to(method).with(n).arguments }
-    end
-  end
+  it { expect(subject).to respond_to(:config).with(0).arguments }
+  it { expect(subject).to respond_to(:options).with(0).arguments }
+  it { expect(subject).to respond_to(:arguments).with(0).arguments }
+  it { expect(subject).to respond_to(:retcode).with(0).arguments }
+  it { expect(subject).to respond_to(:dummy_outputs?).with(0).arguments }
+  it { expect(subject).to respond_to(:success?).with(0).arguments }
+  it { expect(subject).to respond_to(:execute).with(0).arguments }
 end
