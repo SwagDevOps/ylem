@@ -15,7 +15,5 @@ end
 
 # Base module (namespace)
 module Ylem
-  require 'ylem/version'
-
-  VERSION = Ylem::Version.new.freeze
+  autoload :VERSION, 'ylem/VERSION'
 end
