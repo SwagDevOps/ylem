@@ -29,7 +29,6 @@ group :development, :doc do
 end
 
 group :development, :test do
-  gem 'factory_bot', '~> 4.8'
   gem 'fuubar', '~> 2.3'
   gem 'hashie', '~> 3.5'
   gem 'rspec', '~> 3.6'
