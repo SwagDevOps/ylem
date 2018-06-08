@@ -3,22 +3,18 @@
 require 'ylem/helper/system'
 require 'pathname'
 
-describe Ylem::Helper::System do
-  {
-    path:         (1..42).to_a,
-    progname:     [0],
-    'progname=':  [1],
-  }.each do |method, counts|
-    counts.each do |n|
-      it { expect(subject).to respond_to(method).with(n).arguments }
-    end
-  end
+describe Ylem::Helper::System, :helper, :'helper/system' do
+  it { expect(subject).to respond_to(:path).with(1).arguments }
+  it { expect(subject).to respond_to(:path).with(42).arguments }
+
+  it { expect(subject).to respond_to(:progname).with(0).arguments }
+  it { expect(subject).to respond_to('progname=').with(1).arguments }
 end
 
 [:etc, :root, :var, :sysconf].sort.each do |name|
-  describe Ylem::Helper::System do
-    let(:path) { build(:paths).random.to_s.gsub(/^\//, '') }
-    let(:matchable) { %r{#{path}$} }
+  describe Ylem::Helper::System, :helper, :'helper/system' do
+    let(:path) { sham!(:paths).randomizer.call.to_s.gsub(%r{^/}, '') }
+    let(:matchable) { %r{/#{path}$} }
 
     context "#path(:#{name})" do
       it { expect(subject.path(name)).to be_a(Pathname) }
