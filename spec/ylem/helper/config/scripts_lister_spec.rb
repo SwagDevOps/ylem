@@ -2,28 +2,23 @@
 
 require 'ylem/helper/config/scripts_lister'
 
-describe Ylem::Helper::Config::ScriptsLister do
-  {
-    path: [0],
-    configure: [0, 1],
-    entries: [0],
-    scripts: [0],
-  }.each do |method, counts|
-    counts.each do |n|
-      it { expect(subject).to respond_to(method).with(n).arguments }
-    end
-  end
+describe Ylem::Helper::Config::ScriptsLister, \
+         :helper, :'helper/config', :'helper/config/scripts_lister' do
+  it { expect(subject).to respond_to(:path).with(0).arguments }
+  it { expect(subject).to respond_to(:configure).with(0).arguments }
+  it { expect(subject).to respond_to(:configure).with(1).arguments }
+  it { expect(subject).to respond_to(:entries).with(0).arguments }
+  it { expect(subject).to respond_to(:scripts).with(0).arguments }
 end
 
 # using different configs --------------------------------------------
 
 { success: [1, 1], failure: [2, 2] }.each do |config_type, counts|
-  describe Ylem::Helper::Config::ScriptsLister do
-    let!(:config) { build(:config_values).public_send(config_type) }
+  describe Ylem::Helper::Config::ScriptsLister, \
+           :helper, :'helper/config', :'helper/config/scripts_lister' do
+    let!(:config) { sham!(:config_values).public_send(config_type) }
     let!(:subject) do
-      path = config.fetch(:'scripts.path')
-
-      described_class.new.configure(path: path)
+      described_class.new.configure(path: config.fetch(:'scripts.path'))
     end
     let!(:entries_size) { counts.fetch(0) }
     let!(:scripts_size) { counts.fetch(1) }
@@ -53,8 +48,9 @@ end
 # using 10 randomized unexisting directories -------------------------
 
 (1..10).to_a.each do
-  describe Ylem::Helper::Config::ScriptsLister do
-    let(:path) { build(:paths).random }
+  describe Ylem::Helper::Config::ScriptsLister, \
+           :helper, :'helper/config', :'helper/config/scripts_lister' do
+    let(:path) { sham!(:paths).randomizer.call }
     let(:subject) { described_class.new.configure(path: path) }
 
     context '#path' do
