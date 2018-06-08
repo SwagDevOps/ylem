@@ -5,10 +5,10 @@ require 'fileutils'
 
 # execute an ``exec`` action -----------------------------------------
 
-describe Ylem::Action::Exec do
-  let!(:config) { build(:config_values).public_send(:success) }
+describe Ylem::Action::Exec, :action, :'action/exec' do
+  let!(:config) { sham!(:config_values).success }
   # execute should fail, as we use a random path as command
-  let!(:command) { [build('paths').random] }
+  let!(:command) { [sham!(:paths).randomizer.call] }
   let!(:subject) { described_class.new(config, command, quiet: true) }
 
   before(:example) do
