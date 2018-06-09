@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/cli/base'
+require_relative 'base'
 
 # CLI ``dump`` command class
 class Ylem::Cli::Dump < Ylem::Cli::Base
