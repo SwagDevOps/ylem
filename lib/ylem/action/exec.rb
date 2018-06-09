@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/action/base'
+require_relative 'base'
 
 # Action triggered by CLI ``exec`` command
 #
