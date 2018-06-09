@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'ylem'
-require 'ylem/concern/helper'
+require_relative '../ylem'
+require_relative 'concern/helper'
 
 # Actions are merely called from CLI
 module Ylem::Action
@@ -10,10 +10,10 @@ module Ylem::Action
 
     # Get action from a class (using its name)
     #
-    # @param [Class] cl
+    # @param [Class] klass
     # @return [Class]
-    def from_class(cl)
-      get(cl.name.split('::')[-1])
+    def from_class(klass)
+      get(klass.name.split('::')[-1])
     end
 
     # Get action from a string
