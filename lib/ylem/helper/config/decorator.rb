@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'ylem/helper/config'
-require 'ylem/concern/helper'
+require_relative '../config'
+require_relative '../../concern/helper'
 require 'hash_dot'
 require 'dotenv'
 
