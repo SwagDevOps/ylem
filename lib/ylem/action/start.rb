@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/action/base'
+require_relative 'base'
 require 'open3'
 
 # Action triggered by CLI ``start`` command
