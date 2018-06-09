@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'ylem/helper/config'
-require 'ylem/type/script'
+require_relative '../config'
+require_relative '../../type/script'
 
 # Class intended to list scripts (executables)
 #
@@ -28,9 +28,9 @@ class Ylem::Helper::Config::ScriptsLister
   #
   # @return [Array<Pathname>]
   def entries
-    Dir.glob('%s/*' % path).sort.map do |entry|
-      Pathname.new(entry)
-    end
+    Dir.glob('%<path>s/*' % { path: path })
+       .sort
+       .map { |entry| Pathname.new(entry) }
   end
 
   # List scripts
