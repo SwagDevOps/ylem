@@ -1,8 +1,7 @@
-# coding: utf-8
 # frozen_string_literal: true
 
-require 'ylem/helper'
-require 'ylem/helper/config_reader'
+require_relative '../helper'
+require_relative 'config_reader'
 
 # Config helper
 class Ylem::Helper::Config < Ylem::Helper::ConfigReader
