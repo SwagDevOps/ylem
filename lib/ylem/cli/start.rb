@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/cli/base'
+require_relative 'base'
 
 # CLI ``start`` command class
 class Ylem::Cli::Start < Ylem::Cli::Base
@@ -14,7 +14,9 @@ class Ylem::Cli::Start < Ylem::Cli::Base
 
     # @return [String]
     def banner
-      '%s -- [command]' % super
+      '%<banner>s -- [command]' % {
+        banner: super
+      }
     end
   end
 end
