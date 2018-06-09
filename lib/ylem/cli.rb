@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'ylem'
-require 'ylem/concern/helper'
-require 'ylem/concern/cli/output'
-require 'ylem/concern/cli/parse'
-require 'ylem/type/option_parser'
+require_relative '../ylem'
+require_relative 'concern/helper'
+require_relative 'concern/cli/output'
+require_relative 'concern/cli/parse'
+require_relative 'type/option_parser'
 
 # CLI interface
 class Ylem::Cli
@@ -60,10 +60,10 @@ class Ylem::Cli
     #
     # @return OptionParser
     Ylem::Type::OptionParser.new do |opts|
-      opts.banner = 'Usage: %s {%s} [options]' % [
-        $PROGRAM_NAME,
-        commands.keys.join('|'),
-      ]
+      opts.banner = 'Usage: %<progname>s {%<commands>s} [options]' % {
+        progname: $PROGRAM_NAME,
+        commands: commands.keys.join('|'),
+      }
 
       opts.separator(nil)
       opts.separator(subtext)
@@ -108,7 +108,7 @@ class Ylem::Cli
   def command?(command)
     command = command.to_s.empty? ? nil : command
 
-    commands.keys.include?(command&.to_sym)
+    command.nil? ? false : commands.key?(command.to_sym)
   end
 
   protected
