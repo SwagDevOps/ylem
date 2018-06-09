@@ -23,7 +23,7 @@ group :development, :repl do
 end
 
 group :development, :doc do
-  gem 'github-markup', '~> 1.6'
+  gem 'github-markup', '~> 2.0'
   gem 'redcarpet', '~> 3.4'
   gem 'yard', '~> 0.9'
 end
