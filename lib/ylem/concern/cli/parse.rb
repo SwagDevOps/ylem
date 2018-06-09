@@ -58,9 +58,9 @@ module Ylem::Concern::Cli::Parse
       helper.get(:errno).retcode_get(code)
     end
 
-    formatter.call("%<>s\n\n%<>s" % {
-      error_name: error.to_s.capitalize,
-      parser: parser
+    formatter.call("%<error>s\n\n%<parser>s" % {
+      error: error.to_s.capitalize,
+      parser: parser,
     })
   end
 end
