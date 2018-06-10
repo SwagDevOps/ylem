@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/helper'
+require_relative '../helper'
 
 # Helper on top of ``Errno``
 class Ylem::Helper::Errno
