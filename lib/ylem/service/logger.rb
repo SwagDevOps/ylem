@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/service'
+require_relative '../service'
 require 'sys/proc'
 require 'logger'
 require 'pathname'
