@@ -91,7 +91,9 @@ class Ylem::Version
     self.singleton_class.class_eval do
       attr_accessor attr_name
 
+      # rubocop:disable Style/AccessModifierDeclarations
       protected "#{attr_name}="
+      # rubocop:enable Style/AccessModifierDeclarations
     end
 
     self.__send__("#{attr_name}=", attr_value.freeze)
