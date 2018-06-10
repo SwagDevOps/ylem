@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/helper/system'
+require_relative '../system'
 require 'pathname'
 
 # System path helper
@@ -14,8 +14,8 @@ class Ylem::Helper::System::Path
 
   # Return system configuration directory
   #
-  # @return [Pathname]
   # @see https://github.com/pmq20/ruby-compiler/issues/13
+  # @return [Pathname]
   def sysconfdir
     rootdir.join('etc')
   end
