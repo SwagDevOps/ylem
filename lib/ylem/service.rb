@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'ylem'
-require 'ylem/concern/helper'
+require_relative '../ylem'
+require_relative 'concern/helper'
 require 'singleton'
 
 # Provides access to service classes
