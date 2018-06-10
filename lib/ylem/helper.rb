@@ -1,23 +1,11 @@
 # frozen_string_literal: true
 
-require 'ylem'
+require_relative '../ylem'
 require 'singleton'
 
 # Provides access to helper classes
 class Ylem::Helper
   include ::Singleton
-
-  protected def initialize
-    @items = {
-      inflector: proc do
-        require 'ylem/helper/inflector'
-
-        Inflector.new
-      end.call
-    }
-
-    super
-  end
 
   # @param [String|Symbol] name
   # @return [Object]
@@ -37,7 +25,20 @@ class Ylem::Helper
 
   protected
 
+  # @return [Hash]
   attr_reader :items
+
+  def initialize
+    @items = {
+      inflector: proc do
+        require 'ylem/helper/inflector'
+
+        Inflector.new
+      end.call
+    }
+
+    super
+  end
 
   # @return [Hash]
   def to_h
