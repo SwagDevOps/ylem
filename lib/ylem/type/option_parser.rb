@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'ylem/type'
-require 'sys-proc'
+require_relative '../type'
 require 'optparse'
 
+# Base option parser
 class Ylem::Type::OptionParser < ::OptionParser
-  # Version
+  # Get version
   #
   # @return [String]
   def version
     [Ylem::VERSION,
      nil,
-     Ylem.version_info[:license_header]].join("\n")
+     Ylem::VERSION.license_header].join("\n")
   end
 end
