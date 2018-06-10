@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem'
+require_relative '../ylem'
 
 # Namespace for type(s)
 module Ylem::Type
