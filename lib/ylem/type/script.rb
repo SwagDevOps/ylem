@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative '../type'
+require_relative '../concern/helper'
 require 'pathname'
-require 'ylem/concern/helper'
 
 # Describe a script file
 #
