@@ -1,7 +1,6 @@
-# coding: utf-8
 # frozen_string_literal: true
 
-require 'ylem/helper'
+require_relative '../helper'
 require 'open3'
 
 # Helper intended to run subprocess (as ``Kernel#system``)
@@ -54,11 +53,11 @@ class Ylem::Helper::Subprocess
   # Log stream outputs (as ``stdout`` or ``stderr``)
   #
   # @param [::Logger|nil] logger
-  # @param [Symbol] as
+  # @param [Symbol] source
   # @param [IO] stream
   # @return [Thread|nil]
-  def log_stream(logger, as, stream)
-    severity = { stdout: :info, stderr: :warn }.fetch(as)
+  def log_stream(logger, source, stream)
+    severity = { stdout: :info, stderr: :warn }.fetch(source)
 
     return unless logger
 
