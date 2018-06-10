@@ -15,7 +15,7 @@ Kamaze.project do |project|
     'cs:correct', 'cs:control',
     'cs:pre-commit',
     'doc', 'doc:watch',
-    'gem',
+    'gem', 'gem:compile',
     'misc:gitignore',
     'shell', 'sources:license',
     'test',
