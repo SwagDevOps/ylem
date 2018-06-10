@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ylem/type'
+require_relative '../type'
 require 'pathname'
 require 'ylem/concern/helper'
 
@@ -55,8 +55,7 @@ class Ylem::Type::Script < Pathname
 
     called = {
       true  => [:ENDED, :debug],
-      false => [:ERROR, :error]
-
+      false => [:ERROR, :error],
     }.fetch(status.zero?)
 
     logger&.public_send(called.fetch(1), "#{called.fetch(0)} [#{status}]")
