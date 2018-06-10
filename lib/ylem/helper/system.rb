@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'ylem/helper'
-require 'ylem/concern/helper'
+require_relative '../helper'
+require_relative '../concern/helper'
 require 'sys/proc'
 
 # System helper
