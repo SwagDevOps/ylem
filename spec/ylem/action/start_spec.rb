@@ -3,16 +3,21 @@
 require 'ylem/action/start'
 require 'fileutils'
 
+# instance methods ---------------------------------------------------
+
 describe Ylem::Action::Start, :action, :'action/start' do
   let(:config) { sham!(:config_values).success }
   let(:subject) { described_class.new(config, [], quiet: true) }
 
-  [:command, :'command?'].each do |method|
-    it { expect(subject).to respond_to(method).with(0).arguments }
-  end
+  it { expect(subject).to respond_to(:command).with(0).arguments }
+  it { expect(subject).to respond_to(:command?).with(0).arguments }
+  it { expect(subject).to respond_to(:scripts).with(0).arguments }
+  it { expect(subject).to respond_to(:success?).with(0).arguments }
+  it { expect(subject).to respond_to(:keep_going?).with(0).arguments }
+  it { expect(subject).to respond_to(:execute).with(0).arguments }
 end
 
-# execute a ``success`` action ---------------------------------------
+# execute ``success`` + ``failure`` actions --------------------------
 
 { success: 0, failure: 131 }.each do |config_type, retcode|
   describe Ylem::Action::Start do
