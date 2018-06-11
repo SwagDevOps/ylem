@@ -11,6 +11,10 @@ end
 if lock
   require 'rubygems'
   require 'bundler/setup'
+
+  if Gem::Specification.find_all_by_name('kamaze-project').any?
+    require 'kamaze/project/core_ext/pp'
+  end
 end
 
 # Base module (namespace)
