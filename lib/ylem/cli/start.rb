@@ -19,4 +19,13 @@ class Ylem::Cli::Start < Ylem::Cli::Base
       }
     end
   end
+
+  def parser
+    options[:keep_going] = false
+
+    super
+      .on('-k', '--keep-going', 'Keep going even some scripts fails') do |b|
+      options[:keep_going] = true
+    end
+  end
 end

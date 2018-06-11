@@ -10,8 +10,6 @@ require 'open3'
 # any error issued during scripts execution.
 # In this case, a ``retcode`` equal to
 # ``Errno::ENOTRECOVERABLE::Errno`` (``131``) is used.
-#
-# @todo Implement a ``-k``, ``--keep-going`` option
 class Ylem::Action::Start < Ylem::Action::Base
   def execute
     unless execute_scripts(scripts).success?
@@ -42,6 +40,13 @@ class Ylem::Action::Start < Ylem::Action::Base
     !command.empty?
   end
 
+  # Keep going even some scripts fails
+  #
+  # @return [Boolean]
+  def keep_going?
+    !!options[:keep_going]
+  end
+
   protected
 
   # Execute scripts
@@ -53,7 +58,7 @@ class Ylem::Action::Start < Ylem::Action::Base
       unless script.execute(logger: logger, as: :basename).zero?
         self.retcode = :ENOTRECOVERABLE
 
-        return self
+        return self unless keep_going?
       end
       # rubocop:enable Style/Next
     end
