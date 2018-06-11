@@ -11,9 +11,12 @@ require 'open3'
 # In this case, a ``retcode`` equal to
 # ``Errno::ENOTRECOVERABLE::Errno`` (``131``) is used.
 class Ylem::Action::Start < Ylem::Action::Base
+  # @return [self]
   def execute
     unless execute_scripts(scripts).success?
       output('An error was encountered while executing scripts', to: :stderr)
+      # abort execution
+      return self unless keep_going?
     end
 
     self.exec(command)
@@ -52,6 +55,7 @@ class Ylem::Action::Start < Ylem::Action::Base
   # Execute scripts
   #
   # @param [Array<Ylem::Type::Script>] scripts
+  # @return [self]
   def execute_scripts(scripts)
     scripts.each do |script|
       # rubocop:disable Style/Next
