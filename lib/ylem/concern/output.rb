@@ -58,8 +58,8 @@ module Ylem::Concern::Output
   # @return [Hash]
   def default_outputs
     {
-      stdout: STDOUT,
-      stderr: STDERR,
+      stdout: $stdout,
+      stderr: $stderr,
     }
   end
 
