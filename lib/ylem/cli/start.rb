@@ -21,11 +21,14 @@ class Ylem::Cli::Start < Ylem::Cli::Base
   end
 
   def parser
-    options[:keep_going] = false
+    options.merge!(keep_going: false, verbose: false)
 
     super
       .on('-k', '--keep-going', 'Keep going even some scripts fails') do |b|
       options[:keep_going] = true
+    end
+      .on('-v', '--verbose', 'Be verbose') do |b|
+      options[:verbose] = true
     end
   end
 end
