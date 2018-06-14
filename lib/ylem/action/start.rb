@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'base'
+require_relative '../concern/timed_output'
 require 'open3'
 
 # Action triggered by CLI ``start`` command
@@ -11,12 +12,14 @@ require 'open3'
 # In this case, a ``retcode`` equal to
 # ``Errno::ENOTRECOVERABLE::Errno`` (``131``) is used.
 class Ylem::Action::Start < Ylem::Action::Base
+  include Ylem::Concern::TimedOutput
+
   # @return [self]
   def execute
-    unless execute_scripts(scripts).success?
-      output('An error was encountered while executing scripts', to: :stderr)
-      # abort execution
-      return self unless keep_going?
+    with_print_execution_status do
+      Thread.abort_on_exception = true
+
+      execute_scripts(scripts)
     end
 
     self.exec(command)
@@ -50,6 +53,19 @@ class Ylem::Action::Start < Ylem::Action::Base
     !!options[:keep_going]
   end
 
+  # @return [Boolean]
+  def verbose?
+    !!options[:verbose]
+  end
+
+  def script_options
+    {
+      logger: logger,
+      as: :basename,
+      debug: verbose?
+    }
+  end
+
   protected
 
   # Execute scripts
@@ -59,7 +75,7 @@ class Ylem::Action::Start < Ylem::Action::Base
   def execute_scripts(scripts)
     scripts.each do |script|
       # rubocop:disable Style/Next
-      unless script.execute(logger: logger, as: :basename).zero?
+      unless script.execute(script_options).zero?
         self.retcode = :ENOTRECOVERABLE
 
         return self unless keep_going?
@@ -82,13 +98,34 @@ class Ylem::Action::Start < Ylem::Action::Base
   def exec(command)
     action = Ylem::Action.get(:exec)
 
-    if command?
+    if command? and (success? or keep_going?)
       action.new(@base_config, command, options).execute
       # As ``exec`` will replace current process
       # it can hide previous exit code
       self.retcode = success? ? action.retcode : self.retcode
     end
 
+    self
+  end
+
+  # @return [self]
+  def with_print_execution_status
+    self.timed_output.time { yield(self) }
+    print_execution_status if verbose?
+
+    self
+  end
+
+  # @return [self]
+  def print_execution_status
+    status_line = 'Executed (with %<status>s) in %<time>.06fs [%<retcode>s]'
+    # rubocop:disable Style/NestedTernaryOperator
+    timed_output.print(status_line % {
+      time: timed_output.elapsed,
+      status: success? ? 'success' : 'failure',
+      retcode: success? ? retcode : (keep_going? ? 0 : retcode),
+    })
+    # rubocop:enable Style/NestedTernaryOperator
     self
   end
 end

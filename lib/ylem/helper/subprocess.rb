@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../helper'
+require_relative '../concern/timed_output'
 require 'open3'
 
 # Helper intended to run subprocess (as ``Kernel#system``)
@@ -15,7 +16,15 @@ require 'open3'
 # [``exec``](https://linux.die.net/man/3/exec)
 # by the use of a subshell (``sh -c``), parameters are automagically
 # compacted and casted to ``String``.
+#
+# @todo Implement verbose
 class Ylem::Helper::Subprocess
+  include Ylem::Concern::TimedOutput
+
+  def initialize
+    @severities = { stdout: :info, stderr: :warn }
+  end
+
   # Run a command
   #
   # returns error status as ``Fixnum`` (``0`` is success)
@@ -27,22 +36,30 @@ class Ylem::Helper::Subprocess
     # protect against ``exec``, using ``sh -c``
     command = ['sh', '-c'] + command.to_a.compact.map(&:to_s)
 
-    run_command(command, options[:logger])
+    run_command(command, options[:logger], !!options[:debug])
   end
 
   protected
+
+  # Get severities
+  #
+  # Indexed by output, as: ``{ stdout: :info, stderr: :warn }``
+  #
+  # @return [Hash]
+  attr_reader :severities
 
   # Run a command with logging (where ``logger`` can be ``nil``)
   #
   # @param [Array] command
   # @param [::Logger|nil] logger
+  # @param [Boolean] debug
   # @return [Fixnum] as status code
-  def run_command(command, logger)
+  def run_command(command, logger, debug = false)
     Open3.popen3(*command) do |stdin, stdout, stderr, external|
       stdin.close
 
       { stdout: stdout, stderr: stderr }
-        .map { |source, stream| log_stream(logger, source, stream) }
+        .map { |source, stream| log_stream(logger, source, stream, debug) }
         .map { |thread| thread&.join }
 
       external.join
@@ -55,20 +72,34 @@ class Ylem::Helper::Subprocess
   # @param [::Logger|nil] logger
   # @param [Symbol] source
   # @param [IO] stream
+  # @param [Boolean] debug
   # @return [Thread|nil]
-  def log_stream(logger, source, stream)
-    severity = { stdout: :info, stderr: :warn }.fetch(source)
+  def log_stream(logger, source, stream, debug = false)
+    severity = severities.fetch(source)
 
     return unless logger
 
+    log(logger, severity, stream, debug)
+  end
+
+  def log(logger, severity, stream, debug = false)
     Thread.new do
       until stream.eof?
         line = stream.gets.strip
+        next if line.empty?
 
-        logger.public_send(severity, line) unless line.empty?
+        logger.public_send(severity, line)
+        timed_output.print(line, to: fetch_output(severity)) if debug
       end
-
       stream.close
     end
+  end
+
+  # Fetch output by given severity
+  #
+  # @param [Symbol] severity
+  # @return [Symbol]
+  def fetch_output(severity)
+    severities.invert.fetch(severity)
   end
 end

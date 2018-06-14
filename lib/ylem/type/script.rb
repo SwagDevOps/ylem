@@ -2,6 +2,7 @@
 
 require_relative '../type'
 require_relative '../concern/helper'
+require_relative '../concern/timed_output'
 require 'pathname'
 
 # Describe a script file
@@ -9,6 +10,7 @@ require 'pathname'
 # mostly a simple specialization based on ``Pathname``
 class Ylem::Type::Script < Pathname
   include Ylem::Concern::Helper
+  include Ylem::Concern::TimedOutput
 
   # Denote is a script (executable file)
   #
@@ -32,9 +34,10 @@ class Ylem::Type::Script < Pathname
   # @see logged_with
   def execute(options = {})
     logger = options[:logger]&.as(public_send(options[:as] || :to_s))
-    runner = helper.get('subprocess')
 
-    logged_with(logger) { runner.run([self], logger: logger).to_i }
+    logged_with(logger, !!options[:debug]) do
+      runner.run([self], logger: logger, debug: !!options[:debug]).to_i
+    end
   end
 
   protected
@@ -47,10 +50,13 @@ class Ylem::Type::Script < Pathname
   # On failure, ``ENDED`` is replaced by ``ERROR``.
   #
   # @param [::Logger] logger
+  # @param [Boolean] debug
   # @yieldreturn [::Logger]
   # @return [Integer]
-  def logged_with(logger)
+  def logged_with(logger, debug = true)
     logger&.debug('BEGIN')
+    timed_output.print("BEGIN: #{self.basename}") if debug
+
     status = yield logger
 
     called = {
@@ -59,7 +65,15 @@ class Ylem::Type::Script < Pathname
     }.fetch(status.zero?)
 
     logger&.public_send(called.fetch(1), "#{called.fetch(0)} [#{status}]")
+    timed_output.print("ENDED: #{self.basename} [#{status}]") if debug
 
     status
+  end
+
+  # Get script runner (``subprocess``)
+  #
+  # @return [Ylem::Helper::Subprocess]
+  def runner
+    helper.get('subprocess')
   end
 end
