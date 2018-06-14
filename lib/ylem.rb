@@ -19,5 +19,7 @@ end
 
 # Base module (namespace)
 module Ylem
+  require 'English'
+
   autoload :VERSION, 'ylem/VERSION'
 end
