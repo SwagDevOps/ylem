@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# frozen_string_literal: true
 
 # Sample of use:
 #
@@ -16,10 +16,8 @@ end
 # ````
 # it { expect(parsed).to have_all_symbol_keys }
 # ````
-#
-# @see https://relishapp.com/rspec/rspec-expectations/v/2-4/docs/built-in-matchers/predicate-matchers#should-not-have-all-string-keys-(based-on-custom-#has-all-string-keys?-method)
 RSpec::Matchers.define :have_all_symbol_keys do
   match do |subject|
-    subject.keys.all? { |k| Symbol === k }
+    subject.keys.all? { |k| k.is_a?(Symbol) }
   end
 end
