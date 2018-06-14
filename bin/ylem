@@ -1,22 +1,17 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
-#
-# rubyc bin/ylem --keep-tmpdir -r . -o ylem
+
 require 'pathname'
 
-$PROGRAM_NAME = 'ylem'
-
-# require lib requirements -------------------------------------------
-
-[nil, :cli].each do |r|
-  req = r ? "#{$PROGRAM_NAME}/#{r}" : $PROGRAM_NAME
-
-  require Pathname.new(__dir__).join('..', 'lib', '%s' % req)
+Pathname.new(__dir__).join('../lib', 'ylem.rb').tap do |file|
+  require_relative file if file.file?
 end
 
-# execution ----------------------------------------------------------
+if __FILE__ == $PROGRAM_NAME
+  require 'ylem/cli'
+  require 'sys/proc'
 
-require 'sys/proc'
-
-Sys::Proc.progname = nil
-exit Ylem::Cli.run.to_i
+  $PROGRAM_NAME = Pathname.new(__FILE__).basename.to_s
+  Sys::Proc.progname = $PROGRAM_NAME
+  exit Ylem::Cli.run.to_i
+end
