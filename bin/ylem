@@ -7,11 +7,9 @@ Pathname.new(__dir__).join('../lib', 'ylem.rb').tap do |file|
   require_relative file if file.file?
 end
 
-if __FILE__ == $PROGRAM_NAME
-  require 'ylem/cli'
-  require 'sys/proc'
+require 'ylem/cli'
+require 'sys/proc'
 
-  $PROGRAM_NAME = Pathname.new(__FILE__).basename.to_s
-  Sys::Proc.progname = $PROGRAM_NAME
-  exit Ylem::Cli.run.to_i
-end
+$PROGRAM_NAME = Pathname.new(__FILE__).basename.to_s
+Sys::Proc.progname = $PROGRAM_NAME
+exit Ylem::Cli.run.to_i
