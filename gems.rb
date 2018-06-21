@@ -7,6 +7,7 @@ group :default do
   gem 'dotenv', '~> 2.4'
   gem 'dry-inflector', '~> 0.1'
   gem 'hash_dot', '~> 2.1'
+  gem 'kamaze-version', '~> 1.0'
   gem 'sys-proc', '~> 1.1'
 end
 

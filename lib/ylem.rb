@@ -21,5 +21,5 @@ end
 module Ylem
   require 'English'
 
-  autoload :VERSION, 'ylem/VERSION'
+  autoload :VERSION, 'ylem/version'
 end
