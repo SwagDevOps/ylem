@@ -6,27 +6,66 @@
 # at the moment, gem with higher required_ruby_version is activesupport
 
 Gem::Specification.new do |s|
-  s.name        = 'ylem'
-  s.version     = '0.0.1'
-  s.date        = '2017-05-18'
-  s.summary     = 'Kind of init process'
-  s.description = 'A simple init scheme for Unix-like operating systems that initializes processes'
+  s.name        = "ylem"
+  s.version     = "0.0.1"
+  s.date        = "2017-05-18"
+  s.summary     = "Kind of init process"
+  s.description = "A simple init scheme for Unix-like operating systems that initializes processes"
 
   s.licenses    = ["GPL-3.0"]
   s.authors     = ["Dimitri Arrigoni"]
-  s.email       = 'dimitri@arrigoni.me'
-  s.homepage    = 'https://github.com/SwagDevOps/ylem'
+  s.email       = "dimitri@arrigoni.me"
+  s.homepage    = "https://github.com/SwagDevOps/ylem"
 
-  # Require version >= 2.3.0 with safe navigation operator &.
-  s.required_ruby_version = '>= 2.3.0'
-  s.require_paths = ['lib']
-  s.bindir        = 'bin'
-  s.executables   = Dir.glob('bin/*').map { |f| File.basename(f) }
-  s.files         = ['.yardopts',
-                     'bin/*',
-                     'lib/**/*.rb',
-                     'lib/**/version.yml'
-                    ].map { |pt| Dir.glob(pt) }.flatten
+  # MUST follow the higher required_ruby_version
+  # requires version >= 2.3.0 due to safe navigation operator &
+  s.required_ruby_version = ">= 2.3.0"
+  s.require_paths = ["lib"]
+  s.bindir        = "bin"
+  s.executables   = ["ylem"]
+  s.files         = [
+    ".yardopts",
+    "bin/ylem",
+    "lib/ylem.rb",
+    "lib/ylem/action.rb",
+    "lib/ylem/action/base.rb",
+    "lib/ylem/action/dump.rb",
+    "lib/ylem/action/exec.rb",
+    "lib/ylem/action/start.rb",
+    "lib/ylem/cli.rb",
+    "lib/ylem/cli/base.rb",
+    "lib/ylem/cli/dump.rb",
+    "lib/ylem/cli/exec.rb",
+    "lib/ylem/cli/start.rb",
+    "lib/ylem/concern.rb",
+    "lib/ylem/concern/action.rb",
+    "lib/ylem/concern/cli.rb",
+    "lib/ylem/concern/cli/output.rb",
+    "lib/ylem/concern/cli/parse.rb",
+    "lib/ylem/concern/helper.rb",
+    "lib/ylem/concern/output.rb",
+    "lib/ylem/concern/service.rb",
+    "lib/ylem/concern/timed_output.rb",
+    "lib/ylem/helper.rb",
+    "lib/ylem/helper/config.rb",
+    "lib/ylem/helper/config/decorator.rb",
+    "lib/ylem/helper/config/scripts_lister.rb",
+    "lib/ylem/helper/config_reader.rb",
+    "lib/ylem/helper/errno.rb",
+    "lib/ylem/helper/inflector.rb",
+    "lib/ylem/helper/subprocess.rb",
+    "lib/ylem/helper/system.rb",
+    "lib/ylem/helper/system/path.rb",
+    "lib/ylem/helper/timed_output.rb",
+    "lib/ylem/helper/yaml.rb",
+    "lib/ylem/service.rb",
+    "lib/ylem/service/logger.rb",
+    "lib/ylem/type.rb",
+    "lib/ylem/type/option_parser.rb",
+    "lib/ylem/type/script.rb",
+    "lib/ylem/version.rb",
+    "lib/ylem/version.yml",
+  ]
 
   s.add_runtime_dependency("dotenv", ["~> 2.4"])
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
