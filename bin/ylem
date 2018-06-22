@@ -3,13 +3,16 @@
 
 require 'pathname'
 
-Pathname.new(__dir__).join('../lib', 'ylem.rb').tap do |file|
+Pathname.new(__dir__).join('..', 'lib', 'ylem.rb').tap do |file|
   require_relative file if file.file?
 end
 
 require 'ylem/cli'
 require 'sys/proc'
 
-$PROGRAM_NAME = Pathname.new(__FILE__).basename.to_s
-Sys::Proc.progname = $PROGRAM_NAME
+Pathname.new(__FILE__).basename.to_s.tap do |progname|
+  $PROGRAM_NAME      = progname
+  Sys::Proc.progname = progname
+end
+
 exit Ylem::Cli.run.to_i
