@@ -11,23 +11,23 @@
 
 @executables = Dir.glob('bin/*').map { |f| File.basename(f) }
 
-self.singleton_class.define_method(:_q) { |input| input.to_s.inspect }
+self.singleton_class.define_method(:quote) { |input| input.to_s.inspect }
 ?>
 
 # Should follow the higher required_ruby_version
 # at the moment, gem with higher required_ruby_version is activesupport
 
 Gem::Specification.new do |s|
-  s.name        = #{_q(@name)}
-  s.version     = #{_q(@version)}
-  s.date        = #{_q(@date)}
-  s.summary     = #{_q(@summary)}
-  s.description = #{_q(@description)}
+  s.name        = #{quote(@name)}
+  s.version     = #{quote(@version)}
+  s.date        = #{quote(@date)}
+  s.summary     = #{quote(@summary)}
+  s.description = #{quote(@description)}
 
   s.licenses    = #{@licenses}
   s.authors     = #{@authors}
-  s.email       = #{_q(@email)}
-  s.homepage    = #{_q(@homepage)}
+  s.email       = #{quote(@email)}
+  s.homepage    = #{quote(@homepage)}
 
   # MUST follow the higher required_ruby_version
   # requires version >= 2.3.0 due to safe navigation operator &
@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
   s.executables   = #{@executables}
   s.files         = [
     <?rb for file in @files ?>
-    #{"%s," % _q(file)}
+    #{"%s," % quote(file)}
     <?rb end ?>
   ]
 
