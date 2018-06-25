@@ -27,7 +27,8 @@ Then scripts are executed alphabetically sorted.
 In a ``Dockerfile``:
 
 ```
-ENTRYPOINT ["dumb-init", "-c", "--", "ylem", "start", "--", "sleep", "infinity"]
+ENTRYPOINT ["dumb-init", "-c", "--", "ylem", "start", "--"]
+CMD ["sleep", "infinity"]
 ```
 
 ## Configuration
