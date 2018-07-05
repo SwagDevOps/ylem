@@ -96,10 +96,10 @@ class Ylem::Action::Start < Ylem::Action::Base
   # @return [self]
   # @see Ylem::Action::Exec
   def exec(command)
-    action = Ylem::Action.get(:exec)
+    action_class = Ylem::Action.get(:exec)
 
     if command? and (success? or keep_going?)
-      action.new(@base_config, command, options).execute
+      action = action_class.new(@base_config, command, options).execute
       # As ``exec`` will replace current process
       # it can hide previous exit code
       self.retcode = success? ? action.retcode : self.retcode
