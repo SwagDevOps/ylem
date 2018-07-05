@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require_relative '../helper'
-require 'json'
-require 'pathname'
-require 'yaml'
 
 # Yaml helper built on top of ``YAML`
 class Ylem::Helper::Yaml
+  autoload :JSON, 'json'
+  autoload :YAML, 'yaml'
+  autoload :Pathname, 'pathname'
+
   # Parse Yaml source into a Ruby data structure
   #
   # @param [String] content
