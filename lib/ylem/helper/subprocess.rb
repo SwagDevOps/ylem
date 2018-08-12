@@ -21,8 +21,12 @@ require 'open3'
 class Ylem::Helper::Subprocess
   include Ylem::Concern::TimedOutput
 
+  autoload :Manager, "#{__dir__}/subprocess/manager"
+  autoload :Streamer, "#{__dir__}/subprocess/streamer"
+
   def initialize
     @severities = { stdout: :info, stderr: :warn }
+    @external = nil
   end
 
   # Run a command
@@ -57,13 +61,13 @@ class Ylem::Helper::Subprocess
   def run_command(command, logger, debug = false)
     Open3.popen3(*command) do |stdin, stdout, stderr, external|
       stdin.close
+      external.tap { Manager.new(external) }.tap do
+        { stdout: stdout, stderr: stderr }
+          .map { |source, stream| log_stream(logger, source, stream, debug) }
+          .map { |thread| thread&.join }
 
-      { stdout: stdout, stderr: stderr }
-        .map { |source, stream| log_stream(logger, source, stream, debug) }
-        .map { |thread| thread&.join }
-
-      external.join
-      external.value.exitstatus
+        external.join
+      end.value.exitstatus
     end
   end
 
@@ -83,10 +87,11 @@ class Ylem::Helper::Subprocess
   end
 
   def log(logger, severity, stream, debug = false)
-    Thread.new do
+    stream = Streamer.new(stream)
+
+    Thread.new do |thr|
       until stream.eof?
         line = stream.gets.strip
-        next if line.empty?
 
         logger.public_send(severity, line)
         timed_output.print(line, to: fetch_output(severity)) if debug
@@ -102,4 +107,10 @@ class Ylem::Helper::Subprocess
   def fetch_output(severity)
     severities.invert.fetch(severity)
   end
+
+  # @return [Process::Waiter]
+  #
+  # @see https://ruby-doc.org/core-2.3.0/Thread.html
+  # @see https://ruby-doc.org/core-2.3.0/Process/Waiter.html
+  attr_accessor :external
 end
