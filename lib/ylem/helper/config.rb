@@ -24,9 +24,9 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     os = helper.get('system')
 
     {
-      'logger.file':      os.path(:var, 'log', "#{progname}.log"),
-      'logger.level':     :info,
-      'scripts.path':     os.path(:etc, progname, 'scripts'),
+      'logger.file': os.path(:var, 'log', "#{progname}.log"),
+      'logger.level': :info,
+      'scripts.path': os.path(:etc, progname, 'scripts'),
       'environment.file': os.path(:etc, 'environment')
     }
   end
