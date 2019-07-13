@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# License GPLv3+: GNU GPL version 3 or later
+# <http://www.gnu.org/licenses/gpl.html>.
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
 require_relative '../type'
 require_relative '../concern/helper'
 require_relative '../concern/timed_output'
@@ -60,7 +66,7 @@ class Ylem::Type::Script < Pathname
     status = yield logger
 
     called = {
-      true  => [:ENDED, :debug],
+      true => [:ENDED, :debug],
       false => [:ERROR, :error],
     }.fetch(status.zero?)
 

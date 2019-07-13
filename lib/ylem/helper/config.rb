@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# License GPLv3+: GNU GPL version 3 or later
+# <http://www.gnu.org/licenses/gpl.html>.
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
 require_relative '../helper'
 require_relative 'config_reader'
 
@@ -18,9 +24,9 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
     os = helper.get('system')
 
     {
-      'logger.file':      os.path(:var, 'log', "#{progname}.log"),
-      'logger.level':     :info,
-      'scripts.path':     os.path(:etc, progname, 'scripts'),
+      'logger.file': os.path(:var, 'log', "#{progname}.log"),
+      'logger.level': :info,
+      'scripts.path': os.path(:etc, progname, 'scripts'),
       'environment.file': os.path(:etc, 'environment')
     }
   end

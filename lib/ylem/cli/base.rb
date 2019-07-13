@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# License GPLv3+: GNU GPL version 3 or later
+# <http://www.gnu.org/licenses/gpl.html>.
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
 require_relative '../cli'
 require_relative '../concern/helper'
 require_relative '../concern/action'
@@ -70,9 +76,7 @@ class Ylem::Cli::Base
 
   # @return [OptionParser]
   def parser
-    # rubocop:disable Performance/RedundantMerge
     (options = @options).merge!(use_defaults: true)
-    # rubocop:enable Performance/RedundantMerge
 
     Ylem::Type::OptionParser.new do |opts|
       opts.banner = self.class.banner
