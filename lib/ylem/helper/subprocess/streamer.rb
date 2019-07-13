@@ -20,6 +20,7 @@ class Ylem::Helper::Subprocess::Streamer
     stream.eof?
   rescue IOError => e
     raise(e) unless e.message =~ /stream closed/
+
     return true
   end
 
