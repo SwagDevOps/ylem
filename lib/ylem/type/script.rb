@@ -66,7 +66,7 @@ class Ylem::Type::Script < Pathname
     status = yield logger
 
     called = {
-      true  => [:ENDED, :debug],
+      true => [:ENDED, :debug],
       false => [:ERROR, :error],
     }.fetch(status.zero?)
 
