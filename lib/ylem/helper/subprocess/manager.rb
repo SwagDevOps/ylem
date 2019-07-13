@@ -65,6 +65,7 @@ class Ylem::Helper::Subprocess::Manager
     Timeout.timeout(timeout) do
       loop do
         break if kill(:SIGTERM)
+
         sleep(0.25)
       end
     end
