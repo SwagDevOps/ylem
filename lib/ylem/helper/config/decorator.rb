@@ -69,15 +69,15 @@ class Ylem::Helper::Config::Decorator
   def derived
     {
       scripts: {
-        path:        loaded.fetch(:'scripts.path'),
+        path: loaded.fetch(:'scripts.path'),
         executables: list_scripts(loaded),
       },
       logger: {
-        file:  loaded.fetch(:'logger.file'),
+        file: loaded.fetch(:'logger.file'),
         level: loaded.fetch(:'logger.level').to_s.upcase,
       },
       environment: {
-        file:   loaded.fetch(:'environment.file'),
+        file: loaded.fetch(:'environment.file'),
         loaded: {},
       },
     }
