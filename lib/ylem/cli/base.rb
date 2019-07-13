@@ -76,9 +76,7 @@ class Ylem::Cli::Base
 
   # @return [OptionParser]
   def parser
-    # rubocop:disable Performance/RedundantMerge
     (options = @options).merge!(use_defaults: true)
-    # rubocop:enable Performance/RedundantMerge
 
     Ylem::Type::OptionParser.new do |opts|
       opts.banner = self.class.banner
