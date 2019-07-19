@@ -26,6 +26,17 @@ end
 # Base module (namespace)
 module Ylem
   require 'English'
+  autoload(:Pathname, 'pathname')
 
-  autoload :VERSION, 'ylem/version'
+  # @formatter:off
+  {
+    VERSION: 'version',
+    Action: 'action',
+    Cli: 'cli',
+    Concern: 'concern',
+    Helper: 'helper',
+    Service: 'service',
+    Type: 'type',
+  }.each { |s, fp| autoload(s, Pathname.new(__dir__).join("ylem/#{fp}")) }
+  # @formatter:on
 end
