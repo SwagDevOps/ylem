@@ -7,7 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../ylem'
-require_relative 'concern/helper'
 
 # Actions are merely called from CLI
 module Ylem::Action

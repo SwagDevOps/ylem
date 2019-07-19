@@ -10,4 +10,16 @@ require_relative '../ylem'
 
 # Namespace for ``Concern``
 module Ylem::Concern
+  autoload(:Pathname, 'pathname')
+
+  # @formatter:off
+  {
+    Action: 'action',
+    Cli: 'cli',
+    Helper: 'helper',
+    Output: 'output',
+    Service: 'service',
+    TimedOutput: 'timed_output',
+  }.each { |s, fp| autoload(s, Pathname.new(__dir__).join("concern/#{fp}")) }
+  # @formatter:on
 end
