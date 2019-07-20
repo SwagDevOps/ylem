@@ -17,6 +17,8 @@ require_relative 'base'
 # @see https://ruby-doc.org/core-2.4.1/Kernel.html#method-i-exec
 class Ylem::Action::Exec < Ylem::Action::Base
   def execute
+    gc.start
+
     Kernel.exec(*command)
   rescue Errno::ENOENT => e
     on_error(e, e.class.name.split('::')[-1])
