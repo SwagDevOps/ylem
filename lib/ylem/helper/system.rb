@@ -7,12 +7,17 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../helper'
-require_relative '../concern/helper'
 require 'sys/proc'
 
 # System helper
 class Ylem::Helper::System
   include Ylem::Concern::Helper
+
+  # @formatter:off
+  {
+    Path: 'path',
+  }.each { |s, fp| autoload(s, "#{__dir__}/system/#{fp}") }
+  # @formatter:on
 
   # Get program name
   #

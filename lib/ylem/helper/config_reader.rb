@@ -7,13 +7,12 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../helper'
-require_relative '../concern/helper'
-require 'pathname'
 
 # Helper intended to read config files
 #
 # Mostly based on ``Ylem::Helper::Yaml``
 class Ylem::Helper::ConfigReader
+  autoload(:Pathname, 'pathname')
   include Ylem::Concern::Helper
 
   # Default config

@@ -7,8 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative 'base'
-require_relative '../concern/timed_output'
-require 'open3'
 
 # Action triggered by CLI ``start`` command
 #

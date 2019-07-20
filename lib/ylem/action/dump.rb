@@ -7,7 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative 'base'
-require 'json'
 
 # Action intended to display parsed (and derivated) config
 #
@@ -17,6 +16,8 @@ require 'json'
 # @see Ylem.Helper.Config.Decorator
 # @see https://github.com/adsteel/hash_dot
 class Ylem::Action::Dump < Ylem::Action::Base
+  autoload(:JSON, 'json')
+
   # Get options
   #
   # @return [Hash]

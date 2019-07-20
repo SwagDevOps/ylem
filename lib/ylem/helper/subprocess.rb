@@ -7,8 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../helper'
-require_relative '../concern/timed_output'
-require 'open3'
 
 # Helper intended to run subprocess (as ``Kernel#system``)
 #
@@ -27,8 +25,13 @@ require 'open3'
 class Ylem::Helper::Subprocess
   include Ylem::Concern::TimedOutput
 
-  autoload :Manager, "#{__dir__}/subprocess/manager"
-  autoload :Streamer, "#{__dir__}/subprocess/streamer"
+  autoload(:Open3, 'open3')
+  # @formatter:off
+  {
+    Manager: 'manager',
+    Streamer: 'streamer',
+  }.each { |s, fp| autoload(s, "#{__dir__}/subprocess/#{fp}") }
+  # @formatter:on
 
   def initialize
     @severities = { stdout: :info, stderr: :warn }

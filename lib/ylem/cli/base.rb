@@ -7,11 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../cli'
-require_relative '../concern/helper'
-require_relative '../concern/action'
-require_relative '../concern/cli/output'
-require_relative '../concern/cli/parse'
-require_relative '../type/option_parser'
 
 # @abstract Base command
 class Ylem::Cli::Base
