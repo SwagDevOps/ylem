@@ -22,25 +22,28 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   def defaults
     os = helper.get('system')
 
+    # @formatter:off
     {
       'logger.file': os.path(:var, 'log', "#{progname}.log"),
       'logger.level': :info,
+      'gc.enabled': true,
       'scripts.path': os.path(:etc, progname, 'scripts'),
       'environment.file': os.path(:etc, 'environment')
     }
+    # @formatter:on
   end
 
   def parse_file(filepath = default_file)
-    filepath = Pathname.new(filepath)
-    dir = pwd
-    parsed = {}
+    Pathname.new(filepath).tap do |file|
+      dir = pwd
 
-    if filepath.exist?
-      dir = filepath.realpath.dirname
-      filepath = filepath.realpath
+      if file.exist?
+        dir = file.realpath.dirname
+        file = file.realpath
+      end
+
+      Dir.chdir(dir) { return super(file) }
     end
-
-    Dir.chdir(dir) { parsed = super(filepath) }
   end
 
   # Parse string content (YAML) merging with defauts

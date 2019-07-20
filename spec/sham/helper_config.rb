@@ -18,9 +18,11 @@ progname = Sys::Proc.progname
 #
 # @see Ylem::Helper::Config#defaults
 Sham.config(FactoryStruct, File.basename(__FILE__, '.*').to_sym) do |c|
+  # @formatter:off
   c.attributes do
     {
       defaults: {
+        'gc.enabled': true,
         'logger.file': Pathname.new('/var').join('log', "#{progname}.log"),
         'logger.level': :info,
         'scripts.path': Pathname.new('/etc').join(progname, 'scripts'),
@@ -28,4 +30,5 @@ Sham.config(FactoryStruct, File.basename(__FILE__, '.*').to_sym) do |c|
       }
     }
   end
+  # @formatter:on
 end

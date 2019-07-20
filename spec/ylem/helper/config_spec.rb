@@ -5,10 +5,10 @@ require 'pathname'
 
 describe Ylem::Helper::Config, :helper, :'helper/config' do
   {
-    defaults:     [0],
+    defaults: [0],
     default_file: [0],
-    parse_file:   [0, 1],
-    parse:        [1],
+    parse_file: [0, 1],
+    parse: [1],
   }.each do |method, counts|
     counts.each do |n|
       it { expect(subject).to respond_to(method).with(n).arguments }

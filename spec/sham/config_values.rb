@@ -9,10 +9,12 @@ require 'pathname'
 #
 # Each dataset SHOULD match given config path
 Sham.config(FactoryStruct, File.basename(__FILE__, '.*').to_sym) do |c|
+  # @formatter:off
   c.attributes do
     {
 
       success: {
+        'gc.enabled': false,
         'logger.file': Pathname.new(SPEC_DIR).join('var/log/success.log'),
         'logger.level': :DEBUG,
         'scripts.path': Pathname.new(SAMPLES_DIR).realpath
@@ -21,6 +23,7 @@ Sham.config(FactoryStruct, File.basename(__FILE__, '.*').to_sym) do |c|
                                     .join('environment'),
       },
       failure: {
+        'gc.enabled': false,
         'logger.file': Pathname.new(SPEC_DIR).join('var/log/failure.log'),
         'logger.level': :DEBUG,
         'scripts.path': Pathname.new(SAMPLES_DIR).realpath
@@ -30,4 +33,5 @@ Sham.config(FactoryStruct, File.basename(__FILE__, '.*').to_sym) do |c|
       }
     }
   end
+  # @formatter:on
 end
