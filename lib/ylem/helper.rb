@@ -13,6 +13,19 @@ require 'singleton'
 class Ylem::Helper
   include ::Singleton
 
+  # @formatter:off
+  {
+    Config: 'config',
+    ConfigReader: 'config_reader',
+    Errno: 'errno',
+    Inflector: 'inflector',
+    Subprocess: 'subprocess',
+    System: 'system',
+    TimedOutput: 'timed_output',
+    Yaml: 'yaml',
+  }.each { |s, fp| autoload(s, "#{__dir__}/helper/#{fp}") }
+  # @formatter:on
+
   # @param [String|Symbol] name
   # @return [Object]
   #
@@ -37,8 +50,6 @@ class Ylem::Helper
   def initialize
     @items = {
       inflector: proc do
-        require 'ylem/helper/inflector'
-
         Inflector.new
       end.call
     }

@@ -10,4 +10,10 @@ require_relative '../concern'
 
 # Namespace for CLI related concerns
 module Ylem::Concern::Cli
+  # @formatter:off
+  {
+    Output: 'output',
+    Parse: 'parse',
+  }.each { |s, fp| autoload(s, "#{__dir__}/cli/#{fp}") }
+  # @formatter:on
 end
