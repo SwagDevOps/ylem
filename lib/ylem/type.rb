@@ -10,4 +10,10 @@ require_relative '../ylem'
 
 # Namespace for type(s)
 module Ylem::Type
+  # @formatter:off
+  {
+    OptionParser: 'option_parser',
+    Script: 'script',
+  }.each { |s, fp| autoload(s, "#{__dir__}/type/#{fp}") }
+  # @formatter:on
 end

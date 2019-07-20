@@ -7,10 +7,19 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../ylem'
-require_relative 'concern/helper'
 
 # Actions are merely called from CLI
 module Ylem::Action
+  # @formatter:off
+  {
+    Base: 'base',
+    Dump: 'dump',
+    Exec: 'exec',
+    Start: 'start',
+    Type: 'type',
+  }.each { |s, fp| autoload(s, "#{__dir__}/action/#{fp}") }
+  # @formatter:on
+
   class << self
     include Ylem::Concern::Helper
 

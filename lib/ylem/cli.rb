@@ -7,10 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../ylem'
-require_relative 'concern/helper'
-require_relative 'concern/cli/output'
-require_relative 'concern/cli/parse'
-require_relative 'type/option_parser'
 
 # CLI interface
 class Ylem::Cli

@@ -10,4 +10,14 @@ require_relative '../ylem'
 
 # Namespace for ``Concern``
 module Ylem::Concern
+  # @formatter:off
+  {
+    Action: 'action',
+    Cli: 'cli',
+    Helper: 'helper',
+    Output: 'output',
+    Service: 'service',
+    TimedOutput: 'timed_output',
+  }.each { |s, fp| autoload(s, "#{__dir__}/concern/#{fp}") }
+  # @formatter:on
 end

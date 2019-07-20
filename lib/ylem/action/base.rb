@@ -7,9 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../action'
-require_relative '../concern/helper'
-require_relative '../concern/service'
-require_relative '../concern/output'
 
 # @abstract Subclass and override {#execute} to implement
 #           a custom ``Action`` class.

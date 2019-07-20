@@ -8,24 +8,41 @@
 
 $LOAD_PATH.unshift(__dir__)
 
-lock = Dir.chdir("#{__dir__}/..") do
-  [['gems.rb', 'gems.locked'], ['Gemfile', 'Gemfile.lock']]
-    .map { |m| Dir.glob(m).size >= 2 }
-    .include?(true)
-end
-
-if lock
-  require 'rubygems'
-  require 'bundler/setup'
-
-  if Gem::Specification.find_all_by_name('kamaze-project').any?
-    require 'kamaze/project/core_ext/pp'
-  end
-end
-
 # Base module (namespace)
 module Ylem
   require 'English'
+  autoload(:Pathname, 'pathname')
 
-  autoload :VERSION, 'ylem/version'
+  class << self
+    protected
+
+    # @return [Boolean]
+    def bundled?
+      # @formatter:off
+      [['gems.rb', 'gems.locked'], ['Gemfile', 'Gemfile.lock']]
+        .map { |m| Dir.glob("#{__dir__}/../#{m}").size >= 2 }
+        .include?(true)
+      # @formatter:on
+    end
+  end
+
+  # @formatter:off
+  {
+    VERSION: 'version',
+    Action: 'action',
+    Cli: 'cli',
+    Concern: 'concern',
+    Helper: 'helper',
+    Service: 'service',
+    Type: 'type',
+  }.each { |s, fp| autoload(s, Pathname.new(__dir__).join("ylem/#{fp}")) }
+  # @formatter:on
+
+  if bundled?
+    require 'bundler/setup'
+
+    if Gem::Specification.find_all_by_name('kamaze-project').any?
+      require 'kamaze/project/core_ext/pp'
+    end
+  end
 end

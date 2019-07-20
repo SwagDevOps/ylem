@@ -7,10 +7,11 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative 'base'
-require 'optparse'
 
 # CLI ``exec`` command class
 class Ylem::Cli::Exec < Ylem::Cli::Base
+  autoload(:OptionParser, 'optparse')
+
   class << self
     # Get summary (short description)
     #

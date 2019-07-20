@@ -7,7 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../helper'
-require_relative 'config_reader'
 
 # Config helper
 class Ylem::Helper::Config < Ylem::Helper::ConfigReader
