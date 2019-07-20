@@ -5,10 +5,10 @@ require 'pathname'
 
 describe Ylem::Helper::System::Path do
   {
-    rootdir:    [0],
+    rootdir: [0],
     sysconfdir: [0],
-    etcdir:     [0],
-    vardir:     [0],
+    etcdir: [0],
+    vardir: [0],
   }.each do |method, counts|
     counts.each do |n|
       it { expect(subject).to respond_to(method).with(n).arguments }
