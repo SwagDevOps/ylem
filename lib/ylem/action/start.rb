@@ -20,13 +20,15 @@ class Ylem::Action::Start < Ylem::Action::Base
 
   # @return [self]
   def execute
-    with_print_execution_status do
-      Thread.abort_on_exception = true
+    self.tap do
+      with_print_execution_status do
+        Thread.abort_on_exception = true
 
-      execute_scripts(scripts)
+        execute_scripts(scripts)
+      end
+      self.exec(command) if command? and (success? or keep_going?)
+      gc.start
     end
-
-    self.exec(command)
   end
 
   # Get scripts (to be executed)
@@ -100,13 +102,11 @@ class Ylem::Action::Start < Ylem::Action::Base
   # @return [self]
   # @see Ylem::Action::Exec
   def exec(command)
-    Ylem::Action.get(:exec).tap do |klass|
-      if command? and (success? or keep_going?)
-        action = klass.new(@config, command, options).execute
-        # As ``exec`` will replace current process
-        # it can hide previous exit code
-        self.retcode = success? ? action.retcode : self.retcode
-      end
+    Ylem::Action.get(:exec).new(@config, command, options).tap do |action|
+      action.execute
+      # As ``exec`` will replace current process
+      # it can hide previous exit code
+      self.retcode = success? ? action.retcode : self.retcode
     end
 
     self

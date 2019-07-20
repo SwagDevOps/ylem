@@ -77,6 +77,11 @@ class Ylem::Action::Base
 
   protected
 
+  # @return [Ylem::GC]
+  def gc
+    self.config.gc
+  end
+
   # Get a self configured ``Logger``
   #
   # @return [Ylem::Service::Logger]

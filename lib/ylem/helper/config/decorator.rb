@@ -7,7 +7,6 @@
 # There is NO WARRANTY, to the extent permitted by law.
 
 require_relative '../config'
-require_relative '../../concern/helper'
 require 'hash_dot'
 require 'dotenv'
 
@@ -67,7 +66,9 @@ class Ylem::Helper::Config::Decorator
   #
   # @return [Hash]
   def derived
+    # @formatter:off
     {
+      gc: Ylem::GC.new(loaded.fetch(:'gc.enabled')),
       scripts: {
         path: loaded.fetch(:'scripts.path'),
         executables: list_scripts(loaded),
@@ -81,6 +82,7 @@ class Ylem::Helper::Config::Decorator
         loaded: {},
       },
     }
+    # @formatter:on
   end
 
   # rubocop:enable Metrics/MethodLength
