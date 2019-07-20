@@ -16,7 +16,6 @@ module Ylem::Action
     Dump: 'dump',
     Exec: 'exec',
     Start: 'start',
-    Type: 'type',
   }.each { |s, fp| autoload(s, "#{__dir__}/action/#{fp}") }
   # @formatter:on
 
@@ -33,8 +32,8 @@ module Ylem::Action
 
     # Get action from a string
     #
-    # @param [Class] name
-    # @return [Class]
+    # @param [Symbol] name
+    # @return [Base|Dump|Start|Exec]
     def get(name)
       name = inflector.underscore(name.to_s)
       path = self.name

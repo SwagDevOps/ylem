@@ -32,6 +32,7 @@ module Ylem
     Action: 'action',
     Cli: 'cli',
     Concern: 'concern',
+    GC: 'gc',
     Helper: 'helper',
     Service: 'service',
     Type: 'type',
