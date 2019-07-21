@@ -13,6 +13,7 @@ require_relative '../helper'
 # Mostly based on ``Ylem::Helper::Yaml``
 class Ylem::Helper::ConfigReader
   autoload(:Pathname, 'pathname')
+
   include Ylem::Concern::Helper
 
   # Default config
