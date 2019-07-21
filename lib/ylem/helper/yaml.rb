@@ -10,9 +10,10 @@ require_relative '../helper'
 
 # Yaml helper built on top of ``YAML`
 class Ylem::Helper::Yaml
-  autoload :JSON, 'json'
-  autoload :YAML, 'yaml'
-  autoload :Pathname, 'pathname'
+  autoload(:JSON, 'json')
+  autoload(:YAML, 'yaml')
+  autoload(:Pathname, 'pathname')
+  autoload(:ERB, 'erb')
 
   # Parse Yaml source into a Ruby data structure
   #
@@ -29,9 +30,12 @@ class Ylem::Helper::Yaml
   # @param [String|Pathname] filepath
   # @return [Hash]
   def parse_file(filepath)
-    content = Pathname.new(filepath).read
-
-    parse(content)
+    Pathname.new(filepath).read.tap do |content|
+      # @see https://github.com/rails/rails/blob/b9ca94caea2ca6a6cc09abaffaad67b447134079/railties/lib/rails/application.rb#L226
+      ERB.new(content).tap do |renderer|
+        return parse(renderer.result)
+      end
+    end
   end
 
   protected
