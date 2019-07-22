@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "ylem"
-  s.version     = "1.0.3"
-  s.date        = "2019-07-21"
+  s.version     = "1.0.4"
+  s.date        = "2019-07-22"
   s.summary     = "Kind of init process"
   s.description = "A simple init scheme for Unix-like operating systems that initializes processes"
 
@@ -31,9 +31,9 @@ Gem::Specification.new do |s|
    .flatten
    .push(*s.executables.map { |f| [s.bindir, f].join("/") })
 
-  s.add_runtime_dependency("dotenv", ["~> 2.4"])
+  s.add_runtime_dependency("dotenv", ["~> 2.7"])
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
-  s.add_runtime_dependency("hash_dot", ["~> 2.1"])
+  s.add_runtime_dependency("hash_dot", ["~> 2.4"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
   s.add_runtime_dependency("sys-proc", ["~> 1.1"])
 end
