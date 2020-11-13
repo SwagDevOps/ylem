@@ -12,7 +12,7 @@ GEM
     dry-inflector (0.1.2)
     equatable (0.6.1)
     ffi (1.11.1)
-    github-markup (3.0.4)
+    github-markup (3.0.5)
     hash_dot (2.4.1)
     interesting_methods (0.1.2)
     jaro_winkler (1.5.3)
