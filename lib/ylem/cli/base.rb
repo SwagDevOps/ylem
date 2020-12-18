@@ -64,8 +64,8 @@ class Ylem::Cli::Base
 
   # @param [Array] argv
   def initialize(argv = ARGV)
-    @argv      = argv.clone
-    @options   = self.class.defaults
+    @argv = argv.clone
+    @options = self.class.defaults
     @arguments = []
   end
 
@@ -89,13 +89,11 @@ class Ylem::Cli::Base
   # @raise [OptionParser::ParseError]
   # @return [self]
   def parse!
-    argv = self.argv.clone
-    parser.parse!(argv)
-
-    @options   = @options
-    @arguments = argv.clone
-
-    self
+    self.tap do
+      argv = self.argv.clone
+      parser.parse!(argv)
+      @arguments = argv.clone
+    end
   end
 
   # @return [Integer] as return code
@@ -109,7 +107,7 @@ class Ylem::Cli::Base
   # @raise [Errno::EACCES]
   # @return [Hash]
   def config
-    config_file  = @options[:config_file]
+    config_file = @options[:config_file]
     use_defaults = @options.delete(:use_defaults)
 
     begin
