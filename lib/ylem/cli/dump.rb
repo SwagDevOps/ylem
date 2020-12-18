@@ -20,8 +20,7 @@ class Ylem::Cli::Dump < Ylem::Cli::Base
   end
 
   def parser
-    super
-      .on('--section=SECTION', 'Display section value') do |section|
+    super.on('--section=SECTION', 'Display section value') do |section|
       options[:section] = section
     end
   end
