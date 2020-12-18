@@ -13,11 +13,11 @@ require_relative '../action'
 module Ylem::Concern::Action
   # Get related action
   #
-  # @return [Class]
+  # @return [Class<Ylem::Action::Base>]
   def action
-    from = [Class, Module].include?(self.class) ? self : self.class
-
-    Ylem::Action.from_class(from)
+    ([Class, Module].include?(self.class) ? self : self.class).tap do |from|
+      return Ylem::Action.from_class(from)
+    end
   end
 
   protected
