@@ -14,8 +14,19 @@ class Ylem::Cli
   include Ylem::Concern::Cli::Output
   include Ylem::Concern::Cli::Parse
 
+  # CLI argv
+  #
+  # @type [Array<String>]
   attr_reader :argv
+
+  # Arguments
+  #
+  # @type [Array<String>]
   attr_reader :arguments
+
+  # Command verb
+  #
+  # @return [Symbol]
   attr_reader :command
 
   # @param [Array] argv
