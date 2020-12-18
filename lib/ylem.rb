@@ -19,7 +19,7 @@ module Ylem
     # @return [Boolean]
     def bundled?
       # @formatter:off
-      [['gems.rb', 'gems.locked'], ['Gemfile', 'Gemfile.lock']]
+      [%w[gems.rb gems.locked], %w[Gemfile Gemfile.lock]]
         .map { |m| Dir.glob("#{__dir__}/../#{m}").size >= 2 }
         .include?(true)
       # @formatter:on
@@ -32,6 +32,9 @@ module Ylem
       standalone_setupfile.file?
     end
 
+    # Load standalone setup if present
+    #
+    # @return [Boolean]
     def standalone!
       # noinspection RubyResolve
       standalone?.tap { |b| require standalone_setupfile if b }
