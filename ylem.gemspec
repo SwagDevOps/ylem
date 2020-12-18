@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "ylem"
-  s.version     = "1.0.5"
-  s.date        = "2019-08-04"
+  s.version     = "1.0.6"
+  s.date        = "2020-12-18"
   s.summary     = "Kind of init process"
   s.description = "A simple init scheme for Unix-like operating systems that initializes processes"
 
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("hash_dot", ["~> 2.4"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
-  s.add_runtime_dependency("sys-proc", ["~> 1.1"])
+  s.add_runtime_dependency("sys-proc", ["~> 1.1", ">= 1.1.2"])
 end
 
 # Local Variables:
