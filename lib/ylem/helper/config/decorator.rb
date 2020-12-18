@@ -68,7 +68,7 @@ class Ylem::Helper::Config::Decorator
   def derived
     # @formatter:off
     {
-      gc: Ylem::GC.new(loaded.fetch(:'gc.enabled')),
+      gc: Ylem::GC.new(enabled: loaded.fetch(:'gc.enabled')),
       scripts: {
         path: loaded.fetch(:'scripts.path'),
         executables: list_scripts(loaded),
