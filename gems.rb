@@ -8,19 +8,21 @@ group :default do
   gem 'dry-inflector', '~> 0.1'
   gem 'hash_dot', '~> 2.4'
   gem 'kamaze-version', '~> 1.0'
-  gem 'sys-proc', '~> 1.1'
+  gem 'sys-proc', '~> 1.1', '>= 1.1.2'
 end
 
 group :development do
-  gem 'kamaze-project', '~> 1.0', '>= 1.0.3'
-  gem 'listen', '~> 3.1'
-  gem 'rubocop', '~> 0.74'
-end
+  { github: 'SwagDevOps/kamaze-project', branch: 'develop' }.tap do |options|
+    gem(*['kamaze-project'].concat([options]))
+  end
 
-group :repl do
+  gem 'listen', '~> 3.1'
+  gem 'rake', '~> 13.0'
+  gem 'rubocop', '~> 1.3'
+  gem 'rugged', '~> 1.0'
+  # repl ---------------------------------
   gem 'interesting_methods', '~> 0.1'
   gem 'pry', '~> 0.12'
-  gem 'pry-coolline', '~> 0.2'
 end
 
 group :doc do
