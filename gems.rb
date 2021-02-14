@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-# bundle install --path vendor/bundle
+# ```sh
+# bundle config set --local clean 'true'
+# bundle config set --local path 'vendor/bundle'
+# bundle install --standalone
+# ```
 source 'https://rubygems.org'
 
 group :default do
