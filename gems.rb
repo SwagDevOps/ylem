@@ -12,6 +12,7 @@ group :default do
   gem 'dry-inflector', '~> 0.1'
   gem 'hash_dot', '~> 2.4'
   gem 'kamaze-version', '~> 1.0'
+  gem 'stibium-bundled', '~> 0.0.1', '>= 0.0.4'
   gem 'sys-proc', '~> 1.1', '>= 1.1.2'
 end
 

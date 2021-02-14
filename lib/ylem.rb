@@ -11,42 +11,6 @@ $LOAD_PATH.unshift(__dir__)
 # Base module (namespace)
 module Ylem
   require 'English'
-  autoload(:Pathname, 'pathname')
-
-  class << self
-    protected
-
-    # @return [Boolean]
-    def bundled?
-      # @formatter:off
-      [%w[gems.rb gems.locked], %w[Gemfile Gemfile.lock]]
-        .map { |m| Dir.glob("#{__dir__}/../#{m}").size >= 2 }
-        .include?(true)
-      # @formatter:on
-    end
-
-    # @see https://bundler.io/man/bundle-install.1.html
-    #
-    # @return [Boolean]
-    def standalone?
-      standalone_setupfile.file?
-    end
-
-    # Load standalone setup if present
-    #
-    # @return [Boolean]
-    def standalone!
-      # noinspection RubyResolve
-      standalone?.tap { |b| require standalone_setupfile if b }
-    end
-
-    # @api private
-    #
-    # @return [Pathname]
-    def standalone_setupfile
-      Pathname.new("#{__dir__}/../bundle/bundler/setup.rb")
-    end
-  end
 
   # @formatter:off
   {
@@ -61,13 +25,8 @@ module Ylem
   }.each { |s, fp| autoload(s, Pathname.new(__dir__).join("ylem/#{fp}")) }
   # @formatter:on
 
-  unless standalone!
-    if bundled? # rubocop:disable Style/SoleNestedConditional
-      require 'bundler/setup'
-
-      if Gem::Specification.find_all_by_name('kamaze-project').any?
-        require 'kamaze/project/core_ext/pp'
-      end
-    end
+  autoload(:Pathname, 'pathname')
+  Pathname.new(__dir__).join('ylem/bundled.rb').yield_self do |file|
+    self.instance_eval(file.read, file.to_path)
   end
 end

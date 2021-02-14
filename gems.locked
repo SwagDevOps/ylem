@@ -78,6 +78,7 @@ GEM
     ruby-progressbar (1.11.0)
     rugged (1.1.0)
     sham (2.0.0)
+    stibium-bundled (0.0.5)
     sys-proc (1.1.2)
       dry-inflector (~> 0.1)
     tenjin (0.7.1)
@@ -117,6 +118,7 @@ DEPENDENCIES
   rubocop (~> 1.3)
   rugged (~> 1.0)
   sham (~> 2.0)
+  stibium-bundled (~> 0.0.1, >= 0.0.4)
   sys-proc (~> 1.1, >= 1.1.2)
   yard (~> 0.9)
 
