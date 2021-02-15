@@ -16,6 +16,7 @@ module Ylem
   {
     VERSION: 'version',
     Action: 'action',
+    Bundled: 'bundled',
     Cli: 'cli',
     Concern: 'concern',
     GC: 'gc',
@@ -25,8 +26,5 @@ module Ylem
   }.each { |s, fp| autoload(s, Pathname.new(__dir__).join("ylem/#{fp}")) }
   # @formatter:on
 
-  autoload(:Pathname, 'pathname')
-  Pathname.new(__dir__).join('ylem/bundled.rb').yield_self do |file|
-    self.instance_eval(file.read, file.to_path)
-  end
+  include(Bundled)
 end
