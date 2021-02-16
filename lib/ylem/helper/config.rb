@@ -34,15 +34,10 @@ class Ylem::Helper::Config < Ylem::Helper::ConfigReader
   end
 
   def parse_file(filepath = default_file)
-    Pathname.new(filepath).tap do |file|
-      dir = pwd
+    Pathname.new(filepath).yield_self do |file|
+      return super(file) if file.exist?
 
-      if file.exist?
-        dir = file.realpath.dirname
-        file = file.realpath
-      end
-
-      Dir.chdir(dir) { return super(file) }
+      super(file.absolute? ? file : Pathname.new(pwd).join(file))
     end
   end
 
