@@ -39,9 +39,7 @@ class Ylem::Helper::ConfigReader
   # @param [Pathname|String] filepath
   # @return [Hash]
   def parse_file(filepath = default_file)
-    filepath = Pathname.new(filepath)
-
-    parse(filepath.read)
+    Pathname.new(filepath).yield_self { |file| parse(file.read) }
   end
 
   # Parse string content (yaml) merging with defauts
