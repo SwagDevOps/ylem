@@ -22,18 +22,16 @@ class Ylem::Action::Dump < Ylem::Action::Base
   #
   # @return [Hash]
   def options
-    options = super
-
-    options.merge(sections: options[:section].to_s.split('.'))
+    super.tap do |options|
+      options.merge!(sections: options[:section].to_s.split('.'))
+    end
   end
 
   # Execute action
   #
   # @return [self]
   def execute
-    output(printable)
-
-    self
+    self.tap { output(printable) }
   end
 
   # Get printable (JSON encoded string)
@@ -47,15 +45,22 @@ class Ylem::Action::Dump < Ylem::Action::Base
 
   # Dumpable content
   #
-  # @return [Hash|Array]
+  # @return [Hash, Array, Object]
   def dumpable
-    dumpable = config.clone
-    # displays ``scripts.executables`` as relative paths
-    dumpable[:scripts][:executables].map!(&:basename)
+    config.clone.dup.tap do |dumpable|
+      # displays ``scripts.executables`` as relative paths
+      dumpable[:scripts][:executables].map!(&:basename)
+      # gc seen as boolean
+      dumpable[:gc] = !!dumpable[:gc] if dumpable.key?(:gc)
+    end.yield_self { |dumpable| walk(dumpable, sections: options.fetch(:sections, [])) }
+  end
 
-    options.fetch(:sections).each do |section|
-      dumpable = dumpable.public_send(section)
-    end
+  # Walk through given dumpable with given sections.
+  #
+  # @param [Object] dumpable
+  # @param [Arrtay<String>] sections
+  def walk(dumpable, sections: [])
+    sections.each { |section| dumpable = dumpable.public_send(section) }
 
     dumpable
   end
