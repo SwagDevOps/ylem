@@ -23,7 +23,7 @@ module Ylem
     Helper: 'helper',
     Service: 'service',
     Type: 'type',
-  }.each { |s, fp| autoload(s, Pathname.new(__dir__).join("ylem/#{fp}")) }
+  }.each { |s, fp| autoload(s, "#{__dir__}/ylem/#{fp}") }
   # @formatter:on
 
   include(Bundled)
