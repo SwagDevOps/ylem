@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("hash_dot", ["~> 2.4"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
+  s.add_runtime_dependency("stibium-bundled", ["~> 0.0.1", ">= 0.0.4"])
   s.add_runtime_dependency("sys-proc", ["~> 1.1", ">= 1.1.2"])
 end
 
