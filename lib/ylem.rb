@@ -16,7 +16,7 @@ module Ylem
   {
     VERSION: 'version',
     Action: 'action',
-    Bundled: 'bundled',
+    Bundleable: 'bundleable',
     Cli: 'cli',
     Concern: 'concern',
     GC: 'gc',
@@ -26,5 +26,5 @@ module Ylem
   }.each { |s, fp| autoload(s, "#{__dir__}/ylem/#{fp}") }
   # @formatter:on
 
-  include(Bundled)
+  include(Bundleable)
 end
