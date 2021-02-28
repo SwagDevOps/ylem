@@ -13,6 +13,7 @@ class Ylem::Cli
   include Ylem::Concern::Helper
   include Ylem::Concern::Cli::Output
   include Ylem::Concern::Cli::Parse
+  include Ylem::Concern::Cli::Progname
 
   # CLI argv
   #
@@ -31,14 +32,14 @@ class Ylem::Cli
 
   # @param [Array] argv
   def initialize(argv = ARGV)
-    @argv      = argv.clone
+    @argv = argv.clone.dup.freeze.map(&:freeze)
     @arguments = []
   end
 
   class << self
     include Ylem::Concern::Helper
 
-    # Run, almost a shortcut
+    # Shortcut for ``instance.run`` method>
     #
     # Usable, instead of:
     #
@@ -50,10 +51,10 @@ class Ylem::Cli
     # @param [Array] argv
     # @return [Integer]
     #
-    # @see Ylem::Cli#initialize
-    # @see Ylem::Cli#run
-    def run(argv = ARGV)
-      self.new(argv).run
+    # @see #initialize
+    # @see #run
+    def call(argv = ARGV, progname: nil)
+      self.new(argv).call(progname: progname)
     end
 
     # Get available (registered) commands
@@ -74,7 +75,7 @@ class Ylem::Cli
     # @return OptionParser
     Ylem::Type::OptionParser.new do |opts|
       opts.banner = 'Usage: %<progname>s {%<commands>s} [options]' % {
-        progname: $PROGRAM_NAME,
+        progname: progname,
         commands: commands.keys.join('|'),
       }
 
@@ -85,43 +86,49 @@ class Ylem::Cli
 
   # Parse command arguments
   #
+  # @note Instance is frozen after arguments parsing.
+  #
   # @raise OptionParser::InvalidArgument
+  #
   # @return [self]
   def parse!
-    parser.order!(argv)
-    @arguments = argv.clone
-    @command   = arguments.shift
+    -> { self.freeze }.tap do
+      parser.order!(argv)
 
-    raise OptionParser::InvalidArgument unless command?(command)
+      @arguments = argv.dup.freeze.map(&:freeze)
+      @command = arguments.shift.freeze
 
-    self
+      raise OptionParser::InvalidArgument unless command?(command)
+    end.call
   end
 
+  # Execute cli and return status code.
+  #
   # @return [Fixnum]
-  def run
+  def call(progname: nil)
+    self.progname = progname unless progname.nil?
+
     parse { run_command(command, arguments).to_i }
   end
 
   # Get commanda indexed by command name/keyword
   #
-  # @return [Hash]
+  # @return [Hash{Symbol => Object}]
   def commands
-    results = {}
-
-    self.class.commands.each do |name|
-      results[name.to_sym] = command_get(name)
+    {}.tap do |results|
+      self.class.commands.each do |name|
+        results[name.to_sym] = command_get(name)
+      end
     end
-
-    results
   end
 
   # Denote command is available (registered)
   #
   # @return [Boolean]
-  def command?(command)
-    command = command.to_s.empty? ? nil : command
-
-    command.nil? ? false : commands.key?(command.to_sym)
+  def command?(command_name)
+    (command_name.to_s.empty? ? nil : command_name).yield_self do |name|
+      name.nil? ? false : commands.key?(name.to_sym)
+    end
   end
 
   protected
@@ -137,7 +144,7 @@ class Ylem::Cli
     ['Available commands are:']
       .push(commands.keys.map { |k| format_command_summary(k) },
             nil,
-            "See '#{$PROGRAM_NAME} [command] --help'",
+            "See '#{progname} [command] --help'",
             'to read about a specific subcommand.')
       .join("\n")
   end
@@ -148,7 +155,7 @@ class Ylem::Cli
   # @return [String]
   def format_command_summary(name)
     padding = commands.keys.max_by(&:length).size + 4
-    spacer  = ' ' * (padding - name.to_s.size)
+    spacer = ' ' * (padding - name.to_s.size)
     summary = commands.fetch(name).summary
 
     "   #{name}#{spacer}#{summary}"

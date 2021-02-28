@@ -1,18 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'pathname'
-
-Pathname.new(__dir__).join('..', 'lib', 'ylem.rb').tap do |file|
-  require_relative file if file.file?
+File.new("#{__dir__}/../lib/ylem.rb").tap do |file|
+  # noinspection RubyResolve
+  require_relative file if File.file?(file)
 end
 
 require 'ylem/cli'
-require 'sys/proc'
 
-Pathname.new(__FILE__).basename.to_s.tap do |progname|
-  $PROGRAM_NAME      = progname
-  Sys::Proc.progname = progname
+Ylem::Cli.call(progname: File.basename(__FILE__)).to_i.tap do |status_code|
+  exit(status_code)
 end
-
-exit Ylem::Cli.run.to_i
