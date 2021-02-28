@@ -22,7 +22,7 @@ module Ylem::Bundleable
         require 'stibium/bundled'
       rescue LoadError
         loader.call(basedir)
-      else
+      ensure
         othermod
           .__send__(:include, ::Stibium::Bundled)
           .__send__(:bundled_from, basedir, setup: true, &bundle_handler)
