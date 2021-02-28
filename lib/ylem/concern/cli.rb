@@ -14,6 +14,7 @@ module Ylem::Concern::Cli
   {
     Output: 'output',
     Parse: 'parse',
+    Progname: 'progname',
   }.each { |s, fp| autoload(s, "#{__dir__}/cli/#{fp}") }
   # @formatter:on
 end
