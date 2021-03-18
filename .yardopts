@@ -1,7 +1,14 @@
-./lib/**/*.rb
---markup-provider redcarpet
---markup markdown
---charset utf-8
---protected
---embed-mixins
---readme README.md
+# vim: ft=sh
+
+./lib/**/*.rb                 \
+ --markup-provider redcarpet  \
+ --markup markdown            \
+ --charset utf-8              \
+ --protected                  \
+ --embed-mixins               \
+ --readme README.md           \
+ --tag type:'type' --hide-tag 'type'
+
+# Local Variables:
+# mode: sh
+# End:

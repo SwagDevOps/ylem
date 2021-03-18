@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# Copyright (C) 2017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
 # License GPLv3+: GNU GPL version 3 or later
 # <http://www.gnu.org/licenses/gpl.html>.
 # This is free software: you are free to change and redistribute it.
@@ -11,7 +11,7 @@ require_relative '../ylem'
 # Minor wrapper on top of `GC`
 class Ylem::GC
   # @param [Boolean] enabled
-  def initialize(enabled = true)
+  def initialize(enabled: true)
     # noinspection RubySimplifyBooleanInspection
     @enabled = !!enabled
   end
@@ -20,8 +20,6 @@ class Ylem::GC
   def enabled?
     @enabled
   end
-
-  # rubocop:disable Metrics/LineLength
 
   # Initiates garbage collection, unless manually disabled.
   #
@@ -36,9 +34,6 @@ class Ylem::GC
   #
   # @return [self]
   def start(**kwargs)
-    # rubocop:enable Metrics/LineLength
-    self.tap do
-      ::GC.start(**kwargs) if enabled?
-    end
+    self.tap { ::GC.start(**kwargs) if enabled? }
   end
 end

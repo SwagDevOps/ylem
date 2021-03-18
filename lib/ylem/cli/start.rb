@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# Copyright (C) 2017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
 # License GPLv3+: GNU GPL version 3 or later
 # <http://www.gnu.org/licenses/gpl.html>.
 # This is free software: you are free to change and redistribute it.
@@ -29,11 +29,9 @@ class Ylem::Cli::Start < Ylem::Cli::Base
   def parser
     options.merge!(keep_going: false, verbose: false)
 
-    super
-      .on('-k', '--keep-going', 'Keep going even some scripts fails') do |b|
+    super.on('-k', '--keep-going', 'Keep going even some scripts fails') do
       options[:keep_going] = true
-    end
-      .on('-v', '--verbose', 'Be verbose') do |b|
+    end.on('-v', '--verbose', 'Be verbose') do
       options[:verbose] = true
     end
   end

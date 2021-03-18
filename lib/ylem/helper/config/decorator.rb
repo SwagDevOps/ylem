@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# Copyright (C) 2017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
 # License GPLv3+: GNU GPL version 3 or later
 # <http://www.gnu.org/licenses/gpl.html>.
 # This is free software: you are free to change and redistribute it.
@@ -68,7 +68,7 @@ class Ylem::Helper::Config::Decorator
   def derived
     # @formatter:off
     {
-      gc: Ylem::GC.new(loaded.fetch(:'gc.enabled')),
+      gc: Ylem::GC.new(enabled: loaded.fetch(:'gc.enabled')),
       scripts: {
         path: loaded.fetch(:'scripts.path'),
         executables: list_scripts(loaded),

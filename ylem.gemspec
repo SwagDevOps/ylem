@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "ylem"
-  s.version     = "1.0.5"
-  s.date        = "2019-08-04"
+  s.version     = "1.0.7"
+  s.date        = "2021-03-18"
   s.summary     = "Kind of init process"
   s.description = "A simple init scheme for Unix-like operating systems that initializes processes"
 
@@ -16,7 +16,9 @@ Gem::Specification.new do |s|
 
   # MUST follow the higher required_ruby_version
   # requires version >= 2.3.0 due to safe navigation operator &
-  s.required_ruby_version = ">= 2.3.0"
+  # RuboCop found unsupported Ruby version 2.3 in `required_ruby_version`
+  # requires version >= 2.5.0 due to yield_self
+  s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
   s.executables   = Dir.glob([s.bindir, "/*"].join)
@@ -35,7 +37,9 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency("dry-inflector", ["~> 0.1"])
   s.add_runtime_dependency("hash_dot", ["~> 2.4"])
   s.add_runtime_dependency("kamaze-version", ["~> 1.0"])
-  s.add_runtime_dependency("sys-proc", ["~> 1.1"])
+  s.add_runtime_dependency("rouge", ["~> 3.26"])
+  s.add_runtime_dependency("stibium-bundled", ["~> 0.0.1", ">= 0.0.4"])
+  s.add_runtime_dependency("sys-proc", ["~> 1.1", ">= 1.1.2"])
 end
 
 # Local Variables:

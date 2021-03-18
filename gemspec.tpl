@@ -18,7 +18,9 @@ Gem::Specification.new do |s|
 
   # MUST follow the higher required_ruby_version
   # requires version >= 2.3.0 due to safe navigation operator &
-  s.required_ruby_version = ">= 2.3.0"
+  # RuboCop found unsupported Ruby version 2.3 in `required_ruby_version`
+  # requires version >= 2.5.0 due to yield_self
+  s.required_ruby_version = ">= 2.5.0"
   s.require_paths = ["lib"]
   s.bindir        = "bin"
   s.executables   = Dir.glob([s.bindir, "/*"].join)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Copyright (C) 2017-2019 Dimitri Arrigoni <dimitri@arrigoni.me>
+# Copyright (C) 2017-2021 Dimitri Arrigoni <dimitri@arrigoni.me>
 # License GPLv3+: GNU GPL version 3 or later
 # <http://www.gnu.org/licenses/gpl.html>.
 # This is free software: you are free to change and redistribute it.
@@ -13,11 +13,11 @@ require_relative '../action'
 module Ylem::Concern::Action
   # Get related action
   #
-  # @return [Class]
+  # @return [Class<Ylem::Action::Base>]
   def action
-    from = [Class, Module].include?(self.class) ? self : self.class
-
-    Ylem::Action.from_class(from)
+    ([Class, Module].include?(self.class) ? self : self.class).tap do |from|
+      return Ylem::Action.from_class(from)
+    end
   end
 
   protected
