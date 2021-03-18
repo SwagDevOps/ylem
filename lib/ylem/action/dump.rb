@@ -17,6 +17,7 @@ require_relative 'base'
 # @see https://github.com/adsteel/hash_dot
 class Ylem::Action::Dump < Ylem::Action::Base
   autoload(:JSON, 'json')
+  autoload(:Rouge, 'rouge')
 
   # Get options
   #
@@ -31,7 +32,11 @@ class Ylem::Action::Dump < Ylem::Action::Base
   #
   # @return [self]
   def execute
-    self.tap { output(printable) }
+    self.tap do
+      formatter.call(printable).tap do |output|
+        self.output(output)
+      end
+    end
   end
 
   # Get printable (JSON encoded string)
@@ -42,6 +47,17 @@ class Ylem::Action::Dump < Ylem::Action::Base
   end
 
   protected
+
+  # @return [Proc]
+  #
+  # @see https://github.com/rouge-ruby/rouge
+  def formatter
+    lambda do |source, output: $stdout|
+      return source unless output.isatty
+
+      Rouge::Formatters::Terminal256.new.format(Rouge::Lexers::JSON.new.lex(source))
+    end
+  end
 
   # Dumpable content
   #
