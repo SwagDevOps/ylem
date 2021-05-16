@@ -5,6 +5,9 @@ patch: 7
 authors: ['Dimitri Arrigoni']
 email: 'dimitri@arrigoni.me'
 date: '2021-03-18'
+# requires version >= 2.3.0 due to safe navigation operator &
+# requires version >= 2.5.0 due to yield_self
+required_ruby_version: '>= 2.5.0'
 summary: 'Kind of init process'
 description: 'A simple init scheme for Unix-like operating systems that initializes processes'
 homepage: 'https://github.com/SwagDevOps/ylem'
