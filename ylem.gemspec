@@ -4,8 +4,8 @@
 
 Gem::Specification.new do |s|
   s.name        = "ylem"
-  s.version     = "1.0.7"
-  s.date        = "2021-03-18"
+  s.version     = "1.0.8"
+  s.date        = "2021-05-16"
   s.summary     = "Kind of init process"
   s.description = "A simple init scheme for Unix-like operating systems that initializes processes"
 

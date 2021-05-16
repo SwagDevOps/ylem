@@ -1,10 +1,10 @@
 ---
 major: 1
 minor: 0
-patch: 7
+patch: 8
 authors: ['Dimitri Arrigoni']
 email: 'dimitri@arrigoni.me'
-date: '2021-03-18'
+date: '2021-05-16'
 # requires version >= 2.3.0 due to safe navigation operator &
 # requires version >= 2.5.0 due to yield_self
 required_ruby_version: '>= 2.5.0'
