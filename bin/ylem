@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-Warning[:deprecated] = true
+Warning[:deprecated] = true if Warning.respond_to?(:[]=)
 
 File.new("#{__dir__}/../lib/ylem.rb").tap do |file|
   # noinspection RubyResolve
